@@ -1,0 +1,2 @@
+Primero instalamos axios, ahora debemos importarlo  
+Ahora debemos permitir que CORS nos deje enviar solicitudes al servidor

@@ -1,0 +1,2 @@
+En los modelos añadimos como será nuestra tabla, luego creamos la migracion y la 
+ejecutamos, ahora se nos guardará en nuestra base de datos

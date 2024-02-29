@@ -1,0 +1,4 @@
+Django REST framework (https://www.django-rest-framework.org/)
+Esto será nuestra API, la que consumirá view.
+Para editar, solo debemos añadir el id a nuestro url.
+http://127.0.0.1:8000/api/trainers/1
