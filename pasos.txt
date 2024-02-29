@@ -1,5 +1,6 @@
 Primero, instalar un entorno virtual (venv) y entramos a el.
-A continuacion, descargaremos django y crearemos un proyecto en el.
+venv\Scripts\activate
+A continuacion, descargaremos Django.
 Ahora descargaremos los siguientes paquetes y seguiremos los pasos
 que nos sale en la documentacion:
 Django REST framework (https://www.django-rest-framework.org/)
