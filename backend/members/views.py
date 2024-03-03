@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -23,26 +24,15 @@ class TrainerViewSet(viewsets.ModelViewSet):
         # http://127.0.0.1:8000/api/trainers/by_team/?team=1
         return Response(serializer.data)
 
+
 class TeamViewSet(viewsets.ModelViewSet):
     queryset = Team.objects.all()
     serializer_class = TeamSerializer
 
 
-# # CRUD de Trainers
-# # Vista que obtiene todos los entrenadores
-# class TrainerList(generics.ListCreateAPIView):
-#   queryset = Trainer.objects.all()
-#   serializer_class = TrainerSerializer
-# # Vista que nos permite Añadir, actualizar y eliminar un entrenador
-# class TrainerDetail(generics.RetrieveUpdateDestroyAPIView):
-#   queryset = Trainer.objects.all()
-#   serializer_class = TrainerSerializer
-
-# # CRUD de Teams
-
-# class TeamList(generics.ListCreateAPIView):
-#   queryset = Team.objects.all()
-#   serializer_class = TrainerSerializer
-# class TeamDetail(generics.RetrieveUpdateDestroyAPIView):
-#   queryset = Team.objects.all()
-#   serializer_class = TeamSerializer
+def createTrainer(request):
+    print("HAS ENTRADO!!")
+    # if request.method == "POST":
+    #     data = request.POST.get("data") # Recoge los datos enviados
+    #     print(data)
+    return HttpResponse("<h1>Holaa</h1>")

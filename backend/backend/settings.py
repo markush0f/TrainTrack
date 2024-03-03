@@ -46,10 +46,7 @@ THIRD_APPS = [
     "corsheaders",
 ]
 # Aplicaciones
-OWN_APPS = [
-    "members",
-    "league"
-]
+OWN_APPS = ["members", "league"]
 
 INSTALLED_APPS = BASE_APPS + THIRD_APPS + OWN_APPS
 
@@ -67,6 +64,7 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
 ]
+CSRF_TRUSTED_ORIGINS = ["http://localhost:5173"]
 # Esto permita que las rutas realizen estos metodos
 CORS_ALLOW_METHODS = (
     "DELETE",

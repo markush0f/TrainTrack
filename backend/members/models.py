@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from localflavor.es.forms import ESIdentityCardNumberField
-
 from league.models import Team
 
 
@@ -58,6 +57,9 @@ class Parents(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
 
+    def __str__(self):
+        return self.name
+
 
 # Modelo de Jugadores
 class Player(models.Model):
@@ -72,10 +74,14 @@ class Player(models.Model):
     surname = models.CharField(blank=False, null=False, max_length=255)
     birth = models.DateField(blank=False, null=False)
     dni = ESIdentityCardNumberField(only_nif=True)
-    position = models.CharField(blank=False, null=False, max_length=255)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
+
+    def __str__(self):
+        return self.name
+
     # categoria del jugador
     # team_id haremos una clave foranea con la de la base de datos de team
     # Añadir mas maneras de contactos
-    
+
+    # Modelo de estadisticas de jugadores
