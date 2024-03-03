@@ -1,45 +1,32 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from localflavor.es.forms import ESIdentityCardNumberField
 
-# Crear un administrador
-# Modelo de Equipos
-# Los equipos ponerlos en una app distinta, cuyo nombre será algo relacionado con una liga
-class Team(models.Model):
-    name = models.CharField(blank=False, null=False, max_length=255)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    class Meta:
-        verbose_name = "Team"
-        verbose_name_plural = "Teams"
-        ordering = ["name"]
-        # mas campos
-
-    def __str__(self):
-        return self.name
+from league.models import Team
 
 
 # Modelo de Entrenadores
 class Trainer(models.Model):
-    name = models.CharField(blank=False, null=False, max_length=255)
-    surname = models.CharField(blank=False, null=False, max_length=255)
-    email = models.EmailField(blank=False, null=False)
-    birth = models.DateField(blank=False, null=False)
-    password = models.CharField(blank=False, null=True, max_length=255)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
     team = models.ForeignKey(
         Team,
         on_delete=models.CASCADE,
         related_name="get_teams",
         verbose_name="Team",
-        default=1 
+        default=1,
     )
+    email = models.EmailField(blank=False, null=False)
+    password = models.CharField(blank=False, null=True, max_length=255)
+    name = models.CharField(blank=False, null=False, max_length=255)
+    surname = models.CharField(blank=False, null=False, max_length=255)
+    birth = models.DateField(blank=False, null=False)
+    dni = ESIdentityCardNumberField(only_nif=True)
+    address1 = models.CharField(blank=False, null=False, max_length=255)
+    address2 = models.CharField(blank=False, null=True, max_length=255)
+    phone = models.CharField(blank=False, null=False, max_length=255)
+    created_at = models.DateTimeField(default=timezone.now, null=True)
+    updated_at = models.DateTimeField(default=timezone.now, null=True)
     # a la contraseña ponerle un hash
-    # añadir address y country
-    # Añadir mas maneras de contactos
-
-    # team_id haremos una clave foranea con la de la base de datos de team
 
     class Meta:
         verbose_name = "Trainer"
@@ -50,13 +37,45 @@ class Trainer(models.Model):
         return self.name
 
 
+# Modelo de los padres
+class Parents(models.Model):
+    trainer = models.ForeignKey(
+        Trainer,
+        on_delete=models.CASCADE,
+        related_name="get_trainers",
+        verbose_name="Trainer",
+        default=1,
+    )
+    email = models.EmailField(blank=False, null=False)
+    password = models.CharField(blank=False, null=True, max_length=255)
+    name = models.CharField(blank=False, null=False, max_length=255)
+    surname = models.CharField(blank=False, null=False, max_length=255)
+    birth = models.DateField(blank=False, null=False)
+    dni = ESIdentityCardNumberField(only_nif=True)
+    address1 = models.CharField(blank=False, null=False, max_length=255)
+    address2 = models.CharField(blank=False, null=True, max_length=255)
+    phone = models.CharField(blank=False, null=False, max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
+
+
 # Modelo de Jugadores
 class Player(models.Model):
+    parent = models.ForeignKey(
+        Parents,
+        on_delete=models.CASCADE,
+        related_name="get_players",
+        verbose_name="Parent",
+        default=1,
+    )
     name = models.CharField(blank=False, null=False, max_length=255)
-    email = models.EmailField(blank=False, null=False)
+    surname = models.CharField(blank=False, null=False, max_length=255)
     birth = models.DateField(blank=False, null=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    dni = ESIdentityCardNumberField(only_nif=True)
+    position = models.CharField(blank=False, null=False, max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
     # categoria del jugador
     # team_id haremos una clave foranea con la de la base de datos de team
     # Añadir mas maneras de contactos
+    

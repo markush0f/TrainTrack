@@ -48,6 +48,7 @@ THIRD_APPS = [
 # Aplicaciones
 OWN_APPS = [
     "members",
+    "league"
 ]
 
 INSTALLED_APPS = BASE_APPS + THIRD_APPS + OWN_APPS
