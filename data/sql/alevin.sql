@@ -1,0 +1,16 @@
+INSERT INTO league_team (id, code_team, name, category, league, town) VALUES
+(31, 'UDLZ001', 'UD Las Zocas', 'alevin', 'Liga alevin Tenerife', 'Las Zocas'),
+(32, 'CDTF002', 'CD Tenerife', 'alevin', 'Liga alevin Tenerife', 'Santa Cruz de Tenerife'),
+(33, 'CDM003', 'CD Marino', 'alevin', 'Liga alevin Tenerife', 'Playa de las Américas'),
+(34, 'UDI004', 'UD Icodense', 'alevin', 'Liga alevin Tenerife', 'Icod de los Vinos'),
+(35, 'CDL005', 'CD Laguna', 'alevin', 'Liga alevin Tenerife', 'San Cristóbal de La Laguna'),
+(36, 'UDGI006', 'UD Guía de Isora', 'alevin', 'Liga alevin Tenerife', 'Guía de Isora'),
+(37, 'CDT007', 'CD Tejina', 'alevin', 'Liga alevin Tenerife', 'Tejina'),
+(38, 'CDUSY008', 'CD Unión Sur Yaiza', 'alevin', 'Liga alevin Tenerife', 'Yaiza'),
+(39, 'CDB009', 'CD Buzanada', 'alevin', 'Liga alevin Tenerife', 'Buzanada'),
+(40, 'UDT010', 'UD Tacoronte', 'alevin', 'Liga alevin Tenerife', 'Tacoronte'),
+(41, 'UDI011', 'UD Ibarra', 'alevin', 'Liga alevin Tenerife', 'Ibarra'),
+(42, 'CDA012', 'CD Atalaya', 'alevin', 'Liga alevin Tenerife', 'Atalaya'),
+(43, 'UDCS013', 'UD Cruz Santa', 'alevin', 'Liga alevin Tenerife', 'Cruz Santa'),
+(44, 'CDT014', 'CD Tegueste', 'alevin', 'Liga alevin Tenerife', 'Tegueste'),
+(45, 'CDSI015', 'CD San Isidro', 'alevin', 'Liga alevin Tenerife', 'San Isidro');
