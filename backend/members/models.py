@@ -63,8 +63,8 @@ class Parents(models.Model):
 
 # Modelo de Jugadores
 class Player(models.Model):
-    parent = models.ForeignKey(
-        Parents,
+    team = models.ForeignKey(
+        Team,
         on_delete=models.CASCADE,
         related_name="get_players",
         verbose_name="Parent",
