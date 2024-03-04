@@ -18,7 +18,7 @@ class Trainer(models.Model):
     password = models.CharField(blank=False, null=True, max_length=255)
     name = models.CharField(blank=False, null=False, max_length=255)
     surname = models.CharField(blank=False, null=False, max_length=255)
-    birth = models.DateField(blank=False, null=False)
+    birth = models.DateField(blank=False, null=False) 
     dni = ESIdentityCardNumberField(only_nif=True)
     address1 = models.CharField(blank=False, null=False, max_length=255)
     address2 = models.CharField(blank=False, null=True, max_length=255)

@@ -32,15 +32,17 @@ class TeamViewSet(viewsets.ModelViewSet):
     serializer_class = TeamSerializer
 
 
+# Cambiar el csrf, esto hace que el navegador ignore el csrf
 @csrf_exempt
 def signup(request):
     # Creamos un Padre
     if request.method == "POST":
         data = request.POST.get("data")  # Recoge los datos enviados
-    return JsonResponse("Se ha cargado")
+        print("Request",request)
+    return JsonResponse(data, safe=False)
 
 
-def loginParent(request):
-    if request.method == "POST":
-        if request.user.is_authenticated:
-            print("Inicio sesión")
+# def loginParent(request):
+#     if request.method == "POST":
+#         if request.user.is_authenticated:
+#             print("Inicio sesión")
