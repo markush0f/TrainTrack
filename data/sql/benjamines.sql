@@ -1,4 +1,4 @@
-INSERT INTO league_team (id,  name, category, league, town) VALUES
+INSERT INTO league_team (id, code_team, name, category, league, town) VALUES
 (1, 'UDLZ001', 'UD Las Zocas', 'Benjamin', 'Liga Benjamin Tenerife', 'Las Zocas'),
 (2, 'CDTF002', 'CD Tenerife', 'Benjamin', 'Liga Benjamin Tenerife', 'Santa Cruz de Tenerife'),
 (3, 'CDM003', 'CD Marino', 'Benjamin', 'Liga Benjamin Tenerife', 'Playa de las Américas'),
