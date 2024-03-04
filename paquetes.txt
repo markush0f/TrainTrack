@@ -1,0 +1,6 @@
+pip install django-auth
+pip install django-polymodels
+pip install djangorestframework
+pip install django-cors-headers
+pip install mysql
+pip install django-localflavor

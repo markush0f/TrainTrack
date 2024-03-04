@@ -12,14 +12,16 @@
 
 <script setup>
 import axios from 'axios';
-import URL_API from "../../App.vue";
+// import URL_API from "../../variables";
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
 const data = {
   "Respuesta": "recibida"
 }
-axios.post(`http://127.0.0.1:8000/api/createtrainer`, data)
+axios.post(`http://127.0.0.1:8000/api/createuser`, data)
   .then(res => {
-    console.log("Respuesta del backend: ", res.data);
+    console.log(res.data);
   })
   .catch(error => {
     console.log("Error: ", error);

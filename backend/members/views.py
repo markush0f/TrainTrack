@@ -1,7 +1,9 @@
-from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse, JsonResponse
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django.contrib.auth.models import User
 
 # viewsets es una clase que combina las funciones de varias
 # vistas genéricas para proporcionar un conjunto
@@ -30,9 +32,15 @@ class TeamViewSet(viewsets.ModelViewSet):
     serializer_class = TeamSerializer
 
 
-def createTrainer(request):
-    print("HAS ENTRADO!!")
-    # if request.method == "POST":
-    #     data = request.POST.get("data") # Recoge los datos enviados
-    #     print(data)
-    return HttpResponse("<h1>Holaa</h1>")
+@csrf_exempt
+def signup(request):
+    # Creamos un Padre
+    if request.method == "POST":
+        data = request.POST.get("data")  # Recoge los datos enviados
+    return JsonResponse("Se ha cargado")
+
+
+def loginParent(request):
+    if request.method == "POST":
+        if request.user.is_authenticated:
+            print("Inicio sesión")
