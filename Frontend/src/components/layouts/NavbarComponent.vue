@@ -1,9 +1,11 @@
 <template>
   <nav>
+    <RouterLink to="/login">Go to Login</RouterLink>-
     <RouterLink to="/">Go to Home</RouterLink>-
     <RouterLink to="/signup">Register</RouterLink>-
-    <RouterLink to="/about">Go to About</RouterLink>
+    <RouterLink to="/about">Go to About</RouterLink>-
     <RouterLink to="/trainers">Go to Trainers</RouterLink>
+    
     <form action="" method="POST">
       <input type="submit" value="Test">
     </form>
