@@ -24,4 +24,5 @@ class trainingSessions(models.Model):
         verbose_name="Players",
         default=1,
     )
+    
     train_description = models.CharField(max_length=300)

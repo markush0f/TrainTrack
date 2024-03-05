@@ -13,5 +13,6 @@ urlpatterns = router.urls
 
 urlpatterns += [
   path('createuser', signup, name="create_parent"),
+  path('checkcodeteam', checkCodeTeam, name="check_code_team"),
 ]
 

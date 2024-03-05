@@ -4,3 +4,4 @@ pip install djangorestframework
 pip install django-cors-headers
 pip install mysql
 pip install django-localflavor
+pip install django-seed
