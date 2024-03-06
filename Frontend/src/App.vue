@@ -1,9 +1,14 @@
 <template>
+<<<<<<< HEAD
   <!-- <NavBar /> -->
   <RouterLink to="/">Go to Home</RouterLink>-
   <RouterLink to="/login">Go to Login</RouterLink>-
   <RouterLink to="/signup">Register</RouterLink>
   <CodeTeamComponent />
+=======
+
+  <NavBar/>
+>>>>>>> upstream/tailwind
   <!-- En RouterView se mostrará la vista según la ruta actual-->
   <RouterView />
 </template>

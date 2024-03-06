@@ -48,19 +48,19 @@ def checkCodeTeam(request):
             try:
                 codeTeam = Team.objects.all().filter(team_code=data["codeTeam"])
                 password = Team.objects.all().filter(team_password=data["password"])
-                if codeTeam:
-                    #  Guardar en la bd
-                    print("codigo encontrado", codeTeam)
-                else:
-                    print("Codigo no encontrado")
+                if not codeTeam:
                     return JsonResponse("Código de equipo incorrecto", safe=False)
-                if password:
+                    print("Codigo no encontrado")
+                else:
+                    print("codigo encontrado", codeTeam)
+                if password and codeTeam:
                     print("Contraseña correcta")
                     return JsonResponse(
                         {
                             "redirect": "http://localhost:5173/signup",
-                            "success": "Contraseña correcta"
-                        })
+                            "success": "Contraseña correcta",
+                        }
+                    )
                 else:
                     print("Contraseña incorrecta")
                     return JsonResponse("Contraseña incorrecta", safe=False)
