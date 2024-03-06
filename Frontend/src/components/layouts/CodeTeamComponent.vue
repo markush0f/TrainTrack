@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!showCTV" class="card" style="width: 18rem;">
+  <div v-if="!showCTV" class="card" style="width: 18rem; ">
     <div class="card-body">
       <h5 class="card-title">Gestión del jugador</h5>
       <p class="card-text">Acceder a la gestión del jugador.</p>

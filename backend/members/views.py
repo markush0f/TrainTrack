@@ -49,8 +49,8 @@ def checkCodeTeam(request):
                 codeTeam = Team.objects.all().filter(team_code=data["codeTeam"])
                 password = Team.objects.all().filter(team_password=data["password"])
                 if not codeTeam:
-                    return JsonResponse("Código de equipo incorrecto", safe=False)
                     print("Codigo no encontrado")
+                    return JsonResponse("Código de equipo incorrecto", safe=False)
                 else:
                     print("codigo encontrado", codeTeam)
                 if password and codeTeam:
@@ -75,5 +75,27 @@ def signup(request):
     if request.method == "POST":
         # Obtenemos los datos del request
         data = json.loads(request.body)  # Recoge los datos enviados, mediante jsonj
+        # Recoger todos los errors y que se muestren todos, metiendolos en un arr y recorriendo si esya vacia
+        if not data["email"]:
+            print("Debe poner el email")
+            return JsonResponse({"errorEmail": "Introduzca un email"})
+        else:
+            email = data["email"]
+            print("Email: ", email)
+        if not data["password"]:
+            print("Debe poner la contraseña")
+        else:
+            password = data["password"]
+            if len(password) < 8:
+                print("Debe poner una contraseña de mas de 8 caracteres")
+            else:
+                print("Contraseña de mas de 8 caracteres válida")
+            # Mas comprobaciones para la contraseña...
+        if not data["name"]:
+            print("Introduzca su nombre")
+        else:
+            name = data["name"]
+        if not data["surname"]:
+            print("Introduzuca sus apellidos")
         # Validacion de datos
     return JsonResponse("Entra", safe=False)
