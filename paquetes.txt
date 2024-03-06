@@ -5,3 +5,4 @@ pip install django-cors-headers
 pip install mysql
 pip install django-localflavor
 pip install django-seed
+pip install django-data-migrations

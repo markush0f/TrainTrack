@@ -1,5 +1,6 @@
+from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -34,26 +35,38 @@ class TeamViewSet(viewsets.ModelViewSet):
     serializer_class = TeamSerializer
 
 
+#  Comprobamos si en los datos enviados existe tanto el codigo como la contraseña proporcionada por el equipo
+#  La idea es que cada mes se cambie tanto el codigo como la contraseña del equipo
+@csrf_exempt
 def checkCodeTeam(request):
     if request.method == "POST":
+        print("REQUESTR :", request)
         # Obtenemos el code_team y la password del equipo, y luego el entrenador debe aceptar al padre
-        if request.POST["code_team"] and request.POST["password"]:
+        data = json.loads(request.body)
+        print(data["password"])
+        if data["codeTeam"] and data["password"]:
             try:
-                codeTeam = Team.objects.all().filter(code_team=request.POST["code_team"])
-                password = Team.objects.all().filter(password=request.POST["password"])
+                codeTeam = Team.objects.all().filter(team_code=data["codeTeam"])
+                password = Team.objects.all().filter(team_password=data["password"])
                 if codeTeam:
+                    #  Guardar en la bd
                     print("codigo encontrado", codeTeam)
                 else:
                     print("Codigo no encontrado")
                     return JsonResponse("Código de equipo incorrecto", safe=False)
                 if password:
                     print("Contraseña correcta")
+                    return JsonResponse(
+                        {
+                            "redirect": "http://localhost:5173/signup",
+                            "success": "Contraseña correcta"
+                        })
                 else:
                     print("Contraseña incorrecta")
                     return JsonResponse("Contraseña incorrecta", safe=False)
-                return redirect(reverse("register")+"?msg=Codigo correcto")
             except NameError:
                 print("Error:", NameError)
+
 
 # Cambiar el csrf, esto hace que el navegador ignore el csrf
 @csrf_exempt

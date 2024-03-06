@@ -1,9 +1,8 @@
 <template>
   <nav>
     <RouterLink to="/">Go to Home</RouterLink>-
-    <RouterLink to="/signup">Register</RouterLink>-
-    <RouterLink to="/about">Go to About</RouterLink>
-    <RouterLink to="/trainers">Go to Trainers</RouterLink>
+    <RouterLink to="/login">Go to Login</RouterLink>-
+    <RouterLink to="/signup">Register</RouterLink>
     <div>
 
       <input type="text" data-bs-theme="dark" name="name" v-model="name">

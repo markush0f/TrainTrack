@@ -93,5 +93,5 @@ class formAccountParent(models.Model):
     password = models.CharField(max_length=255)
     
 class checkCodeTeam(models.Model):
-    code_team = models.CharField(max_length=255)
+    codeTeam = models.CharField(max_length=255)
     password = models.CharField(max_length=255)
