@@ -1,3 +1,4 @@
+-- Active: 1699984828342@@127.0.0.1@3306@traintrack
 INSERT INTO league_team (id, team_code, name, category, league, town) VALUES
 (1, 'UDLZ001', 'UD Las Zocas', 'Prebenjamin', 'Liga Prebenjamin Tenerife', 'Las Zocas'),
 (2, 'CDTF002', 'CD Tenerife', 'Prebenjamin', 'Liga Prebenjamin Tenerife', 'Santa Cruz de Tenerife'),

@@ -4,7 +4,7 @@ import uuid
 
 # Modelo de equipos
 class Team(models.Model):
-    team_code = models.UUIDField(default=uuid.uuid4, editable=False,unique=True)
+    team_code = models.CharField(blank=False, null=False, max_length=255)
     name = models.CharField(blank=False, null=False, max_length=255)
     category = models.CharField(blank=False, null=False, max_length=255)
     league = models.CharField(blank=False, null=False, max_length=255)
@@ -17,4 +17,4 @@ class Team(models.Model):
         # mas campos
 
     def __str__(self):
-        return self.name
+        return self.name + "-" + self.category

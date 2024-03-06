@@ -33,11 +33,11 @@ class Trainer(models.Model):
         ordering = ["name"]
 
     def __str__(self):
-        return self.name
+        return self.name + " " + self.surname
 
 
 # Modelo de los padres
-class Parents(models.Model):
+class Parent(models.Model):
     trainer = models.ForeignKey(
         Trainer,
         on_delete=models.CASCADE,
@@ -58,15 +58,22 @@ class Parents(models.Model):
     updated_at = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
-        return self.name
+        return self.name + " " + self.surname
 
 
 # Modelo de Jugadores
 class Player(models.Model):
-    parent = models.ForeignKey(
-        Parents,
+    team = models.ForeignKey(
+        Team,
         on_delete=models.CASCADE,
-        related_name="get_players",
+        related_name="get_team",
+        verbose_name="Team",
+        default=1,
+    )
+    parent = models.ForeignKey(
+        Parent,
+        on_delete=models.CASCADE,
+        related_name="get_parent",
         verbose_name="Parent",
         default=1,
     )
@@ -74,14 +81,17 @@ class Player(models.Model):
     surname = models.CharField(blank=False, null=False, max_length=255)
     birth = models.DateField(blank=False, null=False)
     dni = ESIdentityCardNumberField(only_nif=True)
+    category = models.CharField(blank=False, null=False, max_length=255)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
 
     def __str__(self):
-        return self.name
+        return self.name + " " + self.surname
 
-    # categoria del jugador
-    # team_id haremos una clave foranea con la de la base de datos de team
-    # Añadir mas maneras de contactos
-
-    # Modelo de estadisticas de jugadores
+class formAccountParent(models.Model):
+    name = models.CharField(max_length=255)
+    password = models.CharField(max_length=255)
+    
+class checkCodeTeam(models.Model):
+    code_team = models.CharField(max_length=255)
+    password = models.CharField(max_length=255)

@@ -1,7 +1,11 @@
-from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse, JsonResponse
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django.contrib.auth.models import User
+from django.shortcuts import redirect
+import json
 
 # viewsets es una clase que combina las funciones de varias
 # vistas genéricas para proporcionar un conjunto
@@ -30,9 +34,33 @@ class TeamViewSet(viewsets.ModelViewSet):
     serializer_class = TeamSerializer
 
 
-def createTrainer(request):
-    print("HAS ENTRADO!!")
-    # if request.method == "POST":
-    #     data = request.POST.get("data") # Recoge los datos enviados
-    #     print(data)
-    return HttpResponse("<h1>Holaa</h1>")
+def checkCodeTeam(request):
+    if request.method == "POST":
+        # Obtenemos el code_team y la password del equipo, y luego el entrenador debe aceptar al padre
+        if request.POST["code_team"] and request.POST["password"]:
+            try:
+                codeTeam = Team.objects.all().filter(code_team=request.POST["code_team"])
+                password = Team.objects.all().filter(password=request.POST["password"])
+                if codeTeam:
+                    print("codigo encontrado", codeTeam)
+                else:
+                    print("Codigo no encontrado")
+                    return JsonResponse("Código de equipo incorrecto", safe=False)
+                if password:
+                    print("Contraseña correcta")
+                else:
+                    print("Contraseña incorrecta")
+                    return JsonResponse("Contraseña incorrecta", safe=False)
+                return redirect(reverse("register")+"?msg=Codigo correcto")
+            except NameError:
+                print("Error:", NameError)
+
+# Cambiar el csrf, esto hace que el navegador ignore el csrf
+@csrf_exempt
+def signup(request):
+    # Creamos un Padre
+    if request.method == "POST":
+        # Obtenemos los datos del request
+        data = json.loads(request.body)  # Recoge los datos enviados, mediante jsonj
+        # Validacion de datos
+    return JsonResponse("Entra", safe=False)
