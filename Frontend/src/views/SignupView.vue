@@ -26,7 +26,7 @@
         />
       </div>
 
-      <lable for="inputEmail" class="col-sm-2  col-form-label">Email</lable>
+      <label for="inputEmail" class="col-sm-2  col-form-label">Email</label>
       <div class="col-sm-6 mb-2">
         <input
           type="email"
@@ -62,7 +62,7 @@
         />
       </div>
 
-      <lable for="inputPhone" class="col-sm-2  col-form-label">Phone</lable>
+      <label for="inputPhone" class="col-sm-2  col-form-label">Phone</label>
       <div class="col-sm-6 mb-2">
         <input
           type="number"
@@ -74,7 +74,7 @@
           />
       </div>
 
-      <lable for="inputAdress1" class="col-sm-2  col-form-label">Adress 1</lable>
+      <label for="inputAdress1" class="col-sm-2  col-form-label">Adress 1</label>
       <div class="col-sm-6 mb-2">
         <input
           type="text"
@@ -86,7 +86,7 @@
           />
       </div>
 
-      <lable for="inputAdress2" class="col-sm-2  col-form-label">Adress 2</lable>
+      <label for="inputAdress2" class="col-sm-2  col-form-label">Adress 2</label>
       <div class="col-sm-6 mb-2">
         <input
           type="text"
@@ -97,15 +97,10 @@
           />
       </div>
       
-      <input type="submit" value="Enviar" class="btn btn-primary" />
+      <input type="submit" value="Enviar" class="btn btn-primary" @click="submitForm" />
     </form>
   </div>
 </template>
-<<<<<<< HEAD
-<script setup>
-
-</script>
-=======
 
 <script setup>
 import axios from 'axios';
@@ -135,5 +130,4 @@ const submitForm = async () => {
 }
 </script>
 
->>>>>>> main
 <style lang="css"></style>
