@@ -65,37 +65,6 @@ def checkCodeTeam(request):
                 print("Error:", NameError)
 
 
-# Cambiar el csrf, esto hace que el navegador ignore el csrf
-# @csrf_exempt
-# def signup(request):
-#     # Creamos un Padre
-#     if request.method == "POST":
-#         # Obtenemos los datos del request
-#         data = json.loads(request.body)  # Recoge los datos enviados, mediante jsonj
-#         # Recoger todos los errors y que se muestren todos, metiendolos en un arr y recorriendo si esya vacia
-#         if not data["email"]:
-#             print("Debe poner el email")
-#             return JsonResponse({"errorEmail": "Introduzca un email"})
-#         else:
-#             email = data["email"]
-#             print("Email: ", email)
-#         if not data["password"]:
-#             print("Debe poner la contraseña")
-#         else:
-#             password = data["password"]
-#             if len(password) < 8:
-#                 print("Debe poner una contraseña de mas de 8 caracteres")
-#             else:
-#                 print("Contraseña de mas de 8 caracteres válida")
-#             # Mas comprobaciones para la contraseña...
-#         if not data["name"]:
-#             print("Introduzca su nombre")
-#         else:
-#             name = data["name"]
-#         if not data["surname"]:
-#             print("Introduzuca sus apellidos")
-#         # Validacion de datos
-#     return JsonResponse("Entra", safe=False)
 
 
 # Poner dos password
