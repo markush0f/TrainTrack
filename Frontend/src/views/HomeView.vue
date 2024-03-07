@@ -3,9 +3,7 @@
 </script>
 
 <template>
-  <main>
-    <h1>
-      Bienvenido a TrainTrack
-    </h1>
-  </main>
+  <nav>
+    
+  </nav>
 </template>
