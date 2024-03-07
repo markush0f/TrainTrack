@@ -12,7 +12,7 @@ router.register('teams', TeamViewSet, basename='teams')
 urlpatterns = router.urls
 
 urlpatterns += [
-  path('createuser', signup, name="create_parent"),
+  path('createtrainer', SignUpTrainer, name="create_trainer"),
   path('checkcodeteam', checkCodeTeam, name="check_code_team"),
 ]
 

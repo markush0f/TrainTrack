@@ -14,6 +14,8 @@ from forms import SignupForm
 
 from .models import *
 from .serializers import *
+from .forms import TrainerForm
+from django.contrib.auth import authenticate, login
 
 
 class TrainerViewSet(viewsets.ModelViewSet):
@@ -58,26 +60,60 @@ def checkCodeTeam(request):
                         }
                     )
                 else:
-                    return JsonResponse(
-                        {"error": "Contraseña o código de equipo incorrecto"},
-                        safe=False,
-                        status=400,
-                    )
-            except Exception as e:
-                return JsonResponse({"error": e}, status=400)
-# PONER UNA SEGUNDA CONTRASEÑA
-# Cambiar el csrf, esto hace que el navegador ignore el csrf
+                    print("Contraseña incorrecta")
+                    return JsonResponse("Contraseña incorrecta", safe=False)
+            except NameError:
+                print("Error:", NameError)
 
+# Con autenticación
 @csrf_exempt
-def signup(request):
+def SignUpTrainer(request):
     if request.method == "POST":
-        form = SignupForm(request.POST) # Recogemos los datos del formulario
-        # Comprobamos si el formulario recodigo es valido
-        if form.is_valid():     
-            email = form.cleaned_data['email']
-            return JsonResponse({"success": "Registrado con éxito"}, status=200)
+        form = TrainerForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data["email"]
+            password = form.cleaned_data["password"]
+            first_name = form.cleaned_data["first_name"]
+            last_name = form.cleaned_data["last_name"]
+            # Comprobamos si ya existe en la tabla User el email
+            if User.objects.filter(email=email).exists():
+                return JsonResponse(
+                    {"errors": "Este correo electrónico ya está registrado."},
+                    status=400,
+                )
+            # Creamos el usuario
+            try:
+                user = User.objects.create_user(
+                    email, email, password, first_name=first_name, last_name=last_name
+                )
+            except Exception as e:
+                return JsonResponse(
+                    {"errors": e}, status=500
+                )
+            # Autenticamos el usuario
+            if user is not None:
+                # Creamos al entrenador
+                trainer = createTrainer(form.cleaned_data, user)
+                login(request, user)
+                return JsonResponse(
+                    {"success": "El entrenador ha sido autenticado y creado."},
+                    status=200,
+                )
+            return JsonResponse(
+                {"error": "No se ha podido autenticar el entrenador."}, status=500
+            )
         else:
-            errors = form.errors
-            return JsonResponse({"error": errors}, status=400)
-    else:
-        return JsonResponse({"error": "Debe utilizar un método POST"}, status=405)
+            return JsonResponse({"errors": form.errors}, status=400)
+
+
+# Creamos el entrenador
+def createTrainer(data, user):
+    trainer = Trainer.objects.create(
+        user=user,
+        birth=data["birth"],
+        dni=data["dni"],
+        address1=data["address1"],
+        address2=data.get("address2", ""),
+        phone=data["phone"],
+    )
+    return trainer

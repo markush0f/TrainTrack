@@ -3,19 +3,13 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from localflavor.es.forms import ESIdentityCardNumberField
 from league.models import Team
-from django.contrib.auth.models import AbstractUser
-from django.utils import timezone
+from django.contrib.auth.models import (
+    AbstractBaseUser,
+    BaseUserManager,
+    PermissionsMixin,
+)
 
-
-class CustomUser(AbstractUser):
-    email = models.EmailField(blank=False, null=False)
-    password = models.CharField(blank=False, null=True, max_length=255)
-    name = models.CharField(blank=False, null=False, max_length=255)
-    surname = models.CharField(blank=False, null=False, max_length=255)
-    birth = models.DateField(blank=False, null=False)
-    created_at = models.DateTimeField(auto_now_add=True, null=True)
-    updated_at = models.DateTimeField(auto_now=True, null=True)
-
+# El BaseUserManager sirve para los admin
 
 # Modelo de Entrenadores
 class Trainer(models.Model):
@@ -26,12 +20,13 @@ class Trainer(models.Model):
         verbose_name="Team",
         default=1,
     )
-    user = models.OneToOneField(
-        CustomUser,
-        on_delete=models.CASCADE,
-        related_name="trainer",
-        verbose_name="User",
-    )
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    # Estos datos ya están en auth_user
+    # email = models.EmailField(blank=False, null=False)
+    # password = models.CharField(blank=False, null=True, max_length=255)
+    # name = models.CharField(blank=False, null=False, max_length=255)
+    # surname = models.CharField(blank=False, null=False, max_length=255)
+    birth = models.DateField(blank=False, null=False)
     dni = ESIdentityCardNumberField(only_nif=True)
     address1 = models.CharField(blank=False, null=False, max_length=255)
     address2 = models.CharField(blank=False, null=True, max_length=255)
@@ -66,27 +61,28 @@ class Parent(models.Model):
         verbose_name="Trainer",
         default=1,
     )
-    user = models.OneToOneField(
-        CustomUser,
-        on_delete=models.CASCADE,
-        related_name="parent",
-        verbose_name="User",
-    )
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    #  Estos datos ya están en auth_user
+    # email = models.EmailField(blank=False, null=False)
+    # password = models.CharField(blank=False, null=True, max_length=255)
+    # name = models.CharField(blank=False, null=False, max_length=255)
+    # surname = models.CharField(blank=False, null=False, max_length=255)
+    birth = models.DateField(blank=False, null=False)
     dni = ESIdentityCardNumberField(only_nif=True)
     address1 = models.CharField(blank=False, null=False, max_length=255)
     address2 = models.CharField(blank=False, null=True, max_length=255)
     phone = models.CharField(blank=False, null=False, max_length=255)
 
-    # Se pueden añadir mas campos
-    def __str__(self):
-        return self.name + " " + self.surname
+    class Meta:
+        verbose_name = "Parent"
+        verbose_name_plural = "Parents"
+        ordering = ["name"]
 
 
 # Modelo de Jugadores
 class Player(models.Model):
     team = models.ForeignKey(
         Team,
-        on_delete=models.CASCADE,
         related_name="get_team",
         verbose_name="Team",
         default=1,
@@ -102,7 +98,6 @@ class Player(models.Model):
     surname = models.CharField(blank=False, null=False, max_length=255)
     birth = models.DateField(blank=False, null=False)
     dni = ESIdentityCardNumberField(only_nif=True)
-    category = models.CharField(blank=False, null=False, max_length=255)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
 
