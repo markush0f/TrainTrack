@@ -7,13 +7,10 @@ from rest_framework.response import Response
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
 import json
-
-# viewsets es una clase que combina las funciones de varias
-# vistas genéricas para proporcionar un conjunto
-# completo de operaciones CRUD para un modelo especifico
-
 from .models import *
 from .serializers import *
+
+user_manager = CustomUserManager()
 
 
 class TrainerViewSet(viewsets.ModelViewSet):
@@ -69,33 +66,54 @@ def checkCodeTeam(request):
 
 
 # Cambiar el csrf, esto hace que el navegador ignore el csrf
-@csrf_exempt
-def signup(request):
-    # Creamos un Padre
-    if request.method == "POST":
-        # Obtenemos los datos del request
-        data = json.loads(request.body)  # Recoge los datos enviados, mediante jsonj
-        # Recoger todos los errors y que se muestren todos, metiendolos en un arr y recorriendo si esya vacia
-        if not data["email"]:
-            print("Debe poner el email")
-            return JsonResponse({"errorEmail": "Introduzca un email"})
-        else:
-            email = data["email"]
-            print("Email: ", email)
-        if not data["password"]:
-            print("Debe poner la contraseña")
-        else:
-            password = data["password"]
-            if len(password) < 8:
-                print("Debe poner una contraseña de mas de 8 caracteres")
-            else:
-                print("Contraseña de mas de 8 caracteres válida")
-            # Mas comprobaciones para la contraseña...
-        if not data["name"]:
-            print("Introduzca su nombre")
-        else:
-            name = data["name"]
-        if not data["surname"]:
-            print("Introduzuca sus apellidos")
-        # Validacion de datos
-    return JsonResponse("Entra", safe=False)
+# @csrf_exempt
+# def signup(request):
+#     # Creamos un Padre
+#     if request.method == "POST":
+#         # Obtenemos los datos del request
+#         data = json.loads(request.body)  # Recoge los datos enviados, mediante jsonj
+#         # Recoger todos los errors y que se muestren todos, metiendolos en un arr y recorriendo si esya vacia
+#         if not data["email"]:
+#             print("Debe poner el email")
+#             return JsonResponse({"errorEmail": "Introduzca un email"})
+#         else:
+#             email = data["email"]
+#             print("Email: ", email)
+#         if not data["password"]:
+#             print("Debe poner la contraseña")
+#         else:
+#             password = data["password"]
+#             if len(password) < 8:
+#                 print("Debe poner una contraseña de mas de 8 caracteres")
+#             else:
+#                 print("Contraseña de mas de 8 caracteres válida")
+#             # Mas comprobaciones para la contraseña...
+#         if not data["name"]:
+#             print("Introduzca su nombre")
+#         else:
+#             name = data["name"]
+#         if not data["surname"]:
+#             print("Introduzuca sus apellidos")
+#         # Validacion de datos
+#     return JsonResponse("Entra", safe=False)
+
+
+# Poner dos password
+def SignUpTrainer(request):
+    name = request.POST.get("name")
+    surname = request.POST.get("surname")
+    email = request.POST.get("email")
+    birth = request.POST.get("birth")
+    password = request.POST.get("password")
+    dni = request.POST.get("dni")
+    address1 = request.POST.get("address1")
+    address2 = request.POST.get("address2")
+    phone = request.POST.get("phone")
+
+    result = user_manager.create_trainer(
+        name=name, surname=surname, email=email, birth=birth, password=password
+    )
+    if isinstance(result, dict):
+        return JsonResponse(result, dict)
+    else:
+        return JsonResponse({"success": "Entrenador creado correctamente"})
