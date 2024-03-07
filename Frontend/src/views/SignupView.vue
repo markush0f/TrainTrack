@@ -1,18 +1,5 @@
 <template lang="">
   <div>
-    <!-- <h1>Pagina de registro</h1>
-    <form @submit.prevent="submitForm">
-      <label for="inputName" class="col-sm-2 col-form-label">Name</label>
-      <div class="col-sm-6 mb-2">
-        <input
-          type="text"
-          v-model="formData.name"
-          class="form-control"
-          id="inputName"
-          data-bs-theme="dark"
-          required
-        />
-      </div> -->
 
     <form class="w-full max-w-lg">
   <div class="flex flex-wrap -mx-3 mb-6">
@@ -74,3 +61,6 @@
 </div>
 </template>
 
+<script setup>
+// HACER LAS PETICIONES EN LA CARPETA SERVICES
+</script>

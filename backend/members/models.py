@@ -11,33 +11,6 @@ from django.contrib.auth.models import (
 
 # El BaseUserManager sirve para los admin
 
-
-class CustomUserManager(BaseUserManager):
-    errors = {}
-    def create_trainer(
-        self, name, surname, email, birth, password=None, **extra_fields
-    ):
-        if not email:
-            self.errors["emailError"] = "Debe poner un email."
-        else:
-            email = self.normalize_email(email)
-        if not name:
-            self.errors["nameError"] = "Debe poner un nombre."
-        if not surname:
-            self.errors["surnameError"] = "Debe poner sus apellidos."
-        if not birth:
-            self.errors["birthError"] = "Debe poner una fecha de nacimiento."
-        if self.errors:
-            return self.errors
-        trainer = self.model(
-            name=name, surname=surname, email=email, birth=birth, **extra_fields
-        )
-        if password:
-            trainer.set_password(password)
-        trainer.save(using=self._db)
-        return trainer
-
-
 # Modelo de Entrenadores
 class Trainer(models.Model):
     team = models.ForeignKey(
@@ -47,10 +20,12 @@ class Trainer(models.Model):
         verbose_name="Team",
         default=1,
     )
-    email = models.EmailField(blank=False, null=False)
-    password = models.CharField(blank=False, null=True, max_length=255)
-    name = models.CharField(blank=False, null=False, max_length=255)
-    surname = models.CharField(blank=False, null=False, max_length=255)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    # Estos datos ya están en auth_user
+    # email = models.EmailField(blank=False, null=False)
+    # password = models.CharField(blank=False, null=True, max_length=255)
+    # name = models.CharField(blank=False, null=False, max_length=255)
+    # surname = models.CharField(blank=False, null=False, max_length=255)
     birth = models.DateField(blank=False, null=False)
     dni = ESIdentityCardNumberField(only_nif=True)
     address1 = models.CharField(blank=False, null=False, max_length=255)
@@ -78,10 +53,12 @@ class Parent(models.Model):
         verbose_name="Trainer",
         default=1,
     )
-    email = models.EmailField(blank=False, null=False)
-    password = models.CharField(blank=False, null=True, max_length=255)
-    name = models.CharField(blank=False, null=False, max_length=255)
-    surname = models.CharField(blank=False, null=False, max_length=255)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    #  Estos datos ya están en auth_user
+    # email = models.EmailField(blank=False, null=False)
+    # password = models.CharField(blank=False, null=True, max_length=255)
+    # name = models.CharField(blank=False, null=False, max_length=255)
+    # surname = models.CharField(blank=False, null=False, max_length=255)
     birth = models.DateField(blank=False, null=False)
     dni = ESIdentityCardNumberField(only_nif=True)
     address1 = models.CharField(blank=False, null=False, max_length=255)
@@ -89,6 +66,11 @@ class Parent(models.Model):
     phone = models.CharField(blank=False, null=False, max_length=255)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
+
+    class Meta:
+        verbose_name = "Parent"
+        verbose_name_plural = "Parents"
+        ordering = ["name"]
 
     def __str__(self):
         return self.name + " " + self.surname

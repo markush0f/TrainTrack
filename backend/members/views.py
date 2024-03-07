@@ -9,8 +9,8 @@ from django.shortcuts import redirect
 import json
 from .models import *
 from .serializers import *
-
-user_manager = CustomUserManager()
+from .forms import TrainerForm
+from django.contrib.auth import authenticate, login
 
 
 class TrainerViewSet(viewsets.ModelViewSet):
@@ -64,25 +64,55 @@ def checkCodeTeam(request):
             except NameError:
                 print("Error:", NameError)
 
-
-
-
-# Poner dos password
+# Con autenticación
+@csrf_exempt
 def SignUpTrainer(request):
-    name = request.POST.get("name")
-    surname = request.POST.get("surname")
-    email = request.POST.get("email")
-    birth = request.POST.get("birth")
-    password = request.POST.get("password")
-    dni = request.POST.get("dni")
-    address1 = request.POST.get("address1")
-    address2 = request.POST.get("address2")
-    phone = request.POST.get("phone")
+    if request.method == "POST":
+        form = TrainerForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data["email"]
+            password = form.cleaned_data["password"]
+            first_name = form.cleaned_data["first_name"]
+            last_name = form.cleaned_data["last_name"]
+            # Comprobamos si ya existe en la tabla User el email
+            if User.objects.filter(email=email).exists():
+                return JsonResponse(
+                    {"errors": "Este correo electrónico ya está registrado."},
+                    status=400,
+                )
+            # Creamos el usuario
+            try:
+                user = User.objects.create_user(
+                    email, email, password, first_name=first_name, last_name=last_name
+                )
+            except Exception as e:
+                return JsonResponse(
+                    {"errors": e}, status=500
+                )
+            # Autenticamos el usuario
+            if user is not None:
+                # Creamos al entrenador
+                trainer = createTrainer(form.cleaned_data, user)
+                login(request, user)
+                return JsonResponse(
+                    {"success": "El entrenador ha sido autenticado y creado."},
+                    status=200,
+                )
+            return JsonResponse(
+                {"error": "No se ha podido autenticar el entrenador."}, status=500
+            )
+        else:
+            return JsonResponse({"errors": form.errors}, status=400)
 
-    result = user_manager.create_trainer(
-        name=name, surname=surname, email=email, birth=birth, password=password
+
+# Creamos el entrenador
+def createTrainer(data, user):
+    trainer = Trainer.objects.create(
+        user=user,
+        birth=data["birth"],
+        dni=data["dni"],
+        address1=data["address1"],
+        address2=data.get("address2", ""),
+        phone=data["phone"],
     )
-    if isinstance(result, dict):
-        return JsonResponse(result, dict)
-    else:
-        return JsonResponse({"success": "Entrenador creado correctamente"})
+    return trainer

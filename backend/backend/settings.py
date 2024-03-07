@@ -44,6 +44,7 @@ BASE_APPS = [
 THIRD_APPS = [
     "rest_framework",
     "corsheaders",
+    "django.contrib.auth",
 ]
 # Aplicaciones
 OWN_APPS = ["members", "league"]
