@@ -3,6 +3,18 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from localflavor.es.forms import ESIdentityCardNumberField
 from league.models import Team
+from django.contrib.auth.models import AbstractUser
+from django.utils import timezone
+
+
+class CustomUser(AbstractUser):
+    email = models.EmailField(blank=False, null=False)
+    password = models.CharField(blank=False, null=True, max_length=255)
+    name = models.CharField(blank=False, null=False, max_length=255)
+    surname = models.CharField(blank=False, null=False, max_length=255)
+    birth = models.DateField(blank=False, null=False)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True)
 
 
 # Modelo de Entrenadores
@@ -14,17 +26,26 @@ class Trainer(models.Model):
         verbose_name="Team",
         default=1,
     )
-    email = models.EmailField(blank=False, null=False)
-    password = models.CharField(blank=False, null=True, max_length=255)
-    name = models.CharField(blank=False, null=False, max_length=255)
-    surname = models.CharField(blank=False, null=False, max_length=255)
-    birth = models.DateField(blank=False, null=False)
+    user = models.OneToOneField(
+        CustomUser,
+        on_delete=models.CASCADE,
+        related_name="trainer",
+        verbose_name="User",
+    )
     dni = ESIdentityCardNumberField(only_nif=True)
     address1 = models.CharField(blank=False, null=False, max_length=255)
     address2 = models.CharField(blank=False, null=True, max_length=255)
     phone = models.CharField(blank=False, null=False, max_length=255)
-    created_at = models.DateTimeField(default=timezone.now, null=True)
-    updated_at = models.DateTimeField(default=timezone.now, null=True)
+    # Se pueden añadir campos adicionales
+
+    class Meta:
+        verbose_name = "Trainer"
+        verbose_name_plural = "Trainers"
+        ordering = ["user__username"]
+
+    def __str__(self):
+        return self.user.username
+
     # a la contraseña ponerle un hash
 
     class Meta:
@@ -45,18 +66,18 @@ class Parent(models.Model):
         verbose_name="Trainer",
         default=1,
     )
-    email = models.EmailField(blank=False, null=False)
-    password = models.CharField(blank=False, null=True, max_length=255)
-    name = models.CharField(blank=False, null=False, max_length=255)
-    surname = models.CharField(blank=False, null=False, max_length=255)
-    birth = models.DateField(blank=False, null=False)
+    user = models.OneToOneField(
+        CustomUser,
+        on_delete=models.CASCADE,
+        related_name="parent",
+        verbose_name="User",
+    )
     dni = ESIdentityCardNumberField(only_nif=True)
     address1 = models.CharField(blank=False, null=False, max_length=255)
     address2 = models.CharField(blank=False, null=True, max_length=255)
     phone = models.CharField(blank=False, null=False, max_length=255)
-    created_at = models.DateTimeField(auto_now_add=True, null=True)
-    updated_at = models.DateTimeField(auto_now=True, null=True)
 
+    # Se pueden añadir mas campos
     def __str__(self):
         return self.name + " " + self.surname
 
@@ -88,10 +109,12 @@ class Player(models.Model):
     def __str__(self):
         return self.name + " " + self.surname
 
+
 class formAccountParent(models.Model):
     name = models.CharField(max_length=255)
     password = models.CharField(max_length=255)
-    
+
+
 class checkCodeTeam(models.Model):
     codeTeam = models.CharField(max_length=255)
     password = models.CharField(max_length=255)

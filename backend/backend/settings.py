@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+AUTH_USER_MODEL = 'members.CustomUser'
 # Application definition
 
 # Aplicaciones bases

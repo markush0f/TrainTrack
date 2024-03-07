@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
 import json
-
+from forms import SignupForm
 # viewsets es una clase que combina las funciones de varias
 # vistas genéricas para proporcionar un conjunto
 # completo de operaciones CRUD para un modelo especifico
@@ -37,6 +37,7 @@ class TeamViewSet(viewsets.ModelViewSet):
 
 #  Comprobamos si en los datos enviados existe tanto el codigo como la contraseña proporcionada por el equipo
 #  La idea es que cada mes se cambie tanto el codigo como la contraseña del equipo
+# Añadir esta funcion para que pase primero por forms.py
 @csrf_exempt
 def checkCodeTeam(request):
     if request.method == "POST":
@@ -48,54 +49,35 @@ def checkCodeTeam(request):
             try:
                 codeTeam = Team.objects.all().filter(team_code=data["codeTeam"])
                 password = Team.objects.all().filter(team_password=data["password"])
-                if not codeTeam:
-                    print("Codigo no encontrado")
-                    return JsonResponse("Código de equipo incorrecto", safe=False)
-                else:
-                    print("codigo encontrado", codeTeam)
                 if password and codeTeam:
-                    print("Contraseña correcta")
+                    print("Parametros correctos")
                     return JsonResponse(
                         {
                             "redirect": "http://localhost:5173/signup",
-                            "success": "Contraseña correcta",
+                            "success": "Datos correctos",
                         }
                     )
                 else:
-                    print("Contraseña incorrecta")
-                    return JsonResponse("Contraseña incorrecta", safe=False)
-            except NameError:
-                print("Error:", NameError)
-
-
+                    return JsonResponse(
+                        {"error": "Contraseña o código de equipo incorrecto"},
+                        safe=False,
+                        status=400,
+                    )
+            except Exception as e:
+                return JsonResponse({"error": e}, status=400)
+# PONER UNA SEGUNDA CONTRASEÑA
 # Cambiar el csrf, esto hace que el navegador ignore el csrf
+
 @csrf_exempt
 def signup(request):
-    # Creamos un Padre
     if request.method == "POST":
-        # Obtenemos los datos del request
-        data = json.loads(request.body)  # Recoge los datos enviados, mediante jsonj
-        # Recoger todos los errors y que se muestren todos, metiendolos en un arr y recorriendo si esya vacia
-        if not data["email"]:
-            print("Debe poner el email")
-            return JsonResponse({"errorEmail": "Introduzca un email"})
+        form = SignupForm(request.POST) # Recogemos los datos del formulario
+        # Comprobamos si el formulario recodigo es valido
+        if form.is_valid():     
+            email = form.cleaned_data['email']
+            return JsonResponse({"success": "Registrado con éxito"}, status=200)
         else:
-            email = data["email"]
-            print("Email: ", email)
-        if not data["password"]:
-            print("Debe poner la contraseña")
-        else:
-            password = data["password"]
-            if len(password) < 8:
-                print("Debe poner una contraseña de mas de 8 caracteres")
-            else:
-                print("Contraseña de mas de 8 caracteres válida")
-            # Mas comprobaciones para la contraseña...
-        if not data["name"]:
-            print("Introduzca su nombre")
-        else:
-            name = data["name"]
-        if not data["surname"]:
-            print("Introduzuca sus apellidos")
-        # Validacion de datos
-    return JsonResponse("Entra", safe=False)
+            errors = form.errors
+            return JsonResponse({"error": errors}, status=400)
+    else:
+        return JsonResponse({"error": "Debe utilizar un método POST"}, status=405)
