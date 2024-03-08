@@ -6,18 +6,19 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
+from .models import *
+from .serializers import *
+from django.contrib.auth import authenticate, login
 import json
 import re
+from datetime import datetime, timedelta
+import jwt
+from django.conf import settings
 
 # re es un módulo de expresiones regulares
 # viewsets es una clase que combina las funciones de varias
 # vistas genéricas para proporcionar un conjunto
 # completo de operaciones CRUD para un modelo especifico
-
-from .models import *
-from .serializers import *
-from .forms import TrainerForm
-from django.contrib.auth import authenticate, login
 
 
 class TrainerViewSet(viewsets.ModelViewSet):
@@ -42,7 +43,7 @@ class TeamViewSet(viewsets.ModelViewSet):
 def formErrors(data):
     errors = {}
     onlyTxt = re.compile(r"\d+")
-    
+
     if data:
         if data["name"]:
             name = data["name"]
@@ -148,3 +149,28 @@ def createTrainer(data, user_id):
     except Exception as e:
         print("132: ", e)
         return None
+
+
+def generateJWT(user):
+    # Almacenamos el contenido del token
+    payload = {
+        "user_id": user.id,
+        "expirate": datetime.utcnow() + timedelta(days=1),
+    }
+    # Generamos el token
+    token = jwt.enconde(payload, settings.SECRET_KEY, algorithm="HS256")
+    # jwt.encode() firma un token JWT
+    # settings clave secreta utilizada para firmar el token, la clave secreta se define en el archivo settings.py
+    return token.decode("utf-8")
+
+
+def login(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        # Autenticamos el usuario
+        user = authenticate(request, username=data["email"], password=data["email"])
+        if user is not None:
+            # Iniciamos sesión
+            login(request, user)
+            # Generamos el token
+            token = generateJWT(user)
