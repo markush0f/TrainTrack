@@ -8,7 +8,7 @@
                 <!-- Links -->
                 <div class="flex-1 flex justify-center">
                     <a href="#" class="text-3xl px-3 py-2 hover:bg-green-300"><HomeView/>Home</a>
-                    <a href="#" class="text-3xl  px-3 py-2 hover:bg-green-300">About As</a>
+                    <a href="#" class="text-3xl  px-3 py-2 hover:bg-green-300">About Us</a>
                     <a href="#" class="text-3xl  px-3 py-2 hover:bg-green-300">Teams</a>
                     <!-- <a href="#" class="px-3 py-2 hover:bg-gray-700">Contacto</a> -->
                 </div>
@@ -21,23 +21,6 @@
                   </span>
                 </div>
   </nav>
-  <div>
-    <select>
-      Selecciona la categoria: 
-      <option>Pre-benjamin</option>
-      <option>Benjamin</option>
-      <option>Alevin</option>
-      <option>Infantiles</option>
-    </select>
-    <table>
-      <thead>
-      
-      </thead>
-      <tbody>
-        
-      </tbody>
-    </table>
-  </div>
   <CodeTeamComponent/>
 </template>
 
