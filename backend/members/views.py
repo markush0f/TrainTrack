@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
 import json
+
 # viewsets es una clase que combina las funciones de varias
 # vistas genéricas para proporcionar un conjunto
 # completo de operaciones CRUD para un modelo especifico
@@ -64,45 +65,46 @@ def checkCodeTeam(request):
             except NameError:
                 print("Error:", NameError)
 
+
 # Con autenticación
 @csrf_exempt
 def SignUpTrainer(request):
     if request.method == "POST":
-        form = TrainerForm(request.POST)
-        if form.is_valid():
-            email = form.cleaned_data["email"]
-            password = form.cleaned_data["password"]
-            first_name = form.cleaned_data["first_name"]
-            last_name = form.cleaned_data["last_name"]
-            # Comprobamos si ya existe en la tabla User el email
-            if User.objects.filter(email=email).exists():
-                return JsonResponse(
-                    {"errors": "Este correo electrónico ya está registrado."},
-                    status=400,
-                )
-            # Creamos el usuario
-            try:
-                user = User.objects.create_user(
-                    email, email, password, first_name=first_name, last_name=last_name
-                )
-            except Exception as e:
-                return JsonResponse(
-                    {"errors": e}, status=500
-                )
-            # Autenticamos el usuario
-            if user is not None:
-                # Creamos al entrenador
-                trainer = createTrainer(form.cleaned_data, user)
-                login(request, user)
-                return JsonResponse(
-                    {"success": "El entrenador ha sido autenticado y creado."},
-                    status=200,
-                )
-            return JsonResponse(
-                {"error": "No se ha podido autenticar el entrenador."}, status=500
-            )
-        else:
-            return JsonResponse({"errors": form.errors}, status=400)
+        data = json.loads(request.body)
+        errors = {}
+        # Comprobamos si ya existe en la tabla User el email
+        for key, value in data.items():
+            if not value:
+                errors[f"{key}Empty"] =f"El campo {key} no puede estar vacio"
+            print(f"Key: {key}, Value: {value}")
+        if errors:
+            return JsonResponse({"Errors:": errors}, safe=False)
+        # if User.objects.filter(email=email).exists():
+        #     return JsonResponse(
+        #         {"errors": "Este correo electrónico ya está registrado."},
+        #         status=400,
+        #     )
+    #     # Creamos el usuario
+    #     try:
+    #         user = User.objects.create_user(
+    #             email, email, password, first_name=first_name, last_name=last_name
+    #         )
+    #     except Exception as e:
+    #         return JsonResponse({"errors": e}, status=500)
+    #     # Autenticamos el usuario
+    #     if user is not None:
+    #         # Creamos al entrenador
+    #         trainer = createTrainer(form.cleaned_data, user)
+    #         login(request, user)
+    #         return JsonResponse(
+    #             {"success": "El entrenador ha sido autenticado y creado."},
+    #             status=200,
+    #         )
+    #     return JsonResponse(
+    #         {"error": "No se ha podido autenticar el entrenador."}, status=500
+    #     )
+    # else:
+    #     return JsonResponse({"errors": form.errors}, status=400)
 
 
 # Creamos el entrenador
