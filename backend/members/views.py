@@ -50,7 +50,6 @@ def formErrors(data):
                 errors["formatNameIncorrect"] = "Debe introducir un nombre correcto."
         if data["email"]:
             email = data["email"]
-            if 
     if errors:
         return errors
 
