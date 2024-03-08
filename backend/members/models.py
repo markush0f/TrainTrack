@@ -36,21 +36,11 @@ class Trainer(models.Model):
     class Meta:
         verbose_name = "Trainer"
         verbose_name_plural = "Trainers"
-        ordering = ["user__username"]
 
     def __str__(self):
         return self.user.username
 
     # a la contraseña ponerle un hash
-
-    class Meta:
-        verbose_name = "Trainer"
-        verbose_name_plural = "Trainers"
-        ordering = ["name"]
-
-    def __str__(self):
-        return self.name + " " + self.surname
-
 
 # Modelo de los padres
 class Parent(models.Model):
@@ -76,13 +66,13 @@ class Parent(models.Model):
     class Meta:
         verbose_name = "Parent"
         verbose_name_plural = "Parents"
-        ordering = ["name"]
 
 
 # Modelo de Jugadores
 class Player(models.Model):
     team = models.ForeignKey(
         Team,
+        on_delete=models.CASCADE,
         related_name="get_team",
         verbose_name="Team",
         default=1,
@@ -104,12 +94,3 @@ class Player(models.Model):
     def __str__(self):
         return self.name + " " + self.surname
 
-
-class formAccountParent(models.Model):
-    name = models.CharField(max_length=255)
-    password = models.CharField(max_length=255)
-
-
-class checkCodeTeam(models.Model):
-    codeTeam = models.CharField(max_length=255)
-    password = models.CharField(max_length=255)

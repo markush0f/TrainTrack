@@ -7,7 +7,6 @@ from rest_framework.response import Response
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
 import json
-from forms import SignupForm
 # viewsets es una clase que combina las funciones de varias
 # vistas genéricas para proporcionar un conjunto
 # completo de operaciones CRUD para un modelo especifico

@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-AUTH_USER_MODEL = 'members.CustomUser'
+# AUTH_USER_MODEL = 'members.CustomUser'
 # Application definition
 
 # Aplicaciones bases
@@ -43,8 +43,7 @@ BASE_APPS = [
 # Librerias
 THIRD_APPS = [
     "rest_framework",
-    "corsheaders",
-    "django.contrib.auth",
+    "corsheaders"
 ]
 # Aplicaciones
 OWN_APPS = ["members", "league"]
