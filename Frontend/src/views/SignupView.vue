@@ -48,11 +48,15 @@
   <div class="flex flex-wrap -mx-3 mb-6">
     <div class="w-full px-3">
       <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="inputAdress1">Adress</label>
-      <input v-model="data.addres1" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" name="adress" id="inputAdress1"  placeholder="Insert first Adress..." >
+      <input v-model="data.address1" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" name="adress" id="inputAdress1"  placeholder="Insert first Adress..." >
     </div>
     <div class="w-full px-3">
       <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="inputAdress2">Adress2</label>
-      <input v-model="data.addres2" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" name="adress" id="inputAdress2"  placeholder="Insert second Adress..." >
+      <input v-model="data.address2" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" name="adress" id="inputAdress2"  placeholder="Insert second Adress..." >
+    </div>
+    <div>
+      <input v-model="data.dni" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" name="adress" id="inputAdress2"  placeholder="Insert second Adress..." >
+
     </div>
   </div>
   <input type="submit" value="Register"  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" />
@@ -71,18 +75,18 @@ const data = ref({
   "password": "",
   "birth": "",
   "phone": "",
-  "addres1": "",
-  "addres2": ""
+  "address1": "",
+  "address2": "",
+  "dni": ""
 })
 // Cambiarlo al archivo userAPI
 const submitForm = async () => {
   try {
-    console.log("Aqui tb");
+
     const res = await axios.post("http://127.0.0.1:8000/api/createtrainer", data.value)
     console.log("Datos enviado", res.data);
   } catch (e) {
     console.error("ERROR:", e);
   }
-
 }
 </script>

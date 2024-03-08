@@ -11,6 +11,7 @@ from django.contrib.auth.models import (
 
 # El BaseUserManager sirve para los admin
 
+
 # Modelo de Entrenadores
 class Trainer(models.Model):
     team = models.ForeignKey(
@@ -41,6 +42,7 @@ class Trainer(models.Model):
         return self.user.username
 
     # a la contraseña ponerle un hash
+
 
 # Modelo de los padres
 class Parent(models.Model):
@@ -93,4 +95,3 @@ class Player(models.Model):
 
     def __str__(self):
         return self.name + " " + self.surname
-

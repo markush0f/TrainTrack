@@ -7,7 +7,9 @@ from rest_framework.response import Response
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
 import json
+import re
 
+# re es un módulo de expresiones regulares
 # viewsets es una clase que combina las funciones de varias
 # vistas genéricas para proporcionar un conjunto
 # completo de operaciones CRUD para un modelo especifico
@@ -35,6 +37,22 @@ class TrainerViewSet(viewsets.ModelViewSet):
 class TeamViewSet(viewsets.ModelViewSet):
     queryset = Team.objects.all()
     serializer_class = TeamSerializer
+
+
+def formErrors(data):
+    errors = {}
+    onlyTxt = re.compile(r"\d+")
+    
+    if data:
+        if data["name"]:
+            name = data["name"]
+            if onlyTxt.search(name) or len(name) > 20 or len(name) < 2:
+                errors["formatNameIncorrect"] = "Debe introducir un nombre correcto."
+        if data["email"]:
+            email = data["email"]
+            if 
+    if errors:
+        return errors
 
 
 #  Comprobamos si en los datos enviados existe tanto el codigo como la contraseña proporcionada por el equipo
@@ -66,55 +84,68 @@ def checkCodeTeam(request):
                 print("Error:", NameError)
 
 
-# Con autenticación
+# MIRAR EL PINIA
+# GENERA TOKEN
 @csrf_exempt
-def SignUpTrainer(request):
+def signup(request):
     if request.method == "POST":
         data = json.loads(request.body)
         errors = {}
         # Comprobamos si ya existe en la tabla User el email
         for key, value in data.items():
             if not value:
-                errors[f"{key}Empty"] =f"El campo {key} no puede estar vacio"
+                errors[f"{key}Empty"] = f"El campo {key} no puede estar vacio"
             print(f"Key: {key}, Value: {value}")
+
         if errors:
-            return JsonResponse({"Errors:": errors}, safe=False)
-        # if User.objects.filter(email=email).exists():
-        #     return JsonResponse(
-        #         {"errors": "Este correo electrónico ya está registrado."},
-        #         status=400,
-        #     )
-    #     # Creamos el usuario
-    #     try:
-    #         user = User.objects.create_user(
-    #             email, email, password, first_name=first_name, last_name=last_name
-    #         )
-    #     except Exception as e:
-    #         return JsonResponse({"errors": e}, status=500)
-    #     # Autenticamos el usuario
-    #     if user is not None:
-    #         # Creamos al entrenador
-    #         trainer = createTrainer(form.cleaned_data, user)
-    #         login(request, user)
-    #         return JsonResponse(
-    #             {"success": "El entrenador ha sido autenticado y creado."},
-    #             status=200,
-    #         )
-    #     return JsonResponse(
-    #         {"error": "No se ha podido autenticar el entrenador."}, status=500
-    #     )
-    # else:
-    #     return JsonResponse({"errors": form.errors}, status=400)
+            return JsonResponse({"Errors: ": errors})
+        # Arreglar esto
+        if User.objects.filter(email=data["email"]).exists():
+            return JsonResponse(
+                {"Error": "Este correo electrónico ya está registrado."}, status=400
+            )
+        # Creamos el usuario en la base de datos User
+        user = createUser(data)
+        trainer = createTrainer(data, user.id)
+        # Autenticamos el usuario, para así añadir los datos restantes a la tabla entrenador
+        if user is not None:
+            # Creamos al entrenador
+            if trainer:
+                return JsonResponse(
+                    {"success": "El entrenador ha sido autenticado y creado."},
+                    status=201,
+                )
+        return JsonResponse(
+            {"El entrenador no ha sido autenticado ni creado"}, status=500
+        )
 
 
-# Creamos el entrenador
-def createTrainer(data, user):
-    trainer = Trainer.objects.create(
-        user=user,
-        birth=data["birth"],
-        dni=data["dni"],
-        address1=data["address1"],
-        address2=data.get("address2", ""),
-        phone=data["phone"],
-    )
-    return trainer
+def createUser(data):
+    try:
+        user = User.objects.create_user(
+            data["email"],
+            data["email"],
+            data["password"],
+            first_name=data["name"],
+            last_name=data["surname"],
+        )
+        return user
+    except Exception as e:
+        print("116:", e)
+        return None
+
+
+def createTrainer(data, user_id):
+    try:
+        trainer = Trainer.objects.create(
+            user_id=user_id,
+            birth=data["birth"],
+            address1=data["address1"],
+            address2=data["address2"],
+            phone=data["phone"],
+            team_id=1,
+        )
+        return trainer
+    except Exception as e:
+        print("132: ", e)
+        return None
