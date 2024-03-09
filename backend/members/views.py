@@ -100,7 +100,7 @@ def signup(request):
         if errors:
             return JsonResponse({"Errors: ": errors})
         # Arreglar esto
-        if User.objects.filter(email=data["email"]).exists():
+        if User.objects.all().filter(email=data["email"]).exists():
             return JsonResponse(
                 {"Error": "Este correo electrónico ya está registrado."}, status=400
             )
@@ -151,6 +151,7 @@ def createTrainer(data, user_id):
         return None
 
 
+# Generamos el token JWT
 def generateJWT(user):
     # Almacenamos el contenido del token
     payload = {
@@ -174,3 +175,6 @@ def login(request):
             login(request, user)
             # Generamos el token
             token = generateJWT(user)
+            return JsonResponse(
+                {"success": "Usuario logeado y autenticado con éxito.", "token": token}
+            )
