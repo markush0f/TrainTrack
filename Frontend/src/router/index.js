@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import SignupView from '../views/SignupView.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -24,7 +25,6 @@ const router = createRouter({
       name: 'checkcodeteam',
       component: () => import('../views/checkCodeTeamComponent.vue')
     }
-
   ]
 })
 
