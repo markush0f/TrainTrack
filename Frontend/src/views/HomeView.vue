@@ -52,7 +52,9 @@ import Pie from '../components/FooterComponent.vue'
     <div class="flex-grow justify-center p-4 border border-gray-400">
       <!-- div de noticias -->
       <div class="justify-center p-4 border border-gray-400">
-        <img src=C:\laragon\www\TrainTrack\data\img\noticiaEjemplo.jpg alt="Noticias" class="max-w-full text-center">
+        <img
+          src=https://previews.123rf.com/images/yupiramos/yupiramos1609/yupiramos160920026/62953659-de-dibujos-animados-de-televisi%C3%B3n-de-noticias-reportera-ejemplo-gr%C3%A1fico-del-vector.jpg
+          alt="Noticias" class="max-w-full text-center">
       </div>
       <!-- div de partidos -->
       <div class="justify-center p-4 border border-gray-400">
@@ -90,7 +92,8 @@ import Pie from '../components/FooterComponent.vue'
     <div class="w-1/3 justify-center p-4 pr-10 border border-gray-400">
       <!-- div de federacion -->
       <div class="justify-center p-4 border border-gray-400">
-        <img src=C:\laragon\www\TrainTrack\data\img\federacionEjemplo.png alt="Federacion" class="">
+        <img src="https://www.dyntra.org/new/wp-content/uploads/2018/07/federacion-canaria-futbol.jpg" alt="Federacion"
+          class="">
       </div>
       <!-- Div de acciones -->
       <div>
