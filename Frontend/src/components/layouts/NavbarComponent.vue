@@ -1,33 +1,8 @@
-<template>
-  <nav class="bg-white shadow dark:bg-gray-800 text-black">
-            
-            <div class="max-w-7x mx-auto px-4 py-3 flex items-center justify-between">
-                <div class="flex items-center">
-                  <span class="text-3xl font-Blacker">Logo</span>
-                </div>
-                <!-- Links -->
-                <div class="flex-1 flex justify-center">
-                    <a href="#" class="text-3xl px-3 py-2 hover:bg-green-300"><HomeView/>Home</a>
-                    <a href="#" class="text-3xl  px-3 py-2 hover:bg-green-300">About Us</a>
-                    <a href="#" class="text-3xl  px-3 py-2 hover:bg-green-300">Teams</a>
-                    <!-- <a href="#" class="px-3 py-2 hover:bg-gray-700">Contacto</a> -->
-                </div>
-            </div>
-  </nav>
-  <nav class="bg-gray-800 shadow dark:bg-gray-800"> 
-        <div class="flex items-center">
-                  <span class="text-xl font-Blacker" >
-                    
-                  </span>
-                </div>
-  </nav>
-  <CodeTeamComponent/>
-</template>
-
 <script setup>
 import axios from 'axios';
 import { ref } from 'vue'
 // import URL_API from "../../variables";
+
 
 import CodeTeamComponent from "./CodeTeamComponent.vue"
 axios.defaults.xsrfCookieName = 'csrftoken';
@@ -57,3 +32,30 @@ function showLogo(){
   showLogo();
 
 </script>
+
+<template>
+  <nav class="bg-white shadow dark:bg-gray-800 text-black">
+            
+            <div class="max-w-7x mx-auto px-4 py-3 flex items-center justify-between">
+                <div class="flex items-center">
+                  <span class="text-3xl font-Blacker">Logo</span>
+                </div>
+                <!-- Links -->
+                <div class="flex-1 flex justify-center">
+                    <a href="#" class="text-3xl px-3 py-2 hover:bg-green-300"><HomeView/>Home</a>
+                    <a href="#" class="text-3xl  px-3 py-2 hover:bg-green-300">About Us</a>
+                    <a href="#" class="text-3xl  px-3 py-2 hover:bg-green-300">Teams</a>
+                    <a href="#" class="text-3xl  px-3 py-2 hover:bg-green-300"><ParentPage/>ParentPage</a>
+                    <!-- <a href="#" class="px-3 py-2 hover:bg-gray-700">Contacto</a> -->
+                </div>
+            </div>
+  </nav>
+  <nav class="bg-gray-800 shadow dark:bg-gray-800"> 
+        <div class="flex items-center">
+                  <span class="text-xl font-Blacker" >
+                    
+                  </span>
+                </div>
+  </nav>
+  <CodeTeamComponent/>
+</template>

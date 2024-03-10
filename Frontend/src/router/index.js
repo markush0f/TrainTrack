@@ -59,7 +59,6 @@ const router = createRouter({
 
       }
     }
-
   ]
 })
 // Antes de acceder a cada ruta:
