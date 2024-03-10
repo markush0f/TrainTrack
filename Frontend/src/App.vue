@@ -1,7 +1,5 @@
 <template>
-
   <!-- <NavBar/> -->
-  <!-- En RouterView se mostrará la vista según la ruta actual-->
   <RouterView />
   
 </template>

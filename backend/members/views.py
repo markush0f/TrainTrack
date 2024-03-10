@@ -2,8 +2,9 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from rest_framework import viewsets
-from rest_framework.decorators import action
+from rest_framework.decorators import action, permission_classes
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from .models import *
@@ -14,6 +15,7 @@ import re
 from datetime import datetime, timedelta
 import jwt
 from django.conf import settings
+
 
 # re es un módulo de expresiones regulares
 # viewsets es una clase que combina las funciones de varias
@@ -38,6 +40,12 @@ class TrainerViewSet(viewsets.ModelViewSet):
 class TeamViewSet(viewsets.ModelViewSet):
     queryset = Team.objects.all()
     serializer_class = TeamSerializer
+
+
+@permission_classes([IsAuthenticated])
+def verify_token(request):
+    # Si la solicitud ha llegado hasta aquí, significa que el token JWT ha sido verificado con éxito
+    return JsonResponse({"valid": True})
 
 
 def formErrors(data):
@@ -88,6 +96,7 @@ def checkCodeTeam(request):
 # GENERA TOKEN
 @csrf_exempt
 def signup(request):
+    # COMRPOBAR SI LOS DATOS SON LOS CORRECTOS
     if request.method == "POST":
         data = json.loads(request.body)
         errors = {}
@@ -100,9 +109,9 @@ def signup(request):
         if errors:
             return JsonResponse({"Errors: ": errors})
         # Arreglar esto
-        if User.objects.all().filter(email=data["email"]).exists():
+        if User.objects.filter(email=data["email"]).exists():
             return JsonResponse(
-                {"Error": "Este correo electrónico ya está registrado."}, status=400
+                {"Error": "Este correo electrónico ya está registrado."}
             )
         # Creamos el usuario en la base de datos User
         user = createUser(data)
@@ -111,8 +120,13 @@ def signup(request):
         if user is not None:
             # Creamos al entrenador
             if trainer:
+                JWT = generateJWT(user)
+                login(request, user)
                 return JsonResponse(
-                    {"success": "El entrenador ha sido autenticado y creado."},
+                    {
+                        "success": "El entrenador ha sido autenticado y creado.",
+                        "JWT": JWT,
+                    },
                     status=201,
                 )
         return JsonResponse(
@@ -154,27 +168,31 @@ def createTrainer(data, user_id):
 # Generamos el token JWT
 def generateJWT(user):
     # Almacenamos el contenido del token
-    payload = {
-        "user_id": user.id,
-        "expirate": datetime.utcnow() + timedelta(days=1),
-    }
+    payload = {"user_id": user.id}
     # Generamos el token
-    token = jwt.enconde(payload, settings.SECRET_KEY, algorithm="HS256")
+    token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
     # jwt.encode() firma un token JWT
     # settings clave secreta utilizada para firmar el token, la clave secreta se define en el archivo settings.py
-    return token.decode("utf-8")
+    return token
 
 
-def login(request):
+@csrf_exempt
+def loginView(request):
     if request.method == "POST":
         data = json.loads(request.body)
+        # CSRF = data["csrf"]
+        # if not CSRF:
+        #     return JsonResponse({"error": "Token CSRF no válido"}, status=403)
         # Autenticamos el usuario
-        user = authenticate(request, username=data["email"], password=data["email"])
+        user = authenticate(request, username=data["email"], password=data["password"])
         if user is not None:
             # Iniciamos sesión
             login(request, user)
             # Generamos el token
             token = generateJWT(user)
             return JsonResponse(
-                {"success": "Usuario logeado y autenticado con éxito.", "token": token}
+                {"success": "Usuario logeado y autenticado con éxito.", "token": token},
+                status=200,
             )
+        else:
+            return JsonResponse({"error": "Email o contraseña incorrectas"})

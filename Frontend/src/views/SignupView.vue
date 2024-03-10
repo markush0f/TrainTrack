@@ -81,12 +81,6 @@ const data = ref({
 })
 // Cambiarlo al archivo userAPI
 const submitForm = async () => {
-  try {
-
-    const res = await axios.post("http://127.0.0.1:8000/api/createtrainer", data.value)
-    console.log("Datos enviado", res.data);
-  } catch (e) {
-    console.error("ERROR:", e);
-  }
+  signup(data.value)
 }
 </script>

@@ -14,5 +14,6 @@ urlpatterns = router.urls
 urlpatterns += [
   path('createtrainer', signup, name="create_trainer"),
   path('checkcodeteam', checkCodeTeam, name="check_code_team"),
+  path('logintrainer', loginView, name="login_trainer")
 ]
 
