@@ -1,4 +1,3 @@
-from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from rest_framework import viewsets
@@ -6,16 +5,15 @@ from rest_framework.decorators import action, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
-from django.shortcuts import redirect
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.views import TokenObtainPairView
 from .models import *
 from .serializers import *
 from django.contrib.auth import authenticate, login
-import json
-import re
+import json, re, jwt
 from datetime import datetime, timedelta
-import jwt
 from django.conf import settings
-
 
 # re es un módulo de expresiones regulares
 # viewsets es una clase que combina las funciones de varias
@@ -23,11 +21,31 @@ from django.conf import settings
 # completo de operaciones CRUD para un modelo especifico
 
 
+def getRoutes(request):
+    routes = ["/api/token", "/api/token/refresh", "/api/trainers", "/api/parents"]
+    return JsonResponse(routes, safe=False)
+
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        # Add custom claims
+        token["email"] = user.email
+
+        return token
+
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
+
+
 class TrainerViewSet(viewsets.ModelViewSet):
     queryset = Trainer.objects.all()
     serializer_class = TrainerSerializer
 
     # Filtramos por equipo:
+    # El action crea una ruta personalizada en el enrutador del viewset
     @action(detail=False)
     def by_team(self, request):
         team = self.request.query_params.get("team", None)
@@ -42,10 +60,48 @@ class TeamViewSet(viewsets.ModelViewSet):
     serializer_class = TeamSerializer
 
 
+# class ParentViewSet(viewsets.ModelViewSet):
+#     queryset = Team.objects.all()
+#     serializer_class = ParentSerializer
+
+# Validamos el token JWT
 @permission_classes([IsAuthenticated])
 def verify_token(request):
     # Si la solicitud ha llegado hasta aquí, significa que el token JWT ha sido verificado con éxito
     return JsonResponse({"valid": True})
+
+
+# Generamos el token JWT
+def generateJWT(user):
+    tokens = RefreshToken.for_user(user)
+    access_token = str(tokens.access_token)
+    # refresh_token = str(refresh)
+    return access_token
+
+
+# Validamos el token JWT
+# Requerimos autenticación a la función
+# @permission_classes([IsAuthenticated])
+# def authenticateJWT(request):
+#     data = request.headers
+#     # print(data["Authorization"])
+#     authorizationHeader = data["Authorization"]
+#     if authorizationHeader and authorizationHeader.startswith("Bearer "):
+#         print("Aqui si")
+#         tokenJWT = authorizationHeader.split(" ")[1]
+#         try:
+#             # Decodificamos el token JWT
+#             payload = jwt.decode(tokenJWT, settings.SECRET_KEY, algorithms=["HS256"])
+#             user = User.objects.get(pk=payload.get("user_id"))
+#             request.user = user
+#             return None
+#             # Se sigue ejecutando la función
+#         except jwt.ExpiredSignatureError:
+#             return JsonResponse(
+#                 {"error": "Token expirado, debe iniciar sesión"}, status=401
+#             )
+#     else:
+#         return JsonResponse({"error": "Token no enviado"}, status=401)
 
 
 def formErrors(data):
@@ -163,17 +219,6 @@ def createTrainer(data, user_id):
     except Exception as e:
         print("132: ", e)
         return None
-
-
-# Generamos el token JWT
-def generateJWT(user):
-    # Almacenamos el contenido del token
-    payload = {"user_id": user.id}
-    # Generamos el token
-    token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
-    # jwt.encode() firma un token JWT
-    # settings clave secreta utilizada para firmar el token, la clave secreta se define en el archivo settings.py
-    return token
 
 
 @csrf_exempt

@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 # Los serializers permiten convertir objetos de Python, como
 # modelos de Django en formatos de datos como JSON
-from .models import Trainer, Team
+from .models import Trainer, Team, Parent
 
 
 #  Esto son metadatos que se enviarán a nuestro Api REST de Trainer
@@ -14,12 +14,7 @@ class TrainerSerializer(serializers.ModelSerializer):
             "updated_at",
         )
         fields = (
-            "id",
-            "name",
-            "surname",
-            "email",
             "birth",
-            "password",
             "team",
         )
 
@@ -35,3 +30,12 @@ class TeamSerializer(serializers.ModelSerializer):
             "id",
             "name",
         )
+    
+# class ParentSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Parent
+#         fields = (
+#             "birth",
+#             "team",
+#         )
+

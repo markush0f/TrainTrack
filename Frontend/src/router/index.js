@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import SignupView from '../views/SignupView.vue'
 import { useTokenUserStore } from '@/stores/JWT'
 import axios from 'axios'
+import { nextTick } from 'vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -46,8 +47,8 @@ const router = createRouter({
       name: 'trainer',
       component: () => import('../views/TrainerView.vue'),
       meta: {
-        // requireAuthUser: true,
-
+        requireAuthUser: true,
+        // rol: "trainer"
       }
     },
     {
@@ -55,7 +56,8 @@ const router = createRouter({
       name: 'parent',
       component: () => import('../views/ParentView.vue'),
       meta: {
-        // requireAuthUser: true,
+        requireAuthUser: true,
+        // rol: "parent"
 
       }
     }
@@ -64,19 +66,19 @@ const router = createRouter({
 // Antes de acceder a cada ruta:
 // to: hacia donde, from: de donde viene, next: hacia donde
 router.beforeEach(async (to, from, next) => {
-  const jwt = {
-    'JWT': useTokenUserStore.getToken
+  const headers = {
+    'Authorization':`Bearer ${useTokenUserStore.getToken}`
   }
   if (to.meta.requireAuthUser) {
     try {
-      const res = await axios.get('/api/verify-token')
+      const res = await axios.get('/api/authenticatejwt', headers)
       console.log("Data:", res.data);
+      next()
     } catch (e) {
       console.log("Error al verificar el token");
+      next('/login')
     }
-    next('/checkcodeteam')
   } else {
-    // Indicamos que puede acceder a esa ruta
     next()
   }
 })
