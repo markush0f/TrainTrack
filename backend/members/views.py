@@ -1,12 +1,18 @@
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from rest_framework import viewsets
-from rest_framework.decorators import action, permission_classes
+from rest_framework.decorators import (
+    action,
+    permission_classes,
+    authentication_classes,
+    api_view,
+)
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.models import User
+from django.contrib.auth import logout
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .models import *
 from .serializers import *
@@ -19,25 +25,6 @@ from django.conf import settings
 # viewsets es una clase que combina las funciones de varias
 # vistas genéricas para proporcionar un conjunto
 # completo de operaciones CRUD para un modelo especifico
-
-
-def getRoutes(request):
-    routes = ["/api/token", "/api/token/refresh", "/api/trainers", "/api/parents"]
-    return JsonResponse(routes, safe=False)
-
-
-class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
-        # Add custom claims
-        token["email"] = user.email
-
-        return token
-
-
-class MyTokenObtainPairView(TokenObtainPairView):
-    serializer_class = MyTokenObtainPairSerializer
 
 
 class TrainerViewSet(viewsets.ModelViewSet):
@@ -55,53 +42,58 @@ class TrainerViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-class TeamViewSet(viewsets.ModelViewSet):
-    queryset = Team.objects.all()
-    serializer_class = TeamSerializer
 
 
 # class ParentViewSet(viewsets.ModelViewSet):
 #     queryset = Team.objects.all()
 #     serializer_class = ParentSerializer
 
+
 # Validamos el token JWT
-@permission_classes([IsAuthenticated])
-def verify_token(request):
-    # Si la solicitud ha llegado hasta aquí, significa que el token JWT ha sido verificado con éxito
-    return JsonResponse({"valid": True})
+def verifyToken(request):
+    # print(request.headers['Authorization'])
+    if request.method == "GET":
+        token = request.headers["Authorization"]
+        data = json.loads(request.body)
+        if token and token.startswith("Bearer ") and data["rol"]:
+            print("token recogido y empieza por Bearer")
+            print(token)
+            # SEGÚN EL ID, ENVIAR EL ROL DE SI ES PADRE O ENTRENADOR
+            try:
+                tokenJWT = token.split(" ")[1]
+                # Decodificamos el token JWT
+                payload = jwt.decode(
+                    tokenJWT, settings.SECRET_KEY, algorithms=["HS256"]
+                )
+                print("Payload:", payload)
+                return JsonResponse(
+                    {
+                        "message": "Token válido",
+                        "valid": True,
+                        "rol": data["rol"],
+                    },
+                    status=200,
+                )
+            except Exception as e:
+                print("Error: ", e)
+        return JsonResponse(
+            {
+                "message": "Token no válido",
+                "error": "Debe iniciar sesión.",
+                "valid": False,
+            },
+            status=200,
+        )
 
 
 # Generamos el token JWT
 def generateJWT(user):
-    tokens = RefreshToken.for_user(user)
-    access_token = str(tokens.access_token)
-    # refresh_token = str(refresh)
-    return access_token
-
-
-# Validamos el token JWT
-# Requerimos autenticación a la función
-# @permission_classes([IsAuthenticated])
-# def authenticateJWT(request):
-#     data = request.headers
-#     # print(data["Authorization"])
-#     authorizationHeader = data["Authorization"]
-#     if authorizationHeader and authorizationHeader.startswith("Bearer "):
-#         print("Aqui si")
-#         tokenJWT = authorizationHeader.split(" ")[1]
-#         try:
-#             # Decodificamos el token JWT
-#             payload = jwt.decode(tokenJWT, settings.SECRET_KEY, algorithms=["HS256"])
-#             user = User.objects.get(pk=payload.get("user_id"))
-#             request.user = user
-#             return None
-#             # Se sigue ejecutando la función
-#         except jwt.ExpiredSignatureError:
-#             return JsonResponse(
-#                 {"error": "Token expirado, debe iniciar sesión"}, status=401
-#             )
-#     else:
-#         return JsonResponse({"error": "Token no enviado"}, status=401)
+    payload = {
+        "user_id": user.id,
+        # "rol": rol,
+    }
+    token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
+    return token
 
 
 def formErrors(data):
@@ -121,7 +113,6 @@ def formErrors(data):
 
 #  Comprobamos si en los datos enviados existe tanto el codigo como la contraseña proporcionada por el equipo
 #  La idea es que cada mes se cambie tanto el codigo como la contraseña del equipo
-# Añadir esta funcion para que pase primero por forms.py
 @csrf_exempt
 def checkCodeTeam(request):
     if request.method == "POST":
@@ -142,52 +133,10 @@ def checkCodeTeam(request):
                         }
                     )
                 else:
-                    print("Contraseña incorrecta")
+                    print("Contraseña o código de equipo incorrecto")
                     return JsonResponse("Contraseña incorrecta", safe=False)
             except NameError:
                 print("Error:", NameError)
-
-
-# MIRAR EL PINIA
-# GENERA TOKEN
-@csrf_exempt
-def signup(request):
-    # COMRPOBAR SI LOS DATOS SON LOS CORRECTOS
-    if request.method == "POST":
-        data = json.loads(request.body)
-        errors = {}
-        # Comprobamos si ya existe en la tabla User el email
-        for key, value in data.items():
-            if not value:
-                errors[f"{key}Empty"] = f"El campo {key} no puede estar vacio"
-            print(f"Key: {key}, Value: {value}")
-
-        if errors:
-            return JsonResponse({"Errors: ": errors})
-        # Arreglar esto
-        if User.objects.filter(email=data["email"]).exists():
-            return JsonResponse(
-                {"Error": "Este correo electrónico ya está registrado."}
-            )
-        # Creamos el usuario en la base de datos User
-        user = createUser(data)
-        trainer = createTrainer(data, user.id)
-        # Autenticamos el usuario, para así añadir los datos restantes a la tabla entrenador
-        if user is not None:
-            # Creamos al entrenador
-            if trainer:
-                JWT = generateJWT(user)
-                login(request, user)
-                return JsonResponse(
-                    {
-                        "success": "El entrenador ha sido autenticado y creado.",
-                        "JWT": JWT,
-                    },
-                    status=201,
-                )
-        return JsonResponse(
-            {"El entrenador no ha sido autenticado ni creado"}, status=500
-        )
 
 
 def createUser(data):
@@ -221,23 +170,110 @@ def createTrainer(data, user_id):
         return None
 
 
+def createParent(data, user_id):
+    try:
+        parent = Parent.objects.create(
+            user_id=user_id,
+            birth=data["birth"],
+            address1=data["address1"],
+            address2=data["address2"],
+            phone=data["phone"],
+            team_id=1,
+        )
+        return parent
+    except Exception as e:
+        print("190: ", e)
+        return None
+
+
+# GENERA TOKEN
+@csrf_exempt
+def signupView(request):
+    # COMRPOBAR SI LOS DATOS SON LOS CORRECTOS
+    if request.method == "POST":
+        data = json.loads(request.body)
+        errors = {}
+        # Comprobamos si ya existe en la tabla User el email
+        for key, value in data.items():
+            if not value:
+                errors[f"{key}Empty"] = f"El campo {key} no puede estar vacio"
+            print(f"Key: {key}, Value: {value}")
+
+        if errors:
+            return JsonResponse({"Errors: ": errors})
+        # Arreglar esto
+        if User.objects.filter(email=data["email"]).exists():
+            return JsonResponse(
+                {"Error": "Este correo electrónico ya está registrado."}
+            )
+        # Creamos el usuario en la base de datos User
+        user = createUser(data)
+        if data["rol"] == "trainer":
+            trainer = createTrainer(data, user.id)
+        # Autenticamos el usuario, para así añadir los datos restantes a la tabla entrenador
+        if user is not None:
+            # Creamos al entrenador
+            if trainer:
+                JWT = generateJWT(user)
+                login(request, user)
+                return JsonResponse(
+                    {
+                        "success": "El entrenador ha sido autenticado y creado.",
+                        "JWT": JWT,
+                    },
+                    status=201,
+                )
+            return JsonResponse(
+                {"El entrenador no ha sido autenticado ni creado"}, status=500
+            )
+        if data["rol"] == "parent":
+            parent = createParent(user, user.id)
+            if user is not None:
+                if parent:
+                    JWT = generateJWT(user)
+                    login(request, user)
+                    return JsonResponse(
+                        {
+                            "success": "El Padre ha sido autenticado y creado.",
+                            "JWT": JWT,
+                        },
+                        status=201,
+                    )
+                return JsonResponse(
+                    {"El entrenador no ha sido autenticado ni creado"}, status=500
+                )
+
+
 @csrf_exempt
 def loginView(request):
     if request.method == "POST":
         data = json.loads(request.body)
-        # CSRF = data["csrf"]
-        # if not CSRF:
-        #     return JsonResponse({"error": "Token CSRF no válido"}, status=403)
-        # Autenticamos el usuario
         user = authenticate(request, username=data["email"], password=data["password"])
         if user is not None:
             # Iniciamos sesión
             login(request, user)
             # Generamos el token
             token = generateJWT(user)
-            return JsonResponse(
-                {"success": "Usuario logeado y autenticado con éxito.", "token": token},
-                status=200,
-            )
+
+            if token:
+                print(token)
+                return JsonResponse(
+                    {
+                        "success": "Usuario logeado y autenticado con éxito.",
+                        "JWT": token,
+                    },
+                    status=200,
+                )
+            else:
+                return JsonResponse({"error": "El token no se ha podido crear"})
+
         else:
             return JsonResponse({"error": "Email o contraseña incorrectas"})
+
+
+@csrf_exempt
+def logoutView(request):
+    if request.method == "POST":
+        # data = json.loads(request.body)
+        logout(request)
+        return JsonResponse({"success": "Sesión cerrada"})

@@ -3,7 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import SignupView from '../views/SignupView.vue'
 import { useTokenUserStore } from '@/stores/JWT'
 import axios from 'axios'
-import { nextTick } from 'vue'
+import { useCookies } from 'vue3-cookies'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -48,7 +48,7 @@ const router = createRouter({
       component: () => import('../views/TrainerView.vue'),
       meta: {
         requireAuthUser: true,
-        // rol: "trainer"
+        rol: "trainer"
       }
     },
     {
@@ -57,27 +57,39 @@ const router = createRouter({
       component: () => import('../views/ParentView.vue'),
       meta: {
         requireAuthUser: true,
-        // rol: "parent"
+        rol: "parent"
 
       }
     }
   ]
 })
-// Antes de acceder a cada ruta:
-// to: hacia donde, from: de donde viene, next: hacia donde
+
+const { cookies } = useCookies();
+const token = cookies.get('token')
+// import { useRolStore } from '@/stores/ROL';
+// const store = useRolStore()
 router.beforeEach(async (to, from, next) => {
   const headers = {
-    'Authorization':`Bearer ${useTokenUserStore.getToken}`
+    'Authorization': `Bearer ${(token)}`
   }
+  // const body = {
+  //   'rol': store.rol
+  // }
   if (to.meta.requireAuthUser) {
+    if (!token) {
+      next('/login')
+      return;
+    }
     try {
-      const res = await axios.get('/api/authenticatejwt', headers)
+      const res = await axios.get('/api/authenticatejwt', { headers })
+      console.log(token);
       console.log("Data:", res.data);
-      next()
+      if (res.data.valid) next()
+      else next('/login')
     } catch (e) {
       console.log("Error al verificar el token");
-      next('/login')
     }
+    next('/login')
   } else {
     next()
   }

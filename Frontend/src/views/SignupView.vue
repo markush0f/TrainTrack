@@ -1,4 +1,5 @@
 <template lang="">
+  <h1>Registro de {{store.rol}}</h1>
   <div>
     <form class="w-full max-w-lg" @submit.prevent="submitForm">
   <div class="flex flex-wrap -mx-3 mb-6">
@@ -60,6 +61,7 @@
     </div>
   </div>
   <input type="submit" value="Register"  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" />
+  <router-link to="/login">Ya tengo cuenta</router-link>
 </form>
 </div>
 </template>
@@ -68,6 +70,8 @@
 import { ref } from 'vue';
 import { signup } from '../services/userAPI'
 import axios from 'axios';
+import { useRolStore } from '@/stores/ROL';
+const store = useRolStore()
 const data = ref({
   "name": "",
   "surname": "",
@@ -77,10 +81,11 @@ const data = ref({
   "phone": "",
   "address1": "",
   "address2": "",
-  "dni": ""
-})
-// Cambiarlo al archivo userAPI
+  "dni": "",
+  "rol": store.rol
+});
+
 const submitForm = async () => {
   signup(data.value)
-}
+};
 </script>

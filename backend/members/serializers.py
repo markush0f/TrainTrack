@@ -19,17 +19,6 @@ class TrainerSerializer(serializers.ModelSerializer):
         )
 
 
-class TeamSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Team
-        read_only_fields = (
-            "created_at",
-            "updated_at",
-        )
-        fields = (
-            "id",
-            "name",
-        )
     
 # class ParentSerializer(serializers.ModelSerializer):
 #     class Meta:

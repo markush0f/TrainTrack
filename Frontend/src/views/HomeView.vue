@@ -1,8 +1,3 @@
-<script setup>
-import NavBar from '../components/layouts/NavbarComponent.vue'
-import Pie from '../components/FooterComponent.vue'
-</script>
-
 <template>
   <NavBar />
   <!-- Div padre -->
@@ -105,20 +100,35 @@ import Pie from '../components/FooterComponent.vue'
 
         <!-- Boton de Iniciar sesion de entrenador -->
         <div class="justify-center p-4 border border-gray-400">
-          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Iniciar sesion como
-            entrenador</button>
+          <router-link to="/signup" @click="saveRol('trainer')"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Control de
+            entrenador</router-link>
         </div>
 
         <!-- Boton de iniciar sesion como padre-->
         <div class="justify-center p-4 border border-gray-400">
-          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Iniciar sesion como
-            padre</button>
+          <router-link to="/signup" @click="saveRol('parent')"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Control de
+            padre</router-link>
         </div>
       </div>
     </div>
   </div>
   <Pie />
 </template>
+
+<script setup>
+import NavBar from '../components/layouts/NavbarComponent.vue'
+import Pie from '../components/FooterComponent.vue'
+import { ref } from 'vue';
+import { useRolStore } from '@/stores/ROL';
+const store = useRolStore()
+function saveRol(rol) {
+  store.setRol(rol)
+  console.log(store.rol);
+}
+
+</script>
 
 
 

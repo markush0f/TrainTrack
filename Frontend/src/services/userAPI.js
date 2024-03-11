@@ -28,10 +28,13 @@ export async function signup(data) {
 // Solicitud de login
 export async function login(data) {
   try {
-    const res = await axios.post("http://127.0.0.1:8000/api/logintrainer", data)
+    const res = await axios.post("http://127.0.0.1:8000/api/login", data)
     console.log("Datos: ", res.data);
     if (res) {
       console.log("Respuesta del servidor:", res);
+      console.log('Token:', res.data.JWT);
+      // Almacenamos el token en las cookies
+      cookies.set('token', res.data.JWT)
     }
   } catch (e) {
     console.log("ERROR: ", e);

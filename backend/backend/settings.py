@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # AUTH_USER_MODEL = 'members.CustomUser'
 # Application definition
 
+# Almacenar las sessiones en las cookies
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
 # Aplicaciones bases
 BASE_APPS = [
     "django.contrib.admin",
@@ -115,7 +117,7 @@ CORS_ALLOW_METHODS = (
 )
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
-CSRF_COOKIE_HTTPONLY = False
+# CSRF_COOKIE_HTTPONLY = False
 ROOT_URLCONF = "backend.urls"
 
 TEMPLATES = [

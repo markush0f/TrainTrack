@@ -27,7 +27,6 @@ class Trainer(models.Model):
     address1 = models.CharField(blank=False, null=False, max_length=255)
     address2 = models.CharField(blank=False, null=True, max_length=255)
     phone = models.CharField(blank=False, null=False, max_length=255)
-    token_jwt = models.CharField(blank=True, null=True, max_length=500)
 
     class Meta:
         verbose_name = "Trainer"
@@ -54,7 +53,6 @@ class Parent(models.Model):
     address1 = models.CharField(blank=False, null=False, max_length=255)
     address2 = models.CharField(blank=False, null=True, max_length=255)
     phone = models.CharField(blank=False, null=False, max_length=255)
-    token_jwt = models.CharField(blank=True, null=True, max_length=500)
 
     class Meta:
         verbose_name = "Parent"

@@ -16,7 +16,6 @@ app.use(createPinia())
   .use(VueCookies, {
     expires: '7d'
   })
-  // Incluimos en el cabezado de todas las solicitudes el csrf
-  // axios.defaults.headers.common['X-CSRFToken'] = useCSRFStore.getCSRF
+
 app.mount('#app')
 
