@@ -16,11 +16,19 @@
       </div>
     </div>
   </nav>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4d9e8780da55c787bc1cf5199dd0ca8a3fbf0c18
 </template>
 <script setup>
 import axios from 'axios';
 import { ref } from 'vue'
 import { useTokenUserStore } from '@/stores/JWT';
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4d9e8780da55c787bc1cf5199dd0ca8a3fbf0c18
 
 const logout = async () => {
   try {
@@ -32,7 +40,6 @@ const logout = async () => {
   } catch (e) {
     console.log("Error: ", e);
   }
-
 }
 
 </script>
