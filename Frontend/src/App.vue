@@ -1,17 +1,23 @@
 <template>
   <!-- <NavBar/> -->
   <RouterView />
-  
+
 </template>
 
 <script setup>
 import { RouterLink, RouterView } from "vue-router";
-import { ref } from "vue";
-// import NavBar from "./components/layouts/NavbarComponent.vue"
-import CodeTeamComponent from "./components/layouts/CodeTeamComponent.vue";
-const URL_API = "http://127.0.0.1:8000/api";
-const login = ref(false)
-
+import { ref, onMounted } from "vue";
+import { profile } from '@/services/userAPI';
+import { useCookiesStore } from "./stores/cookies";
+import { useProfileStore } from "./stores/profile";
+const cookie = useCookiesStore()
+const token = cookie.getCookie('token')
+if (token) {
+  onMounted(() => {
+    console.log("Cargando perfil...");
+    profile()
+  });
+}
 </script>
 
 <style scoped></style>

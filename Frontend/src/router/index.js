@@ -60,7 +60,18 @@ const router = createRouter({
         rol: "parent"
 
       }
+    },
+    {
+      path: '/trainer/perfil',
+      name: 'trainer_perfil',
+      component: () => import('../components/ProfileComponent.vue'),
+    },
+    {
+      path: '/notfound',
+      name: 'notfound',
+      component: () => import('@/views/NotFoundView.vue')
     }
+
   ]
 })
 
@@ -77,7 +88,7 @@ router.beforeEach(async (to, from, next) => {
   // }
   if (to.meta.requireAuthUser) {
     if (!token) {
-      next('/login')
+      next('/notfound')
       return;
     }
     try {
@@ -85,11 +96,11 @@ router.beforeEach(async (to, from, next) => {
       console.log(token);
       console.log("Data:", res.data);
       if (res.data.valid) next()
-      else next('/login')
+      else next('/notfound')
     } catch (e) {
       console.log("Error al verificar el token");
     }
-    next('/login')
+    next('/notfound')
   } else {
     next()
   }

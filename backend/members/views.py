@@ -20,11 +20,7 @@ from django.contrib.auth import authenticate, login
 import json, re, jwt
 from datetime import datetime, timedelta
 from django.conf import settings
-
-# re es un módulo de expresiones regulares
-# viewsets es una clase que combina las funciones de varias
-# vistas genéricas para proporcionar un conjunto
-# completo de operaciones CRUD para un modelo especifico
+from .utils import *
 
 
 class TrainerViewSet(viewsets.ModelViewSet):
@@ -42,75 +38,12 @@ class TrainerViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-
-
 # class ParentViewSet(viewsets.ModelViewSet):
 #     queryset = Team.objects.all()
 #     serializer_class = ParentSerializer
 
 
 # Validamos el token JWT
-def verifyToken(request):
-    # print(request.headers['Authorization'])
-    if request.method == "GET":
-        token = request.headers["Authorization"]
-        data = json.loads(request.body)
-        if token and token.startswith("Bearer ") and data["rol"]:
-            print("token recogido y empieza por Bearer")
-            print(token)
-            # SEGÚN EL ID, ENVIAR EL ROL DE SI ES PADRE O ENTRENADOR
-            try:
-                tokenJWT = token.split(" ")[1]
-                # Decodificamos el token JWT
-                payload = jwt.decode(
-                    tokenJWT, settings.SECRET_KEY, algorithms=["HS256"]
-                )
-                print("Payload:", payload)
-                return JsonResponse(
-                    {
-                        "message": "Token válido",
-                        "valid": True,
-                        "rol": data["rol"],
-                    },
-                    status=200,
-                )
-            except Exception as e:
-                print("Error: ", e)
-        return JsonResponse(
-            {
-                "message": "Token no válido",
-                "error": "Debe iniciar sesión.",
-                "valid": False,
-            },
-            status=200,
-        )
-
-
-# Generamos el token JWT
-def generateJWT(user):
-    payload = {
-        "user_id": user.id,
-        # "rol": rol,
-    }
-    token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
-    return token
-
-
-def formErrors(data):
-    errors = {}
-    onlyTxt = re.compile(r"\d+")
-
-    if data:
-        if data["name"]:
-            name = data["name"]
-            if onlyTxt.search(name) or len(name) > 20 or len(name) < 2:
-                errors["formatNameIncorrect"] = "Debe introducir un nombre correcto."
-        if data["email"]:
-            email = data["email"]
-    if errors:
-        return errors
-
-
 #  Comprobamos si en los datos enviados existe tanto el codigo como la contraseña proporcionada por el equipo
 #  La idea es que cada mes se cambie tanto el codigo como la contraseña del equipo
 @csrf_exempt
@@ -277,3 +210,35 @@ def logoutView(request):
         # data = json.loads(request.body)
         logout(request)
         return JsonResponse({"success": "Sesión cerrada"})
+
+
+def profile(request):
+    if request.method == "GET":
+        # data = json.loads(request.body)
+        # print(request.headers["Authorization"])
+        # return JsonResponse("s", safe=False)
+        # ERROR AL LLAMAR A LA FUNCIÓN VEIRFYTOKEN
+        payload = verifyToken(request, True)
+        # Comprobar si el rol es de entrenador o padre
+        # Entrenador:
+        # if payload:
+        #     print(payload)
+        try:
+            user = User.objects.get(id=payload["user_id"])
+            trainer = Trainer.objects.get(user_id=payload["user_id"])
+            team = Team.objects.get(id=trainer.team_id)
+            profile = {
+                "first_name": user.first_name,
+                "last_name": user.last_name,
+                "email": user.email,
+                "address1": trainer.address1,
+                "address2": trainer.address2,
+                "team": (team.name if team else "Sin equipo"),
+            }
+            return JsonResponse({"profile":profile}, safe=False)
+        except User.DoesNotExist:
+            return JsonResponse("Usuario no encontrado", status=404)
+        except Trainer.DoesNotExist:
+            return JsonResponse("Entrenador no encontrado", status=404)
+        except Team.DoesNotExist:
+            return JsonResponse("Equipo no encontrado", status=404)

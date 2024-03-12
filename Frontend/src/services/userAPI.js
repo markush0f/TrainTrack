@@ -1,12 +1,14 @@
 import { useCookiesStore } from '@/stores/cookies';
 import axios from 'axios';
 import { useCookies } from "vue3-cookies";
-
+import { useProfileStore } from '@/stores/profile';
+const URL = "http://127.0.0.1:8000/api/"
 const { cookies } = useCookies();
+
 // Solicitud de subscripción
 export async function signup(data) {
   try {
-    const res = await axios.post("http://127.0.0.1:8000/api/createtrainer", data)
+    const res = await axios.post(`${URL}signup`, data)
     if (res) {
       console.log("Respuesta del servidor: ", res);
       if (res.data.JWT) {
@@ -19,18 +21,14 @@ export async function signup(data) {
   } catch (e) {
     console.error("ERROR:", e);
   }
-
-  // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo4fQ.SNKyI5nxOSsXwi38I2rHqB33-EmRlWVTQ8Ivwcon-tI
-  // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo5fQ._zzpXtxsHgEfl8i2-8PicXO95AQFk-gqDanXRre8bbI
 }
-
 
 // Solicitud de login
 export async function login(data) {
   try {
-    const res = await axios.post("http://127.0.0.1:8000/api/login", data)
-    console.log("Datos: ", res.data);
+    const res = await axios.post(`${URL}login`, data)
     if (res) {
+      console.log("Datos: ", res.data);
       console.log("Respuesta del servidor:", res);
       console.log('Token:', res.data.JWT);
       // Almacenamos el token en las cookies
@@ -38,5 +36,32 @@ export async function login(data) {
     }
   } catch (e) {
     console.log("ERROR: ", e);
+  }
+}
+// Solicitud de información del usuario
+export async function profile() {
+  const token = cookies.get('token')
+  if (token) {
+    // console.log("TOKEN:", token);
+    try {
+      const headers = {
+        'Authorization': `Bearer ${(token)}`
+      }
+      const res = await axios.get(`${URL}profile`, { headers })
+      if (res) {
+        console.log('Datos: ', res.data);
+        profileData = res.data.profileº
+        const profile = useProfileStore()
+        profile.name = profileData.name
+        profile.surname = profileData.surname
+        profile.email = profileData.email
+        profile.address1 = profileData.address1
+        profile.address2 = profileData.address2
+        profile.team = profileData.team
+        profile.childrens = "..."
+      }
+    } catch (e) {
+      console.log("ERROR: ", e);
+    }
   }
 }
