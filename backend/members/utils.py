@@ -43,10 +43,9 @@ def verifyToken(request, get):
 
 
 # Generamos el token JWT
-def generateJWT(user, rol):
+def generateJWT(user):
     payload = {
-        "user_id": user.id,
-        "rol": rol,
+        "user_id": user.id
     }
     token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
     return token

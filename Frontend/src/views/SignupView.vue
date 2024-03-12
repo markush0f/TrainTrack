@@ -81,8 +81,7 @@ const data = ref({
   "phone": "",
   "address1": "",
   "address2": "",
-  "dni": "",
-  "rol": store.rol
+  "dni": ""
 });
 
 const submitForm = async () => {

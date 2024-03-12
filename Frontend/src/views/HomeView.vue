@@ -1,5 +1,6 @@
 <template>
   <NavBar />
+
   <!-- Div padre -->
   <div class="flex h-full">
     <!-- divs hijos -->
@@ -15,7 +16,7 @@
       </div>
       <!-- div de partidos -->
       <div class="justify-center p-4 border border-gray-400">
-        <NextGamesComponent/>
+        <NextGamesComponent />
       </div>
     </div>
     <div class="w-1/3 justify-center p-4 pr-10 border border-gray-400">
@@ -55,9 +56,12 @@
 import NavBar from '../components/layouts/NavbarComponent.vue';
 import NextGamesComponent from '@/components/teams/NextGamesComponent.vue';
 import Pie from '../components/FooterComponent.vue'
+
 import { ref } from 'vue';
 import { useRolStore } from '@/stores/ROL';
 import ClassificationTableComponent from '@/components/teams/ClassificationTableComponent.vue';
+
+
 const store = useRolStore()
 function saveRol(rol) {
   store.setRol(rol)

@@ -1,8 +1,6 @@
 <template lang="html">
   <div>
-    <button @click="profileStore.show = true"
-      class="bg-main-green hover:bg-green-900 text-white py-2 px-4 rounded-full mr-4">Ver perfil</button>
-    <Modal v-if="profileStore.show" @close="profileStore.show = false" />
+    
     <div class="flex items-center justify-center h-screen bg-green-100">
       <div class="bg-white p-8 rounded-lg shadow-lg">
         <h1 class="mr-10 ml-10">Introduzca sus datos para iniciar sesión</h1>
@@ -39,11 +37,11 @@
 
 <script setup>
 import { ref } from 'vue';
-import Modal from '@/components/Modal.vue';
+
 import { login } from '@/services/userAPI';
-import { useProfileStore } from '@/stores/profile';
+
 import { useTokenUserStore } from '@/stores/JWT';
-const profileStore = useProfileStore();
+
 const data = ref({
   email: '',
   password: '',

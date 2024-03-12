@@ -150,7 +150,7 @@ def loginView(request):
             login(request, user)
             # Generamos el token
             token = generateJWT(user)
-
+            
             if token:
                 print(token)
                 return JsonResponse(

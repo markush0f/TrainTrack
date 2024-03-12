@@ -8,28 +8,29 @@
       <!-- Links -->
       <div class="flex-1 flex justify-center">
         <!-- Rutas de prueba -->
-        <router-link to="/" class="text-3xl px-3 py-2 hover:bg-green-300">Home</router-link>
-        <router-link to="/trainer" class="text-3xl px-3 py-2 hover:bg-green-300">Trainer</router-link>
-        <router-link to="/parent" class="text-3xl px-3 py-2 hover:bg-green-300">Parent</router-link>
+        <router-link to="/" class="text-3xl px-3 py-2 hover:text-main-green">Home</router-link>
+        <router-link to="/trainer" class="text-3xl px-3 py-2 hover:text-main-green">Trainer</router-link>
+        <router-link to="/parent" class="text-3xl px-3 py-2 hover:text-main-green">Parent</router-link>
 
-        <button @click="logout" class="text-3xl px-3 py-2">Logout</button>
+        <button @click="logout" class="text-3xl px-3 py-2 hover:text-main-green">Logout</button>
+
       </div>
+      <button @click=" profileStore.show = true" class="text-xl px-3 py-2 hover:text-main-green text-rigth">
+        Perfil
+    </button>
+      <Modal v-if="profileStore.show" @close="profileStore.show = false" />
     </div>
-  </nav>
-<<<<<<< HEAD
-=======
 
->>>>>>> 4d9e8780da55c787bc1cf5199dd0ca8a3fbf0c18
+  </nav>
+
 </template>
 <script setup>
 import axios from 'axios';
 import { ref } from 'vue'
 import { useTokenUserStore } from '@/stores/JWT';
-<<<<<<< HEAD
-=======
-
->>>>>>> 4d9e8780da55c787bc1cf5199dd0ca8a3fbf0c18
-
+import Modal from '@/components/Modal.vue';
+const profileStore = useProfileStore();
+import { useProfileStore } from '@/stores/profile';
 const logout = async () => {
   try {
     const res = await axios.post("http://127.0.0.1:8000/api/logout")
