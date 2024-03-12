@@ -7,3 +7,7 @@ pip install django-localflavor
 pip install django-seed
 pip install django-data-migrations
 pip install pyjwt
+pip install djangorestframework-simplejwt
+
+//py .\manage.py makemigrations
+//py .\manage.py migrate
