@@ -22,7 +22,6 @@
 import axios from 'axios';
 import { ref } from 'vue'
 import { useTokenUserStore } from '@/stores/JWT';
-import { useUrlAPIStore } from '@/stores/URL';
 import CodeTeamComponent from "./CodeTeamComponent.vue"
 
 const logout = async () => {
