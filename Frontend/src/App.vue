@@ -14,12 +14,9 @@ import { useProfileStore } from "./stores/profile";
 import { listTeams } from "./services/teamAPI";
 const cookie = useCookiesStore()
 const token = cookie.getCookie('token')
-const category = "alevin";
 // if (token) {
 onMounted(() => {
   console.log("Cargando perfil...");
-  // profile()
-  listTeams(category)
 });
 // }
 </script>

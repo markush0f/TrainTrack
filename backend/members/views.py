@@ -14,6 +14,8 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.views import TokenObtainPairView
+
+from members.parents.views import createParent, profileParent, signupParent
 from .models import *
 from .serializers import *
 from django.contrib.auth import authenticate, login
@@ -92,38 +94,6 @@ def createUser(data):
         return None
 
 
-def createTrainer(data, user_id):
-    try:
-        trainer = Trainer.objects.create(
-            user_id=user_id,
-            birth=data["birth"],
-            address1=data["address1"],
-            address2=data["address2"],
-            phone=data["phone"],
-            team_id=1,
-        )
-        return trainer
-    except Exception as e:
-        print("132: ", e)
-        return None
-
-
-def createParent(data, user_id):
-    try:
-        parent = Parent.objects.create(
-            user_id=user_id,
-            birth=data["birth"],
-            address1=data["address1"],
-            address2=data["address2"],
-            phone=data["phone"],
-            team_id=1,
-        )
-        return parent
-    except Exception as e:
-        print("190: ", e)
-        return None
-
-
 # GENERA TOKEN
 @csrf_exempt
 def signupView(request):
@@ -140,46 +110,34 @@ def signupView(request):
         if errors:
             return JsonResponse({"Errors: ": errors})
         # Arreglar esto
-        if User.objects.filter(email=data["email"]).exists():
-            return JsonResponse(
-                {"Error": "Este correo electrónico ya está registrado."}
-            )
+        if "email" in data:
+            if User.objects.filter(email=data["email"]).exists():
+                return JsonResponse(
+                    {"Error": "Este correo electrónico ya está registrado."}
+                )
         # Creamos el usuario en la base de datos User
         user = createUser(data)
-        if data["rol"] == "trainer":
-            trainer = createTrainer(data, user.id)
-        # Autenticamos el usuario, para así añadir los datos restantes a la tabla entrenador
+        # TRAINER:
+        # if user is not None:
+        #     # Creamos al entrenador
+        #     if trainer:
+        #         return singupTrainer(request, user)
+
+        # PARENT
+        # print(parent)
+        # print(user)
+        # return JsonResponse({"success": "padre creado"})
         if user is not None:
-            # Creamos al entrenador
-            if trainer:
-                JWT = generateJWT(user)
-                login(request, user)
-                return JsonResponse(
-                    {
-                        "success": "El entrenador ha sido autenticado y creado.",
-                        "JWT": JWT,
-                    },
-                    status=201,
-                )
-            return JsonResponse(
-                {"El entrenador no ha sido autenticado ni creado"}, status=500
+            parent = Parent.objects.create(
+                user_id=user.id,
+                birth=data.get("birth"),
+                address1=data.get("address1"),
+                address2=data.get("address2"),
+                phone=data.get("phone"),
+                trainer_id=1,
             )
-        if data["rol"] == "parent":
-            parent = createParent(user, user.id)
-            if user is not None:
-                if parent:
-                    JWT = generateJWT(user)
-                    login(request, user)
-                    return JsonResponse(
-                        {
-                            "success": "El Padre ha sido autenticado y creado.",
-                            "JWT": JWT,
-                        },
-                        status=201,
-                    )
-                return JsonResponse(
-                    {"El entrenador no ha sido autenticado ni creado"}, status=500
-                )
+            if parent:
+                return signupParent(request, user)
 
 
 @csrf_exempt
@@ -219,31 +177,4 @@ def logoutView(request):
 
 def profile(request):
     if request.method == "GET":
-        # data = json.loads(request.body)
-        # print(request.headers["Authorization"])
-        # return JsonResponse("s", safe=False)
-        # ERROR AL LLAMAR A LA FUNCIÓN VEIRFYTOKEN
-        payload = verifyToken(request, True)
-        # Comprobar si el rol es de entrenador o padre
-        # Entrenador:
-        # if payload:
-        #     print(payload)
-        try:
-            user = User.objects.get(id=payload["user_id"])
-            trainer = Trainer.objects.get(user_id=payload["user_id"])
-            team = Team.objects.get(id=trainer.team_id)
-            profile = {
-                "first_name": user.first_name,
-                "last_name": user.last_name,
-                "email": user.email,
-                "address1": trainer.address1,
-                "address2": trainer.address2,
-                "team": (team.name if team else "Sin equipo"),
-            }
-            return JsonResponse({"profile": profile}, safe=False)
-        except User.DoesNotExist:
-            return JsonResponse("Usuario no encontrado", status=404)
-        except Trainer.DoesNotExist:
-            return JsonResponse("Entrenador no encontrado", status=404)
-        except Team.DoesNotExist:
-            return JsonResponse("Equipo no encontrado", status=404)
+        return profileParent(request)

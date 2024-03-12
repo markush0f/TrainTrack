@@ -4,10 +4,11 @@ import { useProfileStore } from '@/stores/profile';
 const URL = "http://127.0.0.1:8000/api/"
 const { cookies } = useCookies();
 
-// Solicitud de subscripción
+// Solicitud de registro
 export async function signup(data) {
+  const res = await axios.post(`${URL}signup`, data)
+  console.log("Datos enviados:", res.data);
   try {
-    const res = await axios.post(`${URL}signup`, data)
     if (res) {
       console.log("Respuesta del servidor: ", res);
       if (res.data.JWT) {

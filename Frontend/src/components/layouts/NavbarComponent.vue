@@ -16,13 +16,11 @@
       </div>
     </div>
   </nav>
-  <CodeTeamComponent />
 </template>
 <script setup>
 import axios from 'axios';
 import { ref } from 'vue'
 import { useTokenUserStore } from '@/stores/JWT';
-import CodeTeamComponent from "./CodeTeamComponent.vue"
 
 const logout = async () => {
   try {
