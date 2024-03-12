@@ -10,8 +10,8 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 router = DefaultRouter()
 router.register("trainers", TrainerViewSet, basename="trainers")
-# # router.register('parents', ParentViewSet, basename='parents')
-
+router.register("parents", ParentViewSet, basename="parents")
+router.register("users", UserViewSet)
 # # Definimos todas las rutas en urlpatterns
 # urlpatterns = router.urls
 

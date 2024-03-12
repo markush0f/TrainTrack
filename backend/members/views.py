@@ -38,9 +38,14 @@ class TrainerViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-# class ParentViewSet(viewsets.ModelViewSet):
-#     queryset = Team.objects.all()
-#     serializer_class = ParentSerializer
+class ParentViewSet(viewsets.ModelViewSet):
+    queryset = Team.objects.all()
+    serializer_class = ParentSerializer
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 
 # Validamos el token JWT
@@ -235,7 +240,7 @@ def profile(request):
                 "address2": trainer.address2,
                 "team": (team.name if team else "Sin equipo"),
             }
-            return JsonResponse({"profile":profile}, safe=False)
+            return JsonResponse({"profile": profile}, safe=False)
         except User.DoesNotExist:
             return JsonResponse("Usuario no encontrado", status=404)
         except Trainer.DoesNotExist:

@@ -15,4 +15,7 @@ class TeamSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "name",
+            'category',
+            'league',
+            'town',
         )

@@ -1,4 +1,3 @@
-import { useCookiesStore } from '@/stores/cookies';
 import axios from 'axios';
 import { useCookies } from "vue3-cookies";
 import { useProfileStore } from '@/stores/profile';
@@ -50,7 +49,7 @@ export async function profile() {
       const res = await axios.get(`${URL}profile`, { headers })
       if (res) {
         console.log('Datos: ', res.data);
-        profileData = res.data.profileº
+        profileData = res.data.profile
         const profile = useProfileStore()
         profile.name = profileData.name
         profile.surname = profileData.surname
