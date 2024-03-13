@@ -178,4 +178,5 @@ def logoutView(request):
 
 def profile(request):
     if request.method == "GET":
+        return JsonResponse({"error": request.headers})
         return profileParent(request)
