@@ -149,14 +149,24 @@ def loginView(request):
             # Iniciamos sesión
             login(request, user)
             # Generamos el token
-            token = generateJWT(user)
+            parentUser = Parent.objects.filter(user_id=user.id).first()
+            if parentUser:
+                rol = "parent"
+            else:
+                trainerUser = Trainer.objects.filter(user_id=user.id)
+                if trainerUser:
+                    rol = "trainer"
+                rol
+            token = generateJWT(user, rol)
 
             if token:
                 print(token)
+
                 return JsonResponse(
                     {
                         "success": "Usuario logeado y autenticado con éxito.",
                         "JWT": token,
+                        "rol": rol,
                     },
                     status=200,
                 )

@@ -23,7 +23,7 @@ def createParent(data, user_id):
 
 
 def signupParent(request, user):
-    JWT = generateJWT(user)
+    JWT = generateJWT(user, "parent")
     if JWT:
         login(request, user)
         return JsonResponse(

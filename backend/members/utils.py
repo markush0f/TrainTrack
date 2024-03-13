@@ -5,7 +5,7 @@ import json, re, jwt
 from django.conf import settings
 
 
-def verifyToken(request, get):
+def verifyToken(request):
     if request.method == "GET":
         token = request.headers["Authorization"]
         # print(request.headers["Authorization"])
@@ -20,9 +20,8 @@ def verifyToken(request, get):
                 payload = jwt.decode(
                     tokenJWT, settings.SECRET_KEY, algorithms=["HS256"]
                 )
+                print(payload)
                 print("Payload:", payload)
-                if get and payload:
-                    return payload
                 return JsonResponse(
                     {
                         "message": "Token válido",
@@ -43,10 +42,10 @@ def verifyToken(request, get):
 
 
 # Generamos el token JWT
-def generateJWT(user):
-    payload = {
-        "user_id": user.id
-    }
+def generateJWT(user, rol):
+    payload = {"user_id": user.id}
+    if rol:
+        payload["rol"] = rol
     token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
     return token
 
