@@ -12,8 +12,8 @@ import { profile } from '@/services/userAPI';
 // import { useCookiesStore } from "./stores/cookies";
 import { useProfileStore } from "./stores/profile";
 import { listTeams } from "./services/teamAPI";
-const cookie = useCookiesStore()
-const token = cookie.getCookie('token')
+// const cookie = useCookiesStore()
+// const token = cookie.getCookie('token')
 // if (token) {
 onMounted(() => {
   console.log("Cargando perfil...");

@@ -53,6 +53,21 @@ def generateJWT(user, rol):
     return token
 
 
+# Decodificamos el JWT
+def decodeJWT(request):
+    token = request.headers["Authorization"]
+    if token and token.startswith("Bearer "):
+        print("Token recogido y empieza por Bearer")
+        print(token)
+        try:
+            tokenJWT = token.split(" ")[1]
+            # Decodificamos el token JWT
+            payload = jwt.decode(tokenJWT, settings.SECRET_KEY, algorithms=["HS256"])
+            return payload
+        except Exception as e:
+            print("Error: ", e)
+
+
 def formErrors(data):
     errors = {}
     onlyTxt = re.compile(r"\d+")

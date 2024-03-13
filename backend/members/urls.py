@@ -23,4 +23,5 @@ urlpatterns = [
     path("logout", views.logoutView, name="logout"),
     path("authenticatejwt", views.verifyToken, name="authenticate_jwt"),
     path("profile", views.profile, name="profile"),
+    path("players/byteam", views.listPlayers, name="players_by_team")
 ]

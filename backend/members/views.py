@@ -1,12 +1,7 @@
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from rest_framework import viewsets
-from rest_framework.decorators import (
-    action,
-    permission_classes,
-    authentication_classes,
-    api_view,
-)
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.contrib.auth.models import User
 from django.contrib.auth import logout
@@ -177,6 +172,43 @@ def loginView(request):
 
         else:
             return JsonResponse({"error": "Email o contraseña incorrectas"})
+
+
+def listPlayers(request):
+    if request.method == "GET":
+        payload = decodeJWT(request)
+        try:
+            trainer_id = payload["user_id"]
+            trainer = Trainer.objects.get(id=trainer_id)
+            players = Player.objects.filter(team=trainer.team)
+            playerList = []
+            if players.exists():
+                for player in players:
+                    parent = Parent.objects.get(user_id=player.parent)
+                    user = User.objects.get(id=parent.user)
+                    playerList = [
+                        {
+                            "name": player.name,
+                            "surname": player.surname,
+                            "padre": user.first_name,
+                        }
+                    ]
+                return JsonResponse({"players": playerList})
+            else:
+                return JsonResponse({"error": "No existen jugadores en ese equipo"})
+
+        except Trainer.DoesNotExist:
+            return JsonResponse(
+                {"error": "No se encontró ningún entrenador con el ID proporcionado"}
+            )
+
+        except Player.DoesNotExist:
+            return JsonResponse({"error": "No existen jugadores en ese equipo"})
+
+        except Exception as e:
+            return JsonResponse(
+                {"error": "Se produjo un error al procesar la solicitud"}
+            )
 
 
 @csrf_exempt

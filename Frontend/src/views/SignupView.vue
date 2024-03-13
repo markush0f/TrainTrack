@@ -72,7 +72,7 @@
 import { ref } from 'vue';
 import { signup } from '../services/userAPI'
 import axios from 'axios';
-import { useRolStore } from '@/stores/ROL';
+// import { useRolStore } from '@/stores/ROL';
 const store = useRolStore()
 const data = ref({
   "name": "",

@@ -46,10 +46,10 @@ const router = createRouter({
       path: '/trainer',
       name: 'trainer',
       component: () => import('../views/TrainerView.vue'),
-      // meta: {
-      //   requireAuthUser: false,
-      //   rol: "trainer"
-      // }
+      meta: {
+        requireAuthUser: false,
+        rol: "trainer"
+      }
     },
     {
       path: '/parent',
@@ -69,27 +69,30 @@ const router = createRouter({
       path: '/notfound',
       name: 'notfound',
       component: () => import('@/views/NotFoundView.vue')
+    },
+    {
+      path: '/insertchildrens',
+      name: 'insert_childrens',
+      component: () => import('')
     }
 
   ]
 })
 
 const { cookies } = useCookies();
+const token = cookies.get('token');
 
-// import { useRolStore } from '@/stores/ROL';
-// const store = useRolStore()
 router.beforeEach(async (to, from, next) => {
-  const token = cookies.get('token');
 
+  // if (!token) {
+  //   next('/');
+  //   console.log("K");
+  //   return;
+  // }
 
-  if (!token) {
-    next('/notfound');
-    return;
-  }
+  console.log("Token:", token != null);
 
-  console.log("Token:", token);
-
-  if (to.meta.requireAuthUser) {
+  if (to.meta.requireAuthUser && token) {
     const headers = {
       'Authorization': `Bearer ${token}`
     };
@@ -97,28 +100,29 @@ router.beforeEach(async (to, from, next) => {
     try {
       const res = await axios.post('/api/authenticatejwt', null, { headers });
       console.log("Response Data:", res.data);
-
       if (res.data.valid) {
         console.log("Rol:", res.data.rol);
         if (res.data.rol === 'parent' && to.meta.rol === 'parent') {
           console.log("Es un padre");
-          if (to.path === '/parent') next()
           next();
           return;
         }
         if (res.data.rol === 'trainer' && to.meta.rol === 'trainer') {
           console.log("Es un entrenador");
-          if (to.path === '/trainer') next()
+          next();
           return;
         }
       }
       next('/notfound');
+      return;
     } catch (error) {
       console.log("Error al verificar el token:", error);
       next('/notfound');
+      // return;
     }
   } else {
     next();
+    return;
   }
 });
 
