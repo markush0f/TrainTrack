@@ -3,7 +3,7 @@ from django.shortcuts import render
 from rest_framework import viewsets
 import json
 from .serializer import TeamSerializer
-from .models import Team
+from .models import Team, Shields
 
 
 class TeamViewSet(viewsets.ModelViewSet):
@@ -32,3 +32,10 @@ def listTeams(request):
                 return JsonResponse({"team": teams})
             except Team.DoesNotExist:
                 return JsonResponse("No existe el equipo", safe=False)
+
+
+def listShields(request):
+    if request.method == "GET":
+        shields = Shields.objects.all()
+        imgs = [shield.route for shield in shields]
+        return JsonResponse({"imgs": imgs})

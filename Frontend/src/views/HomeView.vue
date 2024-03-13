@@ -1,6 +1,9 @@
 <template>
   <NavBar />
-
+  <!-- ESCUDOS -->
+  <div>
+    <img v-for="shield in shields" :src="shield.route" alt="">
+  </div>
   <!-- Div padre -->
   <div class="flex h-full">
     <!-- divs hijos -->
@@ -56,18 +59,18 @@
 import NavBar from '../components/layouts/NavbarComponent.vue';
 import NextGamesComponent from '@/components/teams/NextGamesComponent.vue';
 import Pie from '../components/FooterComponent.vue'
-
-import { ref } from 'vue';
-import { useRolStore } from '@/stores/ROL';
+import { ref, onMounted } from 'vue';
+import { listAllShields } from '@/services/teamAPI';
 import ClassificationTableComponent from '@/components/teams/ClassificationTableComponent.vue';
+const shields = ref([])
+onMounted(async () => {
+  console.log("Cargando escudos...");
+  shields.value = await listAllShields()
+  console.log(shields.value);
+});
 
 
-const store = useRolStore()
-function saveRol(rol) {
-  store.setRol(rol)
-  console.log(store.rol);
-}
-
+// import m from "../data/img/Shields/Tejina.png"
 </script>
 
 

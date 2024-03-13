@@ -20,3 +20,14 @@ class Team(models.Model):
 
     def __str__(self):
         return self.name + "-" + self.category
+
+
+class Shields(models.Model):
+    route = models.CharField(max_length=255)
+    team = models.OneToOneField(
+        Team,
+        on_delete=models.CASCADE,
+        related_name="get_team_shield",
+        verbose_name="Team",
+        default=1,
+    )

@@ -9,5 +9,6 @@ router.register("teams", TeamViewSet, basename="teams")
 
 urlpatterns = [
     path("", include(router.urls)),
-    path("teams", listTeams, name="list_teams")
+    path("teams", listTeams, name="list_teams"),
+    path("shields", listShields, name="list_shields")
 ]

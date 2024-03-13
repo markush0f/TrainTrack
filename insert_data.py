@@ -76,7 +76,6 @@ INSERT INTO league_team (id, team_code, name, category, league, town) VALUES
 (58, 'UDCS294063', 'UD Cruz Santa', 'infantil', 'Liga infantil Tenerife', 'Cruz Santa'),
 (59, 'CDT202528', 'CD Tegueste', 'infantil', 'Liga infantil Tenerife', 'Tegueste'),
 (60, 'CDS3250', 'CD San Isidro', 'infantil', 'Liga infantil Tenerife', 'San Isidro');
-
 """
 executeSQL(teamSQL)
 # Generamos las contraseñas SHA-256 para los equipos
@@ -95,7 +94,71 @@ except Exception as e:
     print("Error al actualizar contraseñas:", e)
     db.rollback()
 
+shieldsSQL = """
+INSERT INTO league_shields (route,team_id) VALUES
+('data/img/Shields/Zocas.png',1),
+('data/img/Shields/CD_Tenerife.png',2),
+('data/img/Shields/CD_Marino.png',3),
+('data/img/Shields/Icodense.png',4),
+('data/img/Shields/CD_LAGUNA.png',5),
+('data/img/Shields/Guia_isora.png',6),
+('data/img/Shields/Tejina.png',7),
+('data/img/Shields/Union_Sur_Yaiza.png',8),
+('data/img/Shields/CD_Buzanada.png',9),
+('data/img/Shields/Tacoronte.png',10),
+('data/img/Shields/Ibarra.png',11),
+('data/img/Shields/Atalaya.png',12),
+('data/img/Shields/UD_CRUZ_SANTA.png',13),
+('data/img/Shields/Tegueste.png',14),
+('data/img/Shields/San_Isidro.png',15),
+('data/img/Shields/Zocas.png',16),
+('data/img/Shields/CD_Tenerife.png',17),
+('data/img/Shields/CD_Marino.png',18),
+('data/img/Shields/Icodense.png',19),
+('data/img/Shields/CD_LAGUNA.png',20),
+('data/img/Shields/Guia_isora.png',21),
+('data/img/Shields/Tejina.png',22),
+('data/img/Shields/Union_Sur_Yaiza.png',23),
+('data/img/Shields/CD_Buzanada.png',24),
+('data/img/Shields/Tacoronte.png',25),
+('data/img/Shields/Ibarra.png',26),
+('data/img/Shields/Atalaya.png',27),
+('data/img/Shields/UD_CRUZ_SANTA.png',28),
+('data/img/Shields/Tegueste.png',29),
+('data/img/Shields/San_Isidro.png',30),
+('data/img/Shields/Zocas.png',31),
+('data/img/Shields/CD_Tenerife.png',32),
+('data/img/Shields/CD_Marino.png',33),
+('data/img/Shields/Icodense.png',34),
+('data/img/Shields/CD_LAGUNA.png',35),
+('data/img/Shields/Guia_isora.png',36),
+('data/img/Shields/Tejina.png',37),
+('data/img/Shields/Union_Sur_Yaiza.png',38),
+('data/img/Shields/CD_Buzanada.png',39),
+('data/img/Shields/Tacoronte.png',40),
+('data/img/Shields/Ibarra.png',41),
+('data/img/Shields/Atalaya.png',42),
+('data/img/Shields/UD_CRUZ_SANTA.png',43),
+('data/img/Shields/Tegueste.png',44),
+('data/img/Shields/San_Isidro.png',45),
+('data/img/Shields/Zocas.png',46),
+('data/img/Shields/CD_Tenerife.png',47),
+('data/img/Shields/CD_Marino.png',48),
+('data/img/Shields/Icodense.png',49),
+('data/img/Shields/CD_LAGUNA.png',50),
+('data/img/Shields/Guia_isora.png',51),
+('data/img/Shields/Tejina.png',52),
+('data/img/Shields/Union_Sur_Yaiza.png',53),
+('data/img/Shields/CD_Buzanada.png',54),
+('data/img/Shields/Tacoronte.png',55),
+('data/img/Shields/Ibarra.png',56),
+('data/img/Shields/Atalaya.png',57),
+('data/img/Shields/UD_CRUZ_SANTA.png',58),
+('data/img/Shields/Tegueste.png',59),
+('data/img/Shields/San_Isidro.png',60);
+"""
 
+executeSQL(shieldsSQL)
 sqlUsers = """
 INSERT INTO auth_user (id, password, username, first_name, last_name, email) VALUES
 (1, 'juan123', 'juangarcia@example.com', 'Juan', 'García', 'juangarcia@example.com'),

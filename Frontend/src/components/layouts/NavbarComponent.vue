@@ -1,18 +1,18 @@
 <template>
   <nav class="bg-white shadow dark:bg-white-800 text-black">
 
-    <div class="max-w-7x mx-auto px-4 py-3 flex items-center justify-between">
+    <div class="max-w-7x mx-auto px-4 py-1 flex items-center justify-between">
       <div class="flex items-center">
         <span class="text-3xl font-Blacker">Logo</span>
       </div>
       <!-- Links -->
       <div class="flex-1 flex justify-center">
         <!-- Rutas de prueba -->
-        <router-link to="/" class="text-3xl px-3 py-2 hover:text-main-green">Home</router-link>
-        <router-link to="/trainer" class="text-3xl px-3 py-2 hover:text-main-green">Trainer</router-link>
-        <router-link to="/parent" class="text-3xl px-3 py-2 hover:text-main-green">Parent</router-link>
+        <router-link to="/" class="text-base px-3 py-2 hover:text-main-green">HOME</router-link>
+        <router-link to="/trainer" class="text-base px-3 py-2 hover:text-main-green">TRAINER</router-link>
+        <router-link to="/parent" class="text-base px-3 py-2 hover:text-main-green">PARENT</router-link>
 
-        <button @click="logout" class="text-3xl px-3 py-2 hover:text-main-green">Logout</button>
+        <!-- <button @click="logout" class="text-base px-3 py-2 hover:text-main-green">Logout</button> -->
 
       </div>
       <button @click=" profileStore.show = true" class="text-xl px-3 py-2 hover:text-main-green text-rigth">
