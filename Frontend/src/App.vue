@@ -9,12 +9,12 @@
 import { RouterLink, RouterView } from "vue-router";
 import { ref, onMounted } from "vue";
 import { profile } from '@/services/userAPI';
-import { useCookiesStore } from "./stores/cookies";
+// import { useCookiesStore } from "./stores/cookies";
 import { useProfileStore } from "./stores/profile";
 import { listTeams } from "./services/teamAPI";
-const cookie = useCookiesStore()
-const token = cookie.getCookie('token')
-const category = "alevin";
+// const cookie = useProfileStore();
+// const token = cookie.getCookie('token');
+// const category = "alevin";
 // if (token) {
 onMounted(() => {
   console.log("Cargando perfil...");
@@ -22,6 +22,7 @@ onMounted(() => {
   listTeams(category)
 });
 // }
+
 </script>
 
 <style scoped></style>

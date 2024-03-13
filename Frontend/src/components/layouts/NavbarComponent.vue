@@ -11,18 +11,17 @@
         <router-link to="/" class="text-3xl px-3 py-2 hover:bg-green-300">Home</router-link>
         <router-link to="/trainer" class="text-3xl px-3 py-2 hover:bg-green-300">Trainer</router-link>
         <router-link to="/parent" class="text-3xl px-3 py-2 hover:bg-green-300">Parent</router-link>
-
         <button @click="logout" class="text-3xl px-3 py-2">Logout</button>
       </div>
     </div>
   </nav>
-  <CodeTeamComponent />
 </template>
 <script setup>
+
 import axios from 'axios';
 import { ref } from 'vue'
 import { useTokenUserStore } from '@/stores/JWT';
-import { useUrlAPIStore } from '@/stores/URL';
+//import { useUrlAPIStore } from '@/stores/URL';
 import CodeTeamComponent from "./CodeTeamComponent.vue"
 
 const logout = async () => {
