@@ -1,9 +1,9 @@
 <template>
   <NavBar />
   <!-- ESCUDOS -->
- <ListImgTeamsComponent/>
+  <ListImgTeamsComponent />
   <!-- Div padre -->
-  <div class="flex h-full">
+  <div class="flex h-full ">
     <!-- divs hijos -->
     <div class="flex flex-col gap-4 h-screen p-6 ">
       <ClassificationTableComponent />

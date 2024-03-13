@@ -3,13 +3,15 @@ from .models import *
 from .serializers import *
 import json, re, jwt
 from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
 
 
+@csrf_exempt
 def verifyToken(request):
-    if request.method == "GET":
+    if request.method == "POST":
         token = request.headers["Authorization"]
+        # return JsonResponse({"error": token})
         # print(request.headers["Authorization"])
-        data = json.loads(request.body)
         if token and token.startswith("Bearer "):
             print("token recogido y empieza por Bearer")
             print(token)
@@ -26,6 +28,7 @@ def verifyToken(request):
                     {
                         "message": "Token válido",
                         "valid": True,
+                        "rol": payload["rol"],
                     },
                     status=200,
                 )

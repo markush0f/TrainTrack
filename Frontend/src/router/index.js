@@ -46,10 +46,10 @@ const router = createRouter({
       path: '/trainer',
       name: 'trainer',
       component: () => import('../views/TrainerView.vue'),
-      // meta: {
-      //   requireAuthUser: true,
-      //   rol: "trainer"
-      // }
+      meta: {
+        requireAuthUser: true,
+        rol: "trainer"
+      }
     },
     {
       path: '/parent',
@@ -57,7 +57,7 @@ const router = createRouter({
       component: () => import('../views/ParentView.vue'),
       meta: {
         requireAuthUser: true,
-        // rol: "parent"
+        rol: "parent"
 
       }
     },
@@ -76,35 +76,51 @@ const router = createRouter({
 })
 
 const { cookies } = useCookies();
-const token = cookies.get('token')
+
 // import { useRolStore } from '@/stores/ROL';
 // const store = useRolStore()
 router.beforeEach(async (to, from, next) => {
-  const headers = {
-    'Authorization': `Bearer ${(token)}`
+  const token = cookies.get('token');
+
+
+  if (!token) {
+    next('/notfound');
+    return;
   }
 
-  // const body = {
-  //   'rol': store.rol
-  // }
+  console.log("Token:", token);
+
   if (to.meta.requireAuthUser) {
-    if (!token) {
-      next('/notfound')
-      return;
-    }
+    const headers = {
+      'Authorization': `Bearer ${token}`
+    };
+
     try {
-      const res = await axios.get('/api/authenticatejwt', { headers })
-      console.log(token);
-      console.log("Data:", res.data);
-      if (res.data.valid) next()
-      else next('/notfound')
-    } catch (e) {
-      console.log("Error al verificar el token");
+      const res = await axios.post('/api/authenticatejwt', null, { headers });
+      console.log("Response Data:", res.data);
+
+      if (res.data.valid) {
+        console.log("Rol:", res.data.rol);
+        if (res.data.rol === 'parent' && to.meta.rol === 'parent') {
+          console.log("Es un padre");
+          if (to.path === '/parent') next()
+          next();
+          return;
+        }
+        if (res.data.rol === 'trainer' && to.meta.rol === 'trainer') {
+          console.log("Es un entrenador");
+          if (to.path === '/trainer') next()
+          return;
+        }
+      }
+      next('/notfound');
+    } catch (error) {
+      console.log("Error al verificar el token:", error);
+      next('/notfound');
     }
-    next('/notfound')
   } else {
-    next()
+    next();
   }
-})
+});
 
 export default router
