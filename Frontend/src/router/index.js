@@ -83,7 +83,7 @@ router.beforeEach(async (to, from, next) => {
   const headers = {
     'Authorization': `Bearer ${(token)}`
   }
-  
+
   // const body = {
   //   'rol': store.rol
   // }
