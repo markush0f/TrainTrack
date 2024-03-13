@@ -150,7 +150,7 @@ def loginView(request):
             login(request, user)
             # Generamos el token
             token = generateJWT(user)
-            
+
             if token:
                 print(token)
                 return JsonResponse(
@@ -172,7 +172,8 @@ def logoutView(request):
     if request.method == "POST":
         # data = json.loads(request.body)
         logout(request)
-        return JsonResponse({"success": "Sesión cerrada"})
+        return JsonResponse({"success": "Sesión cerrada", "destroy": True})
+    return JsonResponse({"error": "No se pudo cerrar la sesión"})
 
 
 def profile(request):

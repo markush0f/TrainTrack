@@ -1,9 +1,7 @@
 <template>
   <NavBar />
   <!-- ESCUDOS -->
-  <div>
-    <img v-for="shield in shields" :src="shield.route" alt="">
-  </div>
+ <ListImgTeamsComponent/>
   <!-- Div padre -->
   <div class="flex h-full">
     <!-- divs hijos -->
@@ -62,12 +60,7 @@ import Pie from '../components/FooterComponent.vue'
 import { ref, onMounted } from 'vue';
 import { listAllShields } from '@/services/teamAPI';
 import ClassificationTableComponent from '@/components/teams/ClassificationTableComponent.vue';
-const shields = ref([])
-onMounted(async () => {
-  console.log("Cargando escudos...");
-  shields.value = await listAllShields()
-  console.log(shields.value);
-});
+import ListImgTeamsComponent from '@/components/teams/ListImgTeamsComponent.vue'
 
 
 // import m from "../data/img/Shields/Tejina.png"

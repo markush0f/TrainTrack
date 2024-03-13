@@ -35,6 +35,10 @@ import { useProfileStore } from '@/stores/profile';
 import axios from 'axios';
 import { onMounted } from 'vue';
 const profileStore = useProfileStore();
-
+import { profile } from '@/services/userAPI';
+onMounted(async () => {
+  profile()
+  console.log(profileStore.showProfile);
+})
 </script>
 <style scoped></style>
