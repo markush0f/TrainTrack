@@ -16,6 +16,6 @@ export async function listNotifications() {
       return res.data.notifications
     } else console.log("No hay notificaciones");
   } catch (e) {
-    console.log("Error al cargar el token: ", e);
+    console.log("Error: ", e);
   }
 }

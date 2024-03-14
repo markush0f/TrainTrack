@@ -29,20 +29,23 @@ def writeNotification(request):
 def listNotifications(request):
     if request.method == "GET":
         payload = decodeJWT(request)
-        print(payload)
-        # return JsonResponse({"payload":payload})
-        if payload["user_id"] == "trainer":
-            data = []
+        if payload["rol"] == "trainer":
             try:
                 notifications = Message.objects.filter(trainer_id=payload["user_id"])
                 data = [
                     {
-                        "tittle": notification.notification_tittle,
+                        "title": notification.notification_title,
                         "notification": notification.notification,
                     }
                     for notification in notifications
                 ]
-
                 return JsonResponse({"notifications": data})
             except Exception as e:
                 print("Error:", e)
+                return JsonResponse(
+                    {"error": "Error al recuperar las notificaciones"}, status=500
+                )
+        else:
+            return JsonResponse({"error": "Acceso no autorizado"}, status=403)
+    else:
+        return JsonResponse({"error": "Método no permitido"}, status=405)

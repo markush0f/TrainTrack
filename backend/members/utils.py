@@ -55,17 +55,26 @@ def generateJWT(user, rol):
 
 # Decodificamos el JWT
 def decodeJWT(request):
-    token = request.headers["Authorization"]
-    if token and token.startswith("Bearer "):
-        print("Token recogido y empieza por Bearer")
-        print(token)
-        try:
+    try:
+        token = request.headers.get("Authorization")
+        if token and token.startswith("Bearer "):
+            print("Token recogido y empieza por Bearer")
             tokenJWT = token.split(" ")[1]
             # Decodificamos el token JWT
             payload = jwt.decode(tokenJWT, settings.SECRET_KEY, algorithms=["HS256"])
             return payload
-        except Exception as e:
-            print("Error: ", e)
+        else:
+            print("Token de autorización no encontrado o formato incorrecto")
+            return None
+    except jwt.ExpiredSignatureError:
+        print("Token JWT expirado")
+        return None
+    except jwt.InvalidTokenError as e:
+        print("Token JWT inválido:", e)
+        return None
+    except Exception as e:
+        print("Error desconocido al decodificar el token JWT:", e)
+        return None
 
 
 def formErrors(data):
