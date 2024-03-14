@@ -9,7 +9,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.views import TokenObtainPairView
-
+from members.trainers.views import profileTrainer
 from members.parents.views import createParent, profileParent, signupParent
 from .models import *
 from .serializers import *
@@ -178,21 +178,22 @@ def listPlayers(request):
     if request.method == "GET":
         payload = decodeJWT(request)
         try:
-            trainer_id = payload["user_id"]
-            trainer = Trainer.objects.get(id=trainer_id)
-            players = Player.objects.filter(team=trainer.team)
-            playerList = []
-            if players.exists():
-                for player in players:
-                    parent = Parent.objects.get(user_id=player.parent)
-                    user = User.objects.get(id=parent.user)
-                    playerList = [
-                        {
-                            "name": player.name,
-                            "surname": player.surname,
-                            "padre": user.first_name,
-                        }
-                    ]
+            if payload['rol'] == 'trainer':
+                trainer_id = payload["user_id"]
+                trainer = Trainer.objects.get(id=trainer_id)
+                players = Player.objects.filter(team=trainer.team)
+                playerList = []
+                if players.exists():
+                    for player in players:
+                        parent = Parent.objects.get(user_id=player.parent)
+                        user = User.objects.get(id=parent.user)
+                        playerList = [
+                            {
+                                "name": player.name,
+                                "surname": player.surname,
+                                "padre": user.first_name,
+                            }
+                        ]
                 return JsonResponse({"players": playerList})
             else:
                 return JsonResponse({"error": "No existen jugadores en ese equipo"})
@@ -201,7 +202,6 @@ def listPlayers(request):
             return JsonResponse(
                 {"error": "No se encontró ningún entrenador con el ID proporcionado"}
             )
-
         except Player.DoesNotExist:
             return JsonResponse({"error": "No existen jugadores en ese equipo"})
 
@@ -222,5 +222,12 @@ def logoutView(request):
 
 def profile(request):
     if request.method == "GET":
-        return JsonResponse({"error": request.headers})
-        return profileParent(request)
+        payload = decodeJWT(request)
+        print(payload["rol"])
+        try:
+            if payload["rol"] == "trainer":
+                return profileTrainer(request, payload)
+            if payload["rol"] == "parent":
+                return profileParent(request, payload)
+        except Exception as e:
+            return JsonResponse({"error": e})

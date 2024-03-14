@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from league.models import Team
-from members.utils import generateJWT, verifyToken
+from members.utils import generateJWT, verifyToken, decodeJWT
 from members.models import Parent
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
@@ -36,8 +36,9 @@ def signupParent(request, user):
     return JsonResponse({"El entrenador no ha sido autenticado ni creado"}, status=500)
 
 
-def profileParent(request):
-    payload = verifyToken(request, True)
+def profileParent(request, payload):
+    payload = decodeJWT(request)
+    
     try:
         user = User.objects.get(id=payload["user_id"])
         parent = Parent.objects.get(user_id=payload["user_id"])

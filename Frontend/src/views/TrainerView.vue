@@ -16,7 +16,7 @@
     <!-- div que recoge horarios de entrenamiento, ultimas noticias y mensajes a los padres -->
     <div>
       <!-- Calendario de entrenamiento-->
-      <CalendariComponent />
+      <CalendarComponent />
       <!-- div de ultimas notificaciones -->
       <NotificationComponent />
       <!-- div de mensajes a los padres -->
@@ -48,16 +48,18 @@
   </div>
 
 
+
 </template>
 <script setup>
 import NavbarComponent from '@/components/layouts/NavbarComponent.vue';
 import ClassificationTableComponent from '@/components/teams/ClassificationTableComponent.vue';
 import NotificationComponent from '@/components/teams/NotificationComponent.vue';
-import CalendariComponent from '@/components/teams/CalendariComponent.vue';
+import CalendarComponent from '@/components/teams/CalendarComponent.vue';
 import ListPlayersComponent from '@/components/players/ListPlayersComponent.vue';
+import ProfileTrainerComponent from '@/components/trainers/ProfileTrainerComponent.vue';
 </script>
 <style scoped>
-.logo{
+.logo {
   width: 200px;
 }
 </style>

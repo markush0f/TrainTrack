@@ -9,7 +9,6 @@ export async function listTeams(data) {
   }
   try {
     const res = await axios.get(`${URL}teams`, { params: data })
-    console.log(res.data.team);
     if (res.data.team) {
       // dataTeam = useTeamStore().dataTeams
       return res.data.team

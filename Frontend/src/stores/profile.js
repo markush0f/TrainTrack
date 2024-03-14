@@ -14,10 +14,30 @@ export const useProfileStore = defineStore('showprofile', () => {
   function changeModal() {
     showProfile.value = !showProfile.value;
   }
+  function getDataProfile() {
+    return data.value
+  }
 
   return {
     showProfile,
     changeModal,
+    getDataProfile,
     data
   };
 });
+
+
+export const useRolStore = defineStore('rol', () => {
+  const rol = ref('')
+  function setRol(newRol) {
+    rol.value = newRol
+  }
+  function getRol(){
+    return rol.value
+  }
+  return { 
+    setRol,
+    getRol,
+    rol
+  };
+})

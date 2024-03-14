@@ -56,12 +56,15 @@
       <input v-model="data.address2" class="appearance-none block w-full bg-gray-200 text-gray-700 border  rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" name="adress" id="inputAdress2"  placeholder="Insert second Adress..." >
     </div>
     <div>
-      <input v-model="data.dni" class="appearance-none block w-full bg-gray-200 text-gray-700 border  rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" name="adress" id="inputAdress2"  placeholder="Insert second Adress..." >
-
+      <input v-model="data.dni" class="appearance-none block w-full bg-gray-200 text-gray-700 border  rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" type="text" name="adress" id="inputAdress2"  placeholder="Introduzca su DNI..." >
     </div>
   </div>
-  <input type="submit" value="Register"  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" />
-  <router-link to="/login">Ya tengo cuenta</router-link>
+  <div class="flex items-center justify-center">
+    <input type="submit" value="Entrar"
+      class="bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded-full mr-4" />
+    <router-link to="/"
+      class="bg-white-500 hover:bg-green-200 text-green-700 font-bold py-2 px-4 rounded-full">Volver</router-link>
+  </div>
 </form>
 </div>
 </div>
@@ -73,7 +76,7 @@ import { ref } from 'vue';
 import { signup } from '../services/userAPI'
 import axios from 'axios';
 // import { useRolStore } from '@/stores/ROL';
-const store = useRolStore()
+// const store = useRolStore()
 const data = ref({
   "name": "",
   "surname": "",

@@ -6,9 +6,17 @@ export const useTeamStore = defineStore('teams', () => {
   function putListTeam(teams) {
     listTeams.value = [...teams]
   }
-
-
   return {
     listTeams
+  }
+})
+
+export const useCategoryStore = defineStore('category', ()=>{
+  const category = ref([])
+  function setCategory(category){
+    category.value = category
+  }
+  return{
+    category
   }
 })

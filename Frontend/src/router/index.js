@@ -1,10 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import SignupView from '../views/SignupView.vue'
-import { useTokenUserStore } from '@/stores/JWT'
 import axios from 'axios'
 import { useCookies } from 'vue3-cookies'
-
+import InsertPlayerComponent from '@/components/players/InsertPlayerComponent.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -71,34 +70,24 @@ const router = createRouter({
       component: () => import('@/views/NotFoundView.vue')
     },
     {
-      path: '/insertchildrens',
+      path: '/trainer/insertplayer',
       name: 'insert_childrens',
-      component: () => import('')
-    }
+      component: InsertPlayerComponent
+    },
+    {}
 
   ]
 })
 
 const { cookies } = useCookies();
-const token = cookies.get('token');
-
 router.beforeEach(async (to, from, next) => {
-
-  // if (!token) {
-  //   next('/');
-  //   console.log("K");
-  //   return;
-  // }
-
-  console.log("Token:", token != null);
+  const token = cookies.get('token');
 
   if (to.meta.requireAuthUser) {
     const headers = {
       'Authorization': `Bearer ${token}`
     };
-
     try {
-      
       const res = await axios.post('/api/authenticatejwt', null, { headers });
       console.log("Response Data:", res.data);
       if (res.data.valid) {
@@ -114,12 +103,12 @@ router.beforeEach(async (to, from, next) => {
           return;
         }
       }
-      next('/notfound');
+      next('/signup');
       return;
     } catch (error) {
       console.log("Error al verificar el token:", error);
-      next('/notfound');
-      // return;
+      next('/signup');
+      return;
     }
   } else {
     next();

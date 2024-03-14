@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from backend.league.models import Team
+from league.models import Team
 from members.utils import generateJWT, verifyToken
 from members.models import Parent, Trainer
 from django.contrib.auth import authenticate, login
@@ -36,8 +36,7 @@ def createTrainer(data, user_id):
         return None
 
 
-def profileTrainer(request):
-    payload = verifyToken(request, True)
+def profileTrainer(request, payload):
     try:
         user = User.objects.get(id=payload["user_id"])
         trainer = Trainer.objects.get(user_id=payload["user_id"])

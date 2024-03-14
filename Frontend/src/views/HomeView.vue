@@ -6,46 +6,69 @@
   <div class="flex h-full ">
     <!-- divs hijos -->
     <div class="flex flex-col gap-4 h-screen p-6 ">
+      <select v-model="category"
+        class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+        <option value="" disabled selected>Selecciona una categoría</option>
+        <option value="prebenjamin">Prebenjamin</option>
+        <option value="benjamin">Benjamin</option>
+        <option value="alevin">Alevin</option>
+        <option value="infantil">Infantil</option>
+      </select>
       <ClassificationTableComponent />
     </div>
-    <div class="flex-grow justify-center p-4 border border-gray-400">
-      <!-- div de noticias -->
-      <div class="justify-center p-4 border border-gray-400">
-        <img
-          src=https://previews.123rf.com/images/yupiramos/yupiramos1609/yupiramos160920026/62953659-de-dibujos-animados-de-televisi%C3%B3n-de-noticias-reportera-ejemplo-gr%C3%A1fico-del-vector.jpg
-          alt="Noticias" class="news">
-      </div>
-      <!-- div de partidos -->
-      <div class="justify-center p-4 border border-gray-400">
+    <!-- div de partidos -->
+    <div class="flex-grow justify-center p-4">
+      <div class="justify-center p-4 pl-4">
         <NextGamesComponent />
       </div>
-    </div>
-    <div class="w-1/3 justify-center p-4 pr-10 border border-gray-400">
-      <!-- div de federacion -->
-      <div class="justify-center p-4 border border-gray-400">
-        <img src="https://www.dyntra.org/new/wp-content/uploads/2018/07/federacion-canaria-futbol.jpg" alt="Federacion"
-          class="">
+      <!-- div de ranking de jugadores -->
+      <div class="justify-center p-4 ">
+        <RankingPlayersComponent />
       </div>
-      <!-- Div de acciones -->
+    </div>
+    <div class="w-1/3 justify-center p-4 pr-10">
+      <!-- div de federacion -->
+      <div class="justify-center p-4 flex">
+        <div class="ml-4">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/Logotipo_del_Gobierno_de_Canarias.svg"
+            alt="Federacion" class="w-56">
+        </div>
+        <div>
+          <img src="https://www.ftf.es/2023/img/logos/fcf.png" alt="Federacion" class="w-56">
+        </div>
+      </div>
       <div>
-        <!-- Boton de registrar equipo -->
-        <div class="justify-center p-4 border border-gray-400">
-          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Registrar
-            equipo</button>
+        <!-- REGISTRAR EQUIPO -->
+        <div class="justify-center p-4  ">
+          <router-link to="/" class="max-w-xl w-full">
+            <div class="bg-gray-100 p-8 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+              <h2 class="text-2xl font-semibold mb-4 ">Registrar equipo</h2>
+              <p class="text-gray-700">Registro de equipo para el acceso a crearse la cuenta.
+              </p>
+            </div>
+          </router-link>
         </div>
 
-        <!-- Boton de Iniciar sesion de entrenador -->
-        <div class="justify-center p-4 border border-gray-400">
-          <router-link to="/signup" @click="saveRol('trainer')"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Control de
-            entrenador</router-link>
+        <!-- PADRE -->
+        <div class="justify-center p-4 ">
+          <router-link to="/parent" class="max-w-xl w-full">
+            <div class="bg-gray-100 p-8 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+              <h2 class="text-2xl font-semibold mb-4 ">Entrar como padre</h2>
+              <p class="text-gray-700">Si no tiene cuenta, primero registre el equipo al que pertence su hijo.
+              </p>
+            </div>
+          </router-link>
         </div>
 
-        <!-- Boton de iniciar sesion como padre-->
-        <div class="justify-center p-4 border border-gray-400">
-          <router-link to="/signup" @click="saveRol('parent')"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Control de
-            padre</router-link>
+        <!-- ENTRENADOR-->
+        <div class="justify-center p-4">
+          <router-link to="/trainer" class="max-w-xl w-full">
+            <div class="bg-gray-100 p-8 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+              <h2 class="text-2xl font-semibold mb-4 ">Entrar como entrenador</h2>
+              <p class="text-gray-700">Si no tiene cuenta, primero registre el equipo al que pertence
+              </p>
+            </div>
+          </router-link>
         </div>
       </div>
     </div>
@@ -56,17 +79,16 @@
 <script setup>
 import NavBar from '../components/layouts/NavbarComponent.vue';
 import NextGamesComponent from '@/components/teams/NextGamesComponent.vue';
-import Pie from '../components/FooterComponent.vue'
+import Pie from '../components/layouts/FooterComponent.vue'
+import RankingPlayersComponent from '@/components/players/RankingPlayersComponent.vue';
+import { useTeamStore, useCategoryStore } from '@/stores/team';
 import { ref, onMounted } from 'vue';
 import { listAllShields } from '@/services/teamAPI';
 import ClassificationTableComponent from '@/components/teams/ClassificationTableComponent.vue';
 import ListImgTeamsComponent from '@/components/teams/ListImgTeamsComponent.vue'
-
-
-// import m from "../data/img/Shields/Tejina.png"
+const categoryStore = useCategoryStore()
+const category = ref(categoryStore.category);
 </script>
-
-
 
 
 <style lang="css">

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useCookies } from "vue3-cookies";
-import { useProfileStore } from '@/stores/profile';
+import { useProfileStore, useRolStore } from '@/stores/profile';
 const URL = "http://127.0.0.1:8000/api/"
 const { cookies } = useCookies();
 
@@ -45,23 +45,40 @@ export async function profile() {
     // console.log("TOKEN:", token);
     try {
       const headers = {
-        'Authorization': `Bearer ${(token)}`
+        'Authorization': `Bearer ${token}`
       }
       const res = await axios.get(`${URL}profile`, { headers })
       if (res) {
         console.log('Datos: ', res.data);
-        profileData = res.data.profile
+        const profileData = res.data.profile
         const profile = useProfileStore()
-        profile.name = profileData.name
-        profile.surname = profileData.surname
-        profile.email = profileData.email
-        profile.address1 = profileData.address1
-        profile.address2 = profileData.address2
-        profile.team = profileData.team
-        profile.childrens = "..."
+        profile.data.name = profileData.first_name
+        profile.data.surname = profileData.last_name
+        profile.data.email = profileData.email
+        profile.data.address1 = profileData.address1
+        profile.data.address2 = profileData.address2
+        profile.data.team = profileData.team
+        profile.data.childrens = "..."
+        console.log(profile.getDataProfile());
       }
     } catch (e) {
       console.log("ERROR: ", e);
     }
+  }
+}
+
+// Solicitud de JWT descodificado
+export async function decodeJWT() {
+  const token = cookies.get('token')
+  const headers = {
+    'Authorization': `Bearer ${token}`
+  };
+  try {
+    const res = await axios.post('/api/authenticatejwt', null, { headers });
+
+    const rolStore = useRolStore()
+    rolStore.setRol(res.data.rol)
+  } catch (e) {
+    console.log("Error al cargar el token: ", e);
   }
 }

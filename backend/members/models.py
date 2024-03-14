@@ -58,6 +58,9 @@ class Parent(models.Model):
         verbose_name = "Parent"
         verbose_name_plural = "Parents"
 
+    def __str__(self):
+        return self.user.first_name
+
 
 # Modelo de Jugadores
 class Player(models.Model):

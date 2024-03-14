@@ -1,12 +1,5 @@
 <template>
-  <select v-model="category"
-    class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-    <option value="" disabled selected>Selecciona una categoría</option>
-    <option value="prebenjamin">Prebenjamin</option>
-    <option value="benjamin">Benjamin</option>
-    <option value="alevin">Alevin</option>
-    <option value="infantil">Infantil</option>
-  </select>
+
   <table class="table-auto">
     <thead class>
       <tr class="bg-main-green">
@@ -36,14 +29,11 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
-import { useTeamStore } from '@/stores/team';
+import { useTeamStore, useCategoryStore } from '@/stores/team';
 import { listTeams } from '@/services/teamAPI';
-
-const category = ref('prebenjamin');
 const teams = ref([]);
-
+const categoryStore = useCategoryStore()
 onMounted(async () => {
-  console.log("Cargando equipos...");
-  teams.value = await listTeams(category.value);
+  teams.value = await listTeams(categoryStore.category);
 });
 </script>

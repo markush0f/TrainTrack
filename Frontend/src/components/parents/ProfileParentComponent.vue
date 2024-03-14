@@ -4,7 +4,7 @@
       <!-- Encabezado del perfil -->
       <div class="bg-main-green text-white px-6 py-4">
         <div class="flex items-center justify-between">
-          <h1 class="text-2xl ">Perfil de Usuario</h1>
+          <h1 class="text-2xl ">Perfil de Padre</h1>
           <button class="mr-4" @click="profileStore.show = false"><i class="material-icons">close</i></button>
         </div>
       </div>
@@ -18,7 +18,8 @@
           <p class="text-lg font-semibold">Nombre y apellidos</p>
           <p class="text-lg font-semibold"> </p>
           <p class="text-gray-600">Correo electrónico: </p>
-          <p class="text-gray-600">Ubicación</p>
+          <p class="text-gray-600">Ubicación: </p>
+          <p class="text-gray-600">Equipo: </p>
         </div>
         <div class="mb-6">
           <p class="text-lg font-semibold">Hijos</p>
