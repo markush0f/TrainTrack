@@ -47,7 +47,7 @@ const router = createRouter({
       name: 'trainer',
       component: () => import('../views/TrainerView.vue'),
       meta: {
-        requireAuthUser: false,
+        requireAuthUser: true,
         rol: "trainer"
       }
     },
@@ -92,12 +92,13 @@ router.beforeEach(async (to, from, next) => {
 
   console.log("Token:", token != null);
 
-  if (to.meta.requireAuthUser && token) {
+  if (to.meta.requireAuthUser) {
     const headers = {
       'Authorization': `Bearer ${token}`
     };
 
     try {
+      
       const res = await axios.post('/api/authenticatejwt', null, { headers });
       console.log("Response Data:", res.data);
       if (res.data.valid) {

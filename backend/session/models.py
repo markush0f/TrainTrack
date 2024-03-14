@@ -5,7 +5,7 @@ from members.models import *
 class Message(models.Model):
 
     # Un entrenador puede escribir varias sesiones
-    trainer_id = models.ForeignKey(
+    trainer = models.ForeignKey(
         Trainer,
         on_delete=models.CASCADE,
         related_name="get_trainers_session",
@@ -14,7 +14,7 @@ class Message(models.Model):
     )
 
     # Un jugador puede tener una o muchas sesiones
-    player_id = models.ForeignKey(
+    player = models.ForeignKey(
         Player,
         on_delete=models.CASCADE,
         related_name="get_players_session",

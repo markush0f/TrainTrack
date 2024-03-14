@@ -6,7 +6,7 @@
       <!-- div del Escudo del equipo -->
       <div class="justify-center p-4 border border-gray-400">
         <img src="https://www.dyntra.org/new/wp-content/uploads/2018/07/federacion-canaria-futbol.jpg" alt="Federacion"
-          class="">
+          class="logo">
       </div>
       <!-- div de la clasificacion -->
       <div>
@@ -56,3 +56,8 @@ import NotificationComponent from '@/components/teams/NotificationComponent.vue'
 import CalendariComponent from '@/components/teams/CalendariComponent.vue';
 import ListPlayersComponent from '@/components/players/ListPlayersComponent.vue';
 </script>
+<style scoped>
+.logo{
+  width: 200px;
+}
+</style>
