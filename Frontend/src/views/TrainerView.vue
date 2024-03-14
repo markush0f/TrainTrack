@@ -14,7 +14,7 @@
       </div>
     </div>
     <!-- div que recoge horarios de entrenamiento, ultimas noticias y mensajes a los padres -->
-    <div>
+    <div class="flex-grow justify-center p-4">
       <!-- Calendario de entrenamiento-->
       <CalendarComponent />
       <!-- div de ultimas notificaciones -->
