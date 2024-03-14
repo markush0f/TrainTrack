@@ -15,7 +15,7 @@
     <div class="flex-grow justify-center p-4 border border-gray-400">
         <!-- div de horario de entrenamiento -->
         <h2 class="text-lg font-bold text-center">Horario de entrenamiento</h2>
-      <CalendariComponent />
+      <CalendarComponent />
       <!-- div de ultimas notificaciones -->
       <NotificationComponent />
     </div>
@@ -95,6 +95,6 @@
 <script setup>
 import NavbarComponent from '@/components/layouts/NavbarComponent.vue';
 import ClassificationTableComponent from '@/components/teams/ClassificationTableComponent.vue';
-import CalendariComponent from '@/components/teams/CalendariComponent.vue';
+import CalendarComponent from '@/components/teams/CalendarComponent.vue';
 import NotificationComponent from '@/components/teams/NotificationComponent.vue';
 </script>
