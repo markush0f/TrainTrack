@@ -9,4 +9,5 @@ router.register("sessions", views.SessionViewSet)
 urlpatterns = [
     path("", include(router.urls)),
     path("trainer/messages/listnotifications", views.listNotifications, name="listNotifications"),
+    path("trainer/sendsession", views.writeSession, name="sendsession"),
 ]

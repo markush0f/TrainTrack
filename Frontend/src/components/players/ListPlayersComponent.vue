@@ -17,12 +17,12 @@
 <script setup>
 import { listPlayers } from '@/services/playersAPI';
 import { onMounted, ref } from 'vue';
-const players = ref([])
-const playerById = ref(0)
-onMounted(async () => {
-  players = listPlayers();
-});
-function showPlayer(id) {
-  playerById = id
-} 
+// const players = ref([])
+// const playerById = ref(0)
+// onMounted(async () => {
+//   players = listPlayers();
+// });
+// function showPlayer(id) {
+//   playerById = id
+// } 
 </script>

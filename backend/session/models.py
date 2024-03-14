@@ -22,10 +22,10 @@ class Message(models.Model):
         verbose_name="Players",
         default=1,
     )
-    train_session_tittle = models.CharField(max_length=300, null=True, blank=True)
-    train_description = models.CharField(max_length=300, null=True, blank=True)
-    train_created_at = models.CharField(max_length=300, null=True, blank=True)
-    notification_tittle = models.CharField(max_length=300, null=True, blank=True)
+    session_title = models.CharField(max_length=300, null=True, blank=True)
+    session_description = models.CharField(max_length=300, null=True, blank=True)
+    session_created_at = models.CharField(max_length=300, null=True, blank=True)
+    notification_title = models.CharField(max_length=300, null=True, blank=True)
     notification = models.CharField(max_length=300, null=True, blank=True)
     notification_created_at = models.CharField(max_length=300, null=True, blank=True)
 

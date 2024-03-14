@@ -24,7 +24,7 @@ onMounted(() => {
   if (token) {
     console.log("Hay token");
     decodeJWT()
-    listNotifications()
+    // listNotifications()
     
   }
   profile()
