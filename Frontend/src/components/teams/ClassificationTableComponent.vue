@@ -13,7 +13,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(team, index) in teams" class="hover:bg-gray-100">
+      <tr v-for="(team, index) in teams" class="hover:bg-second-green">
         <td class="px-4 py-2">{{ index + 1 }}.</td>
         <td class="px-4 py-2 pr-8 "> {{ team.name }}</td>
         <td class="px-4 py-2">{{ team.matchPlayed }}</td>
