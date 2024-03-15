@@ -51,7 +51,7 @@
           hijo</button><br><br>
         <!-- div de form para enviar aviso al entrenador. -->
         <div class="justify-center p-4  ">
-          
+          <SendNoticeComponent />
         </div>
       </div>
       <!-- Proximo partido -->
@@ -84,6 +84,7 @@ import NavbarComponent from '@/components/layouts/NavbarComponent.vue';
 import ClassificationTableComponent from '@/components/teams/ClassificationTableComponent.vue';
 import CalendarComponent from '@/components/teams/CalendarComponent.vue';
 import NotificationComponent from '@/components/teams/NotificationComponent.vue';
+import SendNoticeComponent from '@/components/parents/SendNoticeComponent.vue';
 import { ref } from 'vue';
 const data = ref({
 

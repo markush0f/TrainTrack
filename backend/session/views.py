@@ -85,8 +85,9 @@ def writeSession(request):
 def sendNotice(request):
     if request.method == "POST":
         payload = verifyToken(request)
+        data = json.loads(request.body)
+        return JsonResponse({"error": data})
         if payload:
-            data = json.loads(request.body)
             try:
                 notice_type = data.get("title")
                 if notice_type:

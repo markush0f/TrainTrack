@@ -17,14 +17,17 @@
 
 <script setup>
 // ESTABLECER LA CANTIDAD DE TIEMPO QUE LLEGARÁ TARDE
+import { sendNotice } from '@/services/parentsAPI';
 import { ref } from 'vue';
-const notice = ref('')
 
+const data = ref({
+  'notice': ''
+})
 const selectNotice = (event) => {
-  notice.value = event.target.value;
+  data.value.notice = event.target.value;
 };
 
 function submitFormNotices() {
-
+  sendNotice(data.value)
 }
 </script>
