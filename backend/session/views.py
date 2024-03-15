@@ -86,7 +86,7 @@ def sendNotice(request):
     if request.method == "POST":
         payload = verifyToken(request)
         data = json.loads(request.body)
-        return JsonResponse({"error": data})
+        # return JsonResponse({"error": data})
         if payload:
             try:
                 notice_type = data.get("title")

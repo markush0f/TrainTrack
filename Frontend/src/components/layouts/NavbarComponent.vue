@@ -11,9 +11,10 @@
         <!-- <button @click="logout" class="text-base px-3 py-2 hover:text-main-green">Logout</button> -->
         <!-- CONDICION PARA SI ESTÁ REGISTRADO MOSTRAR SU PERFIL -->
       </div>
-      <button @click=" profileStore.show = true" class="text-xl px-3 py-2 hover:text-main-green text-rigth">
+      <button @click=" profileStore.show = true" v-if="token"
+        class="text-xl px-3 py-2 hover:text-main-green text-rigth">
         Perfil
-    </button>
+      </button>
       <Modal v-if="profileStore.show" @close="profileStore.show = false" />
     </div>
 
@@ -26,5 +27,8 @@ import { ref } from 'vue'
 import Modal from '@/components/Modal.vue';
 const profileStore = useProfileStore();
 import { useProfileStore } from '@/stores/profile';
+import { useCookies } from "vue3-cookies";
+const { cookies } = useCookies();
+const token = cookies.get('token')
 
 </script>

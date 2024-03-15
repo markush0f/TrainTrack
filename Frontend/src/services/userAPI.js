@@ -34,9 +34,14 @@ export async function login(data) {
       // Almacenamos el token en las cookies
       if (res.data.success) {
         console.log('Token:', res.data.JWT);
-        this.$router.push('/');
+        cookies.set('token', res.data.JWT)
+        if (res.data.rol == "trainer") {
+          window.location.href = "/trainer"
+        } else if (res.data.rol == "parent")
+          window.location.href = "/parent"
+        else window.location.href = "/"
+        // this.$router.push('/');
       }
-      cookies.set('token', res.data.JWT)
     }
   } catch (e) {
     console.log("ERROR: ", e);

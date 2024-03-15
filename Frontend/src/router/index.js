@@ -91,14 +91,14 @@ router.beforeEach(async (to, from, next) => {
       const res = await axios.post('/api/authenticatejwt', null, { headers });
       console.log("Response Data:", res.data);
       if (res.data.valid) {
-        console.log("Rol:", res.data.rol);
+        // console.log("Rol:", res.data.rol);
         if (res.data.rol === 'parent' && to.meta.rol === 'parent') {
           console.log("Es un padre");
           next();
           return;
         }
         if (res.data.rol === 'trainer' && to.meta.rol === 'trainer') {
-          console.log("Es un entrenador");
+          // console.log("Es un entrenador");
           next();
           return;
         }

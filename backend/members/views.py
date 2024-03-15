@@ -174,8 +174,8 @@ def loginView(request):
             return JsonResponse({"error": "Email o contraseña incorrectas"})
 
 
-# Recogemos los jugadores según el entrenador
-def playersByTrainer(request):
+# Recogemos los jugadores según el equipo
+def playersByTeams(request):
     if request.method == "GET":
         payload = decodeJWT(request)
         try:
@@ -216,13 +216,40 @@ def playersByTrainer(request):
             )
 
 
+# Recogemos los jguadores según la categoría
+
+
+def playersByCategory(request):
+    if request.method == "GET":
+        category = request.GET.get("category")
+        if category:
+            teams = Team.objects.filter(category=category)
+            playersList = []
+            for team in teams:
+                players_in_team = Player.objects.filter(team_id=team.id)
+                for player in players_in_team:
+                    playersList.append(
+                        {
+                            "name": player.name,
+                            "surname": player.surname,
+                            "goals": 0,
+                            "assistance": 0,
+                            "games_played": 0,
+                        }
+                    )
+            return JsonResponse({"players": playersList})
+        else:
+            return JsonResponse({"error": "Category not provided"}, status=400)
+    else:
+        return JsonResponse({"error": "Only GET requests are allowed"}, status=405)
+
+
 @csrf_exempt
 def players(request):
     if request.method == "POST":
         data = json.loads(request.body)
         payload = decodeJWT(request)
         try:
-            
             trainer = Trainer.objects.get(user_id=payload["user_id"])
             player = Player.objects.create(
                 name=data["name"],
@@ -231,6 +258,7 @@ def players(request):
                 team_id=trainer.team_id,
                 parent_id=data["parent_id"],
             )
+            # playerJson = json.dumps(player)
             return JsonResponse({"success": True})
         except Trainer.DoesNotExist:
             return JsonResponse(

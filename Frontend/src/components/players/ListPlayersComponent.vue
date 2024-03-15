@@ -27,14 +27,17 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import InsertPlayerComponent from './InsertPlayerComponent.vue';
-import { listPlayers } from '@/services/playersAPI';
+import { listPlayers, loadListPlayer } from '@/services/playersAPI';
 import { useShowInsertPlayerStore } from '@/stores/players';
+ 
 const storePlayer = useShowInsertPlayerStore();
 const players = ref([]);
 
-onMounted(async () => {
-  players.value = await listPlayers();
-  console.log(players.value);
+
+
+onMounted( async () => {
+  players.value = await listPlayers()
+  // console.log(players.value);
 });
 
 

@@ -25,6 +25,7 @@ urlpatterns = [
     path("authenticatejwt", views.verifyToken, name="authenticate_jwt"),
     path("profile", views.profile, name="profile"),
     path("players", views.players, name="parents_by_parent"),
-    path("playersbyteam", views.playersByTrainer, name="players_by_team"),
+    path("playersbyteam", views.playersByTeams, name="players_by_team"),
     path("parents/bytrainer", parentsByTrainer, name="parents_by_parent"),
+    path("players/bycategory", playersByCategory, name="players_by_category"),
 ]

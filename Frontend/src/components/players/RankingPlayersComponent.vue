@@ -16,7 +16,7 @@
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
-                <tr>
+                <tr v-for="player in players">
                   <td class="px-6 py-4 whitespace-nowrap">
                     <div class="flex items-center">
                       <div class="flex-shrink-0 h-10 w-10">
@@ -253,3 +253,15 @@
   </div>
 
 </template>
+
+<script setup>
+import { ref } from 'vue';
+
+import { useCategoryStore } from '@/stores/team';
+import { listPlayers, playersByCategory } from '@/services/playersAPI';
+const categoryStore = useCategoryStore();
+// const players = ref([])
+// onMounted(() => {
+//   players = playersByCategory()
+// }),
+</script>

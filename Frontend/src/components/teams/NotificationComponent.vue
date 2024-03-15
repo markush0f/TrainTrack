@@ -20,7 +20,7 @@ import { listNotifications } from '@/services/trainerAPI';
 const notifications = ref([])
 onMounted(async () => {
   notifications.value = await listNotifications()
-  console.log(notifications.value);
+  console.log("Notificaciones del entrenador: ",notifications.value);
 });
 
 

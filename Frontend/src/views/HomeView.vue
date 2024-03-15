@@ -5,10 +5,11 @@
   <!-- Div padre -->
   <div class="flex h-full ">
     <!-- divs hijos -->
+    {{ categoryStore.category }}
     <div class="flex flex-col gap-4 h-screen p-6 ">
-      <select v-model="category"
+      <select v-model="categoryStore.category"
         class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-        <option value="" disabled selected>Selecciona una categoría</option>
+        <!-- <option value="" disabled>Selecciona una categoría</option> -->
         <option value="prebenjamin">Prebenjamin</option>
         <option value="benjamin">Benjamin</option>
         <option value="alevin">Alevin</option>
@@ -23,6 +24,7 @@
       </div>
       <!-- div de ranking de jugadores -->
       <div class="justify-center p-4 ">
+
         <RankingPlayersComponent />
       </div>
     </div>
@@ -87,14 +89,18 @@ import { listAllShields } from '@/services/teamAPI';
 import ClassificationTableComponent from '@/components/teams/ClassificationTableComponent.vue';
 import ListImgTeamsComponent from '@/components/teams/ListImgTeamsComponent.vue'
 const categoryStore = useCategoryStore()
-const category = ref(categoryStore.category);
+const category = ref('prebenjamin');
+// categoryStore.setCategory(category)
 </script>
 
 <style>
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity 0.5s;
 }
-.fade-enter, .fade-leave-to {
+
+.fade-enter,
+.fade-leave-to {
   opacity: 0;
 }
 </style>
