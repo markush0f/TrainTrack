@@ -1,5 +1,5 @@
 <template>
-  <div class="justify-center p-4 border border-gray-400">
+  <div class="justify-center p-4 ">
     <table class="w-full border-collapse border border-gray-200">
       <thead>
         <tr>

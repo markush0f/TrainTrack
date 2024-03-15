@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="flex items-center justify-center h-screen bg-green-100">
     <div>
-      <img src="https://cdn-icons-png.flaticon.com/512/1039/1039328.png" class="logo ">
+      <!-- <img src="https://cdn-icons-png.flaticon.com/512/1039/1039328.png" class="logo "> -->
       <div class="divForm ">
         <h1 class="mr-10 ml-10">Introduzca sus datos para iniciar sesión</h1>
         <form @submit.prevent="submitForm" class="bg-white px-8 pt-6 pb-8 mb-4">
@@ -42,12 +42,14 @@ import { ref } from 'vue';
 
 import { login } from '@/services/userAPI';
 
-import { useTokenUserStore } from '@/stores/JWT';
+// import { useTokenUserStore } from '@/stores/JWT';
+import { useCookies } from "vue3-cookies";
+const { cookies } = useCookies();
 
 const data = ref({
   email: '',
   password: '',
-  JWT: useTokenUserStore.getToken,
+  JWT: cookies.get('token'),
 });
 
 const submitForm = async () => {

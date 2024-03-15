@@ -21,7 +21,7 @@
       <NotificationComponent />
       <!-- div de mensajes a los padres -->
       <div class="flex p-4 border border-gray-400">
-        <SendSessionComponent/>
+        <SendSessionComponentTrainer />
       </div>
     </div>
     <div class="w-1/4 p-4">
@@ -38,12 +38,14 @@ import ClassificationTableComponent from '@/components/teams/ClassificationTable
 import NotificationComponent from '@/components/teams/NotificationComponent.vue';
 import CalendarComponent from '@/components/teams/CalendarComponent.vue';
 import ListPlayersComponent from '@/components/players/ListPlayersComponent.vue';
-
-import SendSessionComponent from '@/components/trainers/SendSessionComponent.vue'
+import SendSessionComponentTrainer from '@/components/trainers/SendSessionComponent.vue'
 import ProfileTrainerComponent from '@/components/trainers/ProfileTrainerComponent.vue';
+import { listParentsByTrainer } from "@/services/parentsAPI";
 import { onMounted, ref } from 'vue'
 
-
+onMounted(() => {
+  listParentsByTrainer()
+})
 </script>
 <style scoped>
 .logo {

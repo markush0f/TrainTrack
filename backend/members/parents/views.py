@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from league.models import Team
 from members.utils import generateJWT, verifyToken, decodeJWT
-from members.models import Parent
+from members.models import Parent, Trainer
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 
@@ -16,7 +16,13 @@ def createParent(data, user_id):
             phone=data.get("phone"),
             team_id=1,
         )
-        return parent
+        return JsonResponse(
+            {
+                "success": True,
+                "parent": parent,
+            },
+            safe=False,
+        )
     except Exception as e:
         print("190: ", e)
         return None
@@ -36,9 +42,33 @@ def signupParent(request, user):
     return JsonResponse({"El entrenador no ha sido autenticado ni creado"}, status=500)
 
 
+# Recogemos los padres segúun al entrenador al que pertenecen
+def parentsByTrainer(request):
+    if request.method == "GET":
+        payload = decodeJWT(request)
+        try:
+            if payload["rol"] == "trainer":
+                parentsList = []
+                trainer = Trainer.objects.get(user_id=payload["user_id"])
+                parents = Parent.objects.filter(trainer_id=trainer.id)
+                for parent in parents:
+                    parentsList.append(
+                        {
+                            "name": parent.user.first_name,
+                            "username": parent.user.last_name,
+                            "id": parent.id,
+                        }
+                    )
+                return JsonResponse({"parents": parentsList})
+        except Exception as e:
+            return JsonResponse(
+                {"error": "Se produjo un error al procesar la solicitud"}
+            )
+
+
 def profileParent(request, payload):
-    payload = decodeJWT(request)
-    
+    # payload = decodeJWT(request)
+
     try:
         user = User.objects.get(id=payload["user_id"])
         parent = Parent.objects.get(user_id=payload["user_id"])

@@ -90,13 +90,11 @@ const categoryStore = useCategoryStore()
 const category = ref(categoryStore.category);
 </script>
 
-
-<style lang="css">
-.news {
-  /*max-width: 100%;*/
-  text-align: center;
-  width: 500px;
-  margin: 0 auto;
-
+<style>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
 }
 </style>

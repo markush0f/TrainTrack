@@ -27,6 +27,8 @@ class Message(models.Model):
     session_created_at = models.CharField(max_length=300, null=True, blank=True)
     notification_title = models.CharField(max_length=300, null=True, blank=True)
     notification = models.CharField(max_length=300, null=True, blank=True)
+    notice_title = models.CharField(max_length=300, null=True, blank=True)
+    notice = models.CharField(max_length=300, null=True, blank=True)
     notification_created_at = models.CharField(max_length=300, null=True, blank=True)
 
     def __str__(self):

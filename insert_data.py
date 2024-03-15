@@ -234,23 +234,23 @@ executeSQL(shieldsSQL)
 
 from django.contrib.auth.hashers import make_password
 
-try:
-    cursor.execute(
-        "SELECT id, password FROM auth_user WHERE password NOT LIKE 'pbkdf2_sha256%'"
-    )
-    users = cursor.fetchall()
-    for user in users:
-        user_id, password = user
-        # Aplicar make_password para encriptar y formatear correctamente la contraseña
-        hashed_password = make_password(password)
-        cursor.execute(
-            f"UPDATE auth_user SET password = '{hashed_password}' WHERE id = {user_id}"
-        )
-        db.commit()
-    print("Contraseñas de los usuarios actualizadas")
-except Exception as e:
-    print("Error al actualizar contraseñas:", e)
-    db.rollback()
+# try:
+#     cursor.execute(
+#         "SELECT id, password FROM auth_user WHERE password NOT LIKE 'pbkdf2_sha256%'"
+#     )
+#     users = cursor.fetchall()
+#     for user in users:
+#         user_id, password = user
+#         # Aplicar make_password para encriptar y formatear correctamente la contraseña
+#         hashed_password = make_password(password)
+#         cursor.execute(
+#             f"UPDATE auth_user SET password = '{hashed_password}' WHERE id = {user_id}"
+#         )
+#         db.commit()
+#     print("Contraseñas de los usuarios actualizadas")
+# except Exception as e:
+#     print("Error al actualizar contraseñas:", e)
+#     db.rollback()
 
 # sqlTrainers = """
 # INSERT INTO members_trainer (id, birth, address1, address2, phone, team_id, user_id) VALUES

@@ -11,10 +11,11 @@ export async function signup(data) {
   try {
     if (res) {
       console.log("Respuesta del servidor: ", res);
-      if (res.data.JWT) {
+      if (res.data.JWT && res.data.success) {
         console.log('Token:', res.data.JWT);
         // Almacenamos el token en las cookies
         cookies.set('token', res.data.JWT)
+        this.$router.push('/');
       }
     } else console.log("No hay respuesta del servidor");
     console.log("Datos enviado", res.data);
@@ -30,8 +31,11 @@ export async function login(data) {
     if (res) {
       console.log("Datos: ", res.data);
       console.log("Respuesta del servidor:", res);
-      console.log('Token:', res.data.JWT);
       // Almacenamos el token en las cookies
+      if (res.data.success) {
+        console.log('Token:', res.data.JWT);
+        this.$router.push('/');
+      }
       cookies.set('token', res.data.JWT)
     }
   } catch (e) {

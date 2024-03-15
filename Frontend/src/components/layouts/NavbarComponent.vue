@@ -27,5 +27,4 @@ import Modal from '@/components/Modal.vue';
 const profileStore = useProfileStore();
 import { useProfileStore } from '@/stores/profile';
 
-
 </script>

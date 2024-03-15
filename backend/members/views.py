@@ -161,7 +161,7 @@ def loginView(request):
                 print(token)
                 return JsonResponse(
                     {
-                        "success": "Usuario logeado y autenticado con éxito.",
+                        "success": True,
                         "JWT": token,
                         "rol": rol,
                     },
@@ -174,27 +174,32 @@ def loginView(request):
             return JsonResponse({"error": "Email o contraseña incorrectas"})
 
 
-def listPlayers(request):
+# Recogemos los jugadores según el entrenador
+def playersByTrainer(request):
     if request.method == "GET":
         payload = decodeJWT(request)
         try:
-            if payload['rol'] == 'trainer':
-                trainer_id = payload["user_id"]
-                trainer = Trainer.objects.get(id=trainer_id)
+            if payload["rol"] == "trainer":
+                user = User.objects.get(id=payload["user_id"])
+                trainer = Trainer.objects.get(user_id=user.id)
                 players = Player.objects.filter(team=trainer.team)
                 playerList = []
                 if players.exists():
                     for player in players:
-                        parent = Parent.objects.get(user_id=player.parent)
-                        user = User.objects.get(id=parent.user)
-                        playerList = [
+                        # Aquí agregamos cada jugador a la lista, en lugar de sobrescribir la lista en cada iteración
+                        playerList.append(
                             {
                                 "name": player.name,
                                 "surname": player.surname,
-                                "padre": user.first_name,
+                                "parent": player.parent.user.first_name,
+                                "position": "Delantero",
+                                "goals": 34,
                             }
-                        ]
-                return JsonResponse({"players": playerList})
+                        )
+                    # Luego retornamos la lista completa de jugadores
+                    return JsonResponse({"players": playerList})
+                else:
+                    return JsonResponse({"error": "No existen jugadores en ese equipo"})
             else:
                 return JsonResponse({"error": "No existen jugadores en ese equipo"})
 
@@ -209,6 +214,37 @@ def listPlayers(request):
             return JsonResponse(
                 {"error": "Se produjo un error al procesar la solicitud"}
             )
+
+
+@csrf_exempt
+def players(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        payload = decodeJWT(request)
+        try:
+            
+            trainer = Trainer.objects.get(user_id=payload["user_id"])
+            player = Player.objects.create(
+                name=data["name"],
+                surname=data["surname"],
+                birth=data["birth"],
+                team_id=trainer.team_id,
+                parent_id=data["parent_id"],
+            )
+            return JsonResponse({"success": True})
+        except Trainer.DoesNotExist:
+            return JsonResponse(
+                {"error": "No se encontró ningún entrenador con el ID proporcionado"},
+                status=404,
+            )
+        except Exception as e:
+            return JsonResponse(
+                {"error": "Se produjo un error al procesar la solicitud"}, status=500
+            )
+    else:
+        return JsonResponse(
+            {"error": "No tienes permisos para agregar jugadores"}, status=403
+        )
 
 
 @csrf_exempt
