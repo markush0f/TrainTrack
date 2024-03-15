@@ -29,7 +29,7 @@ import { onMounted, ref } from 'vue';
 import InsertPlayerComponent from './InsertPlayerComponent.vue';
 import { listPlayers, loadListPlayer } from '@/services/playersAPI';
 import { useShowInsertPlayerStore } from '@/stores/players';
- 
+// Ejecutar la función de recargar jugadores cada vez que se añada un, en pinia por ejemplo
 const storePlayer = useShowInsertPlayerStore();
 const players = ref([]);
 

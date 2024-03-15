@@ -31,3 +31,13 @@ class Shields(models.Model):
         verbose_name="Team",
         default=1,
     )
+
+
+# models.ImageField
+
+
+class InfoPlayer(models.Model):
+    position = models.CharField(max_length=255)
+    goals = models.PositiveIntegerField(default=0)
+    assistance = models.PositiveIntegerField(default=0)
+    player = models.OneToOneField()

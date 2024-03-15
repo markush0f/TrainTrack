@@ -56,3 +56,4 @@ def profileTrainer(request, payload):
         return JsonResponse("Entrenador no encontrado", status=404)
     except Team.DoesNotExist:
         return JsonResponse("Equipo no encontrado", status=404)
+    
