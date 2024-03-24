@@ -83,11 +83,11 @@ import NavBar from '../components/layouts/NavbarComponent.vue';
 import NextGamesComponent from '@/components/teams/NextGamesComponent.vue';
 import Pie from '../components/layouts/FooterComponent.vue'
 import RankingPlayersComponent from '@/components/players/RankingPlayersComponent.vue';
-import { useTeamStore, useCategoryStore } from '@/stores/team';
-import { ref, onMounted } from 'vue';
-import { listAllShields } from '@/services/teamAPI';
+import {useCategoryStore } from '@/stores/team';
+import { ref, } from 'vue';
 import ClassificationTableComponent from '@/components/teams/ClassificationTableComponent.vue';
 import ListImgTeamsComponent from '@/components/teams/ListImgTeamsComponent.vue'
+
 const categoryStore = useCategoryStore()
 const category = ref('prebenjamin');
 // categoryStore.setCategory(category)

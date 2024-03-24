@@ -32,7 +32,7 @@ onMounted(() => {
     categoryStore.setCategory('prebenjamin')
     playersByCategory()
   }
-  profile()
+  // profile()
 });
 
 </script>

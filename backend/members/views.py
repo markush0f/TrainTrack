@@ -112,16 +112,6 @@ def signupView(request):
                 )
         # Creamos el usuario en la base de datos User
         user = createUser(data)
-        # TRAINER:
-        # if user is not None:
-        #     # Creamos al entrenador
-        #     if trainer:
-        #         return singupTrainer(request, user)
-
-        # PARENT
-        # print(parent)
-        # print(user)
-        # return JsonResponse({"success": "padre creado"})
         if user is not None:
             parent = Parent.objects.create(
                 user_id=user.id,

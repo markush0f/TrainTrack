@@ -17,7 +17,7 @@ export async function listNotifications() {
       return res.data.notifications
     } else console.log("No hay notificaciones");
   } catch (e) {
-    console.log("Error: ", e);
+    // console.log("Error: ", e);
   }
 }
 

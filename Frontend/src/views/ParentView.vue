@@ -1,9 +1,9 @@
 <template>
   <NavbarComponent />
   <div class="flex h-full">
-    <div class="flex flex-col gap-4 h-screen p-6 ">
+    <div class="flex flex-col gap-4 h-screen p-6 overflow-y-auto">
       <!-- div del Escudo del equipo -->
-      <div class="justify-center p-4  ">
+      <div class="justify-center p-4">
         <!-- <img src="https://www.dyntra.org/new/wp-content/uploads/2018/07/federacion-canaria-futbol.jpg" alt="Federacion"
           class="logo"> -->
       </div>
@@ -12,14 +12,14 @@
         <ClassificationTableComponent />
       </div>
     </div>
-    <div class="flex-grow justify-center p-4  ">
+    <div class="flex-grow justify-center p-4 overflow-y-auto">
       <!-- div de horario de entrenamiento -->
       <h2 class="text-lg font-bold text-center">Horario de entrenamiento</h2>
       <CalendarComponent />
       <!-- div de ultimas notificaciones -->
-      <NotificationComponent />
+      <!-- <NotificationComponent /> -->
       <!-- div de mensaje al entrenador -->
-      <div class="justify-center p-4  ">
+      <div class="justify-center p-4">
         <h2 class="text-lg font-bold text-center p-2">Enviar mensaje al entrenador</h2><br>
         <form @submit.prevent="submitForm">
           <div class="p-2 w-full">
@@ -43,19 +43,19 @@
       </div>
     </div>
 
-    <div class="w-1/4 p-4">
+    <div class="w-1/4 p-4 overflow-y-auto">
       <!-- div de ficha del hijo -->
-      <div class="justify-center p-4  ">
+      <div class="justify-center p-4">
         <h2 class="text-lg font-bold text-center p-2">Ficha del hijo</h2>
         <button class="bg-main-green hover:bg-green-700 text-white font-bold py-2 w-full rounded-full">Ficha del
           hijo</button><br><br>
         <!-- div de form para enviar aviso al entrenador. -->
-        <div class="justify-center p-4  ">
+        <div class="justify-center p-4">
           <SendNoticeComponent />
         </div>
       </div>
       <!-- Proximo partido -->
-      <div class="p-4   ">
+      <div class="p-4">
         <h2 class="text-lg font-bold text-center p-2">PROXIMO PARTIDO</h2><br>
         <table class="w-full">
           <thead>
@@ -76,7 +76,6 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <script setup>

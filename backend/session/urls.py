@@ -15,5 +15,5 @@ urlpatterns = [
     ),
     path("trainer/sendsession", views.writeSession, name="sendsession"),
     path("parent/sendnotification", views.writeNotification, name="sendnotification"),
-    path("parent/sendnotice", views.sendNotice, name="sendsession"),
+    path("parent/sendnotice", views.sendNotice, name="sendnotices"),
 ]

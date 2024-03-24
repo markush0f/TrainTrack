@@ -83,70 +83,77 @@ def writeSession(request):
 @csrf_exempt
 # Enviar aviso de padre a entrenador
 def sendNotice(request):
-    if request.method == "POST":
-        payload = verifyToken(request)
-        data = json.loads(request.body)
-        # return JsonResponse({"error": data})
-        if payload:
-            try:
-                notice_type = data.get("title")
-                if notice_type:
-                    parent = Parent.objects.get(id=payload["user_id"])
-                    player = Player.objects.get(parent_id=parent.id)
-                    new_title = ""
-                    new_notice = ""
-                    if notice_type == "notNextTrain":
-                        new_title = "Asistencia a entrenamiento"
-                        new_notice = (
-                            f"{player.name} no podrá acudir al siguiente entrenamiento"
-                        )
-                    elif notice_type == "notNextMatch":
-                        new_title = "Asistencia a partido"
-                        new_notice = (
-                            f"{player.name} no podrá acudir al siguiente partido"
-                        )
-                    elif notice_type == "lateNextTrain":
-                        new_title = "Asistencia a entrenamiento"
-                        new_notice = (
-                            f"{player.name} acudirá tarde al siguiente entrenamiento"
-                        )
-                    elif notice_type == "lateNextMatch":
-                        new_title = "Asistencia a partido"
-                        new_notice = f"{player.name} acudirá tarde al siguiente partido"
-                    else:
-                        return JsonResponse(
-                            {"error": "Tipo de notificación no válido"}, status=400
-                        )
+    # if request.method != "POST":
+    #     return JsonResponse({"error": "Método no permitido"}, status=405)
 
-                    session = Message.objects.create(
-                        notification=new_notice,
-                        notification_title=new_title,
-                        player_id=player.id,
-                        trainer_id=parent.trainer_id,
-                    )
-                    if session:
-                        return JsonResponse({"success": True})
-                else:
-                    return JsonResponse(
-                        {"error": "Falta el campo 'title' en los datos"}, status=400
-                    )
-            except Parent.DoesNotExist:
+    if request.method == "POST":
+        payload = decodeJWT(request)
+
+        if not payload:
+            return JsonResponse({"error": "Token no válido"}, status=400)
+
+        try:
+            data = json.loads(request.body)
+            notice_type = data["notice"]
+
+            if not notice_type:
+                return JsonResponse({"error": "Debe enviar una noticia"}, status=400)
+
+            # LOGICA PARA QUE SOLO SE ENVIE EL MENSAJE DEL HIJO, GUARDARLO EN EL TOKEN.
+            parent = Parent.objects.get(user_id=payload["user_id"])
+            player = Player.objects.filter(parent_id=parent.id).first()
+
+            notifications = {
+                "notNextTrain": (
+                    "Asistencia a entrenamiento",
+                    f"{player.name} no podrá acudir al siguiente entrenamiento",
+                ),
+                "notNextMatch": (
+                    "Asistencia a partido",
+                    f"{player.name} no podrá acudir al siguiente partido",
+                ),
+                "lateNextTrain": (
+                    "Asistencia a entrenamiento",
+                    f"{player.name} acudirá tarde al siguiente entrenamiento",
+                ),
+                "lateNextMatch": (
+                    "Asistencia a partido",
+                    f"{player.name} acudirá tarde al siguiente partido",
+                ),
+            }
+
+            if notice_type not in notifications:
                 return JsonResponse(
-                    {"error": "No se encontró ningún padre con el ID proporcionado"},
-                    status=404,
+                    {"error": "Tipo de notificación no válido"}, status=400
                 )
-            except Player.DoesNotExist:
-                return JsonResponse(
-                    {"error": "No se encontró ningún jugador asociado al padre"},
-                    status=404,
-                )
-            except Exception as e:
-                print("Error:", e)
-                return JsonResponse(
-                    {"error": "Error al crear la notificación"}, status=500
-                )
+
+            title, message = notifications[notice_type]
+
+            session = Message.objects.create(
+                notification=message,
+                notification_title=title,
+                player_id=player.id,
+                trainer_id=parent.trainer_id,
+            )
+
+            if session:
+                return JsonResponse({"success": True, "notice": message})
+        except Parent.DoesNotExist:
+            return JsonResponse(
+                {"error": "No se encontró ningún padre con el ID proporcionado"},
+                status=404,
+            )
+        except Player.DoesNotExist:
+            return JsonResponse(
+                {"error": "No se encontró ningún jugador asociado al padre"}, status=404
+            )
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Datos JSON no válidos"}, status=400)
+        except Exception as e:
+            print("Error:", e)
+            return JsonResponse({"error": "Error al crear la notificación"}, status=500)
     else:
-        return JsonResponse({"error": "Método no permitido"}, status=405)
+        return JsonResponse({"error": "Error desconocido"}, status=500)
 
 
 # Lista de mensajes del entrenador

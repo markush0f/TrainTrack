@@ -47,13 +47,13 @@ export async function sendNotification(data) {
 // Solicitamos la creación de un aviso de un padre al entrenador
 export async function sendNotice(data) {
   const token = cookies.get('token')
-  console.log(data);
   if (token) {
     try {
       const headers = {
         'Authorization': `Bearer ${token}`
       }
       const res = await axios.post(`${URL}session/parent/sendnotice`, data, { headers })
+      console.log("Respuestaa...::", res);
       if (res.data.notice) {
         console.log("Advertencia:", res.data);
       }
