@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useCookies } from "vue3-cookies";
-import { useCategoryStore } from "@/stores/team";
+import { useCategoryStore } from "@/stores/category";
 const { cookies } = useCookies();
 const URL = "http://127.0.0.1:8000/api/players"
 
@@ -54,11 +54,11 @@ export async function loadListPlayer() {
 export async function playersByCategory() {
   const categoryStore = useCategoryStore();
   try {
-    const category = categoryStore.category;
+    const category = categoryStore.getCategory();
     const res = await axios.get(`${URL}/bycategory?category=${category}`);
-    console.log("Categoría seleccionada:", res.data);
+    // console.log("Categoría seleccionada:", res.data);
     if (res.data.players) {
-      console.log("Jugadores por categoría:", res.data);
+      // console.log("Jugadores por categoría:", res.data);
       return res.data.players;
     }
   } catch (e) {

@@ -83,8 +83,6 @@ def writeSession(request):
 @csrf_exempt
 # Enviar aviso de padre a entrenador
 def sendNotice(request):
-    # if request.method != "POST":
-    #     return JsonResponse({"error": "Método no permitido"}, status=405)
 
     if request.method == "POST":
         payload = decodeJWT(request)
@@ -153,7 +151,7 @@ def sendNotice(request):
             print("Error:", e)
             return JsonResponse({"error": "Error al crear la notificación"}, status=500)
     else:
-        return JsonResponse({"error": "Error desconocido"}, status=500)
+        return JsonResponse({"error": "Error de método  "})
 
 
 # Lista de mensajes del entrenador

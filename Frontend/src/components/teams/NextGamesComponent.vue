@@ -5,9 +5,9 @@
 <table class="w-full">
   <thead>
     <tr>
-      <th class="px-4 py-2 bg-green-300"></th>
-      <th class="px-4 py-2 bg-green-300"></th>
-      <th class="px-4 py-2 bg-green-300"></th>
+      <th class="px-4 py-2 bg-main-green"></th>
+      <th class="px-4 py-2 bg-main-green"></th>
+      <th class="px-4 py-2 bg-main-green"></th>
     </tr>
   </thead>
   <tbody>

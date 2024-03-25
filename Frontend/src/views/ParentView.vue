@@ -47,7 +47,7 @@
       <!-- div de ficha del hijo -->
       <div class="justify-center p-4">
         <h2 class="text-lg font-bold text-center p-2">Ficha del hijo</h2>
-        <button class="bg-main-green hover:bg-green-700 text-white font-bold py-2 w-full rounded-full">Ficha del
+        <button class="bg-main-green border-solid border-2 border-third-green hover:bg-green-700 text-white font-bold py-2 w-full rounded-full">Ficha del
           hijo</button><br><br>
         <!-- div de form para enviar aviso al entrenador. -->
         <div class="justify-center p-4">
@@ -75,6 +75,7 @@
         </table>
       </div>
     </div>
+    
   </div>
 </template>
 

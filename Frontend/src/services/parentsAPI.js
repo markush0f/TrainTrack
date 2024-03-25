@@ -37,7 +37,7 @@ export async function sendNotification(data) {
         console.log("Padres:", res.data);
         return res.data.parents
       }
-    } catch (e) {
+    } catch (e) { 
       console.log("Error:", e);
     }
 

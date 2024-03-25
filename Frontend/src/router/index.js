@@ -103,11 +103,11 @@ router.beforeEach(async (to, from, next) => {
           return;
         }
       }
-      next('/signup');
+      next('/login');
       return;
     } catch (error) {
       console.log("Error al verificar el token:", error);
-      next('/signup');
+      next('/login');
       return;
     }
   } else {

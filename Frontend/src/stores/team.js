@@ -11,18 +11,3 @@ export const useTeamStore = defineStore('teams', () => {
   }
 })
 
-export const useCategoryStore = defineStore('category', () => {
-  const category = ref('category')
-  function setCategory(newCategory) {
-    category.value = newCategory
-  }
-  function getCategory() {
-    return category.value
-  }
-
-  return {
-    category,
-    setCategory,
-    getCategory
-  }
-})

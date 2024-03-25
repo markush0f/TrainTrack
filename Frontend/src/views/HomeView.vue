@@ -3,18 +3,11 @@
   <!-- ESCUDOS -->
   <ListImgTeamsComponent />
   <!-- Div padre -->
-  <div class="flex h-full ">
+  <div class="flex h-full mt-16 ">
     <!-- divs hijos -->
-    {{ categoryStore.category }}
     <div class="flex flex-col gap-4 h-screen p-6 ">
-      <select v-model="categoryStore.category"
-        class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-        <!-- <option value="" disabled>Selecciona una categoría</option> -->
-        <option value="prebenjamin">Prebenjamin</option>
-        <option value="benjamin">Benjamin</option>
-        <option value="alevin">Alevin</option>
-        <option value="infantil">Infantil</option>
-      </select>
+      <SelecCategory />
+
       <ClassificationTableComponent />
     </div>
     <!-- div de partidos -->
@@ -36,7 +29,7 @@
             alt="Federacion" class="w-56">
         </div>
         <div>
-          <img src="https://www.ftf.es/2023/img/logos/fcf.png" alt="Federacion" class="w-56">
+          <img src="../img/fcf.png" alt="Federacion" class="w-56">
         </div>
       </div>
       <div>
@@ -75,7 +68,7 @@
       </div>
     </div>
   </div>
-  <Pie />
+
 </template>
 
 <script setup>
@@ -83,14 +76,12 @@ import NavBar from '../components/layouts/NavbarComponent.vue';
 import NextGamesComponent from '@/components/teams/NextGamesComponent.vue';
 import Pie from '../components/layouts/FooterComponent.vue'
 import RankingPlayersComponent from '@/components/players/RankingPlayersComponent.vue';
-import {useCategoryStore } from '@/stores/team';
 import { ref, } from 'vue';
 import ClassificationTableComponent from '@/components/teams/ClassificationTableComponent.vue';
 import ListImgTeamsComponent from '@/components/teams/ListImgTeamsComponent.vue'
+import SelecCategory from '@/views/SelectCategory.vue'
+// CADA VEZ QUE CAMBIE DE CATEGORÍA SE CAMBIE TODO, HACIENDO UNA FUNCIÓN DE LOAD
 
-const categoryStore = useCategoryStore()
-const category = ref('prebenjamin');
-// categoryStore.setCategory(category)
 </script>
 
 <style>
