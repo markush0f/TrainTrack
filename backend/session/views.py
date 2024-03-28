@@ -5,7 +5,7 @@ import json
 from members.utils import verifyToken, decodeJWT
 from members.models import *
 from django.views.decorators.csrf import csrf_exempt
-
+from datetime import datetime
 
 class SessionViewSet(viewsets.ModelViewSet):
     queryset = Message.objects.all()
@@ -130,6 +130,7 @@ def sendNotice(request):
             session = Message.objects.create(
                 notification=message,
                 notification_title=title,
+                # notification_create
                 player_id=player.id,
                 trainer_id=parent.trainer_id,
             )
@@ -169,6 +170,7 @@ def listNotifications(request):
                             {
                                 "title": notification.notification_title,
                                 "notification": notification.notification,
+                                "created_at": notification.created_at,
                             }
                         )
                 return JsonResponse({"notifications": data})

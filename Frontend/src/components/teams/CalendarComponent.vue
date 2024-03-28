@@ -15,11 +15,11 @@
       <tbody>
         <tr class="text-center">
           <td class="px-4 py-2 bg-white border border-gray-200">F</td>
-          <td class="px-4 py-2 bg-third-green border border-gray-200">19-21</td>
+          <td class="px-4 py-2 bg-third-green border border-gray-200">18:00-20:00</td>
           <td class="px-4 py-2 bg-white border border-gray-200">F</td>
-          <td class="px-4 py-2 bg-third-green border border-gray-200">19-21</td>
+          <td class="px-4 py-2 bg-third-green border border-gray-200">18:00-20:00</td>
           <td class="px-4 py-2  border border-gray-200">F</td>
-          <td class="px-4 py-2 bg-yellow-300 border border-gray-200">MD</td>
+          <td class="px-4 py-2 bg-yellow-300 border border-gray-200">Partido</td>
           <td class="px-4 py-2  border border-gray-200">F</td>
         </tr>
       </tbody>

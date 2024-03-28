@@ -14,7 +14,7 @@ export async function listNotifications() {
     const res = await axios.get(`${URL}session/trainer/messages/listnotifications`, { headers });
     if (res.data.notifications) {
       // console.log(res.data);
-      return res.data.notifications
+      return res.data.notifications;
     } else console.log("No hay notificaciones");
   } catch (e) {
     // console.log("Error: ", e);

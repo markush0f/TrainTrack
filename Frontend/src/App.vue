@@ -14,6 +14,8 @@ import { useCookiesStore } from "./stores/cookies";
 import { useRolStore } from "./stores/profile";
 import { useCategoryStore } from "./stores/category";
 import {playersByCategory } from '@/services/playersAPI';
+
+
 const cookie = useCookiesStore()
 const token = cookie.getCookie('token')
 const rolStore = useRolStore()
@@ -28,8 +30,8 @@ onMounted(() => {
     // listNotifications()
     categoryStore.setCategory('prebenjamin')
     playersByCategory()
+    profile()
   }
-  profile()
 });
 
 </script>

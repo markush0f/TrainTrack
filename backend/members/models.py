@@ -19,7 +19,6 @@ class Trainer(models.Model):
         on_delete=models.CASCADE,
         related_name="get_teams",
         verbose_name="Team",
-        default=1,
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     birth = models.DateField(blank=False, null=False)
@@ -45,7 +44,6 @@ class Parent(models.Model):
         on_delete=models.CASCADE,
         related_name="get_trainers",
         verbose_name="Trainer",
-        default=1,
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     birth = models.DateField(blank=False, null=False)
@@ -53,6 +51,7 @@ class Parent(models.Model):
     address1 = models.CharField(blank=False, null=False, max_length=255)
     address2 = models.CharField(blank=False, null=True, max_length=255)
     phone = models.CharField(blank=False, null=False, max_length=255)
+    verify = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "Parent"

@@ -74,7 +74,7 @@
 <script setup>
 import { useShowInsertPlayerStore } from '@/stores/players';
 import { listParentsByTrainer } from '@/services/parentsAPI';
-import { createPlayer } from '@/services/playersAPI';
+import { createPlayer, listPlayers } from '@/services/playersAPI';
 import { onMounted, ref } from 'vue';
 const parents = ref([]);
 const storePlayer = useShowInsertPlayerStore();

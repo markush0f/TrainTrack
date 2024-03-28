@@ -1,5 +1,5 @@
 from django.db import models
-
+from datetime import datetime
 from members.models import *
 
 
@@ -24,12 +24,11 @@ class Message(models.Model):
     )
     session_title = models.CharField(max_length=300, null=True, blank=True)
     session_description = models.CharField(max_length=300, null=True, blank=True)
-    session_created_at = models.CharField(max_length=300, null=True, blank=True)
     notification_title = models.CharField(max_length=300, null=True, blank=True)
     notification = models.CharField(max_length=300, null=True, blank=True)
     notice_title = models.CharField(max_length=300, null=True, blank=True)
     notice = models.CharField(max_length=300, null=True, blank=True)
-    notification_created_at = models.CharField(max_length=300, null=True, blank=True)
+    created_at = models.DateField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
         return self.player.parent.user.first_name + " " + self.trainer.user.first_name

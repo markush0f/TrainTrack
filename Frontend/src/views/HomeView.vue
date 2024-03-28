@@ -79,7 +79,7 @@ import RankingPlayersComponent from '@/components/players/RankingPlayersComponen
 import { ref, } from 'vue';
 import ClassificationTableComponent from '@/components/teams/ClassificationTableComponent.vue';
 import ListImgTeamsComponent from '@/components/teams/ListImgTeamsComponent.vue'
-import SelecCategory from '@/views/SelectCategory.vue'
+import SelecCategory from '@/views/teams/SelectCategory.vue'
 // CADA VEZ QUE CAMBIE DE CATEGORÍA SE CAMBIE TODO, HACIENDO UNA FUNCIÓN DE LOAD
 
 </script>

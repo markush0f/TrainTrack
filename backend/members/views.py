@@ -119,10 +119,11 @@ def signupView(request):
                 address1=data.get("address1"),
                 address2=data.get("address2"),
                 phone=data.get("phone"),
-                trainer_id=1,
+                trainer_id=0,
             )
             if parent:
-                return signupParent(request, user)
+                # return signupParent(request, user)
+                return JsonResponse({"success": "Debe esperar a que el entrenador confirme su registro, en cuanto confirme le llegará un correo electrónico."})
 
 
 @csrf_exempt
@@ -138,17 +139,13 @@ def loginView(request):
             parentUser = Parent.objects.filter(user_id=user.id).first()
             if parentUser:
                 rol = "parent"
-                print("PADRE")
-
             else:
                 trainerUser = Trainer.objects.filter(user_id=user.id)
                 if trainerUser:
                     rol = "trainer"
-                print("ENTRENADOR")
             token = generateJWT(user, rol)
 
             if token:
-                print(token)
                 return JsonResponse(
                     {
                         "success": True,

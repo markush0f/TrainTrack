@@ -11,7 +11,7 @@
         <div>
           <label for="email" class="sr-only">Email</label>
           <div class="relative">
-            <input type="email" v-model="data.email"
+            <input type="text" v-model="data.email"
               class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-light-gray"
               placeholder="Introduzca su email" />
           </div>

@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from league.models import Team
-from members.utils import generateJWT, verifyToken
+from members.utils import generateJWT
 from members.models import Parent, Trainer
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
@@ -32,7 +32,6 @@ def createTrainer(data, user_id):
         )
         return trainer
     except Exception as e:
-        print("132: ", e)
         return None
 
 

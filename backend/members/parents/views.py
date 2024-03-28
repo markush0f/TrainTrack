@@ -1,4 +1,5 @@
 from django.http import JsonResponse
+# from members.views import loginView
 from league.models import Team
 from members.utils import generateJWT, verifyToken, decodeJWT
 from members.models import Parent, Trainer
@@ -88,3 +89,16 @@ def profileParent(request, payload):
         return JsonResponse("Padre no encontrado", status=404)
     except Team.DoesNotExist:
         return JsonResponse("Equipo no encontrado", status=404)
+
+
+def loginParent(request):
+
+    try:
+        payload = decodeJWT(request)
+        user = User.objects.get(id=payload["user_id"])
+        parent = Parent.objects.get(user_id=payload["user_id"])
+        if parent.verify:
+            # REALIZAR LA CONFIRMACIÓN DEL REGISTRO DE PADRE.
+            return loginView()
+    except:
+        return JsonResponse({"Error"})

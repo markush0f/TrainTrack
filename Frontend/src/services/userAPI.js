@@ -58,7 +58,7 @@ export async function profile() {
       }
       const res = await axios.get(`${URL}profile`, { headers })
       if (res) {
-        console.log('Datos: ', res.data);
+        // console.log('Datos: ', res.data);
         const profileData = res.data.profile
         const profile = useProfileStore()
         profile.data.name = profileData.first_name
@@ -68,7 +68,7 @@ export async function profile() {
         profile.data.address2 = profileData.address2
         profile.data.team = profileData.team
         profile.data.childrens = "..."
-        console.log(profile.getDataProfile());
+        // console.log(profile.getDataProfile());
       }
     } catch (e) {
       console.log("ERROR: ", e);

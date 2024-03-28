@@ -36,7 +36,7 @@ const router = createRouter({
     {
       path: '/checkcodeteam',
       name: 'checkcodeteam',
-      component: () => import('../views/checkCodeTeamComponent.vue'),
+      component: () => import('../views/teams/checkCodeTeamComponent.vue'),
       meta: {
         requireAuthUser: false
       }
@@ -44,7 +44,7 @@ const router = createRouter({
     {
       path: '/trainer',
       name: 'trainer',
-      component: () => import('../views/TrainerView.vue'),
+      component: () => import('../views/trainers/TrainerView.vue'),
       meta: {
         requireAuthUser: true,
         rol: "trainer"
@@ -53,7 +53,7 @@ const router = createRouter({
     {
       path: '/parent',
       name: 'parent',
-      component: () => import('../views/ParentView.vue'),
+      component: () => import('../views/parents/ParentView.vue'),
       meta: {
         requireAuthUser: true,
         rol: "parent"

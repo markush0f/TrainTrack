@@ -29,16 +29,12 @@
   </div>
 </template>
 <script setup>
+
 import { useProfileStore } from '@/stores/profile';
-import axios from 'axios';
-import { onMounted, ref } from 'vue';
-import { profile } from '@/services/userAPI';
+
+// Cambiar la solicitud a app para que no realize una peticion cada vez que pulse en el perfil
 const profileStore = useProfileStore();
 const profileData = profileStore.data
-onMounted(async () => {
-  profile()
-  console.log(profileStore.showProfile);
-  console.log(profileData.value);
-});
+
 </script>
 <style scoped></style>

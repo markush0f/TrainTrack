@@ -1,26 +1,19 @@
 import { defineStore } from "pinia";
-import { inject } from 'vue'
+import { inject } from "vue";
 import { ref } from "vue";
-export const usePlayerStore = defineStore('player', () => {
-  const player = ref({
-    "name": "",
-    "surname": "",
-    "birth": "",
-    "parent": "",
-    "position": "",
-    "dorsal": ""
-  })
 
-  function setPlayer(data) {
-    player.name = data.name,
-      player.surname = data.surname,
-      player.birth = data.birth,
-      position.bir
-  }
-})
+export const usePlayerStore = defineStore("player", () => {
+  const players = ref([]);
+  const playerMsg = ref(null);
 
+  return {
+    players,
+    playerMsg,
+  };
+});
 
-export const useShowInsertPlayerStore = defineStore('insertplayer', () => {
+// Modal para mostrar y ocultar el div de crear jugador
+export const useShowInsertPlayerStore = defineStore("insertplayer", () => {
   const showInsertPlayer = ref(false);
 
   function changeModal() {
