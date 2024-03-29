@@ -15,7 +15,7 @@ export async function signup(data) {
         console.log('Token:', res.data.JWT);
         // Almacenamos el token en las cookies
         cookies.set('token', res.data.JWT)
-        this.$router.push('/');
+        window.location.href = "/checkcodeteam"
       }
     } else console.log("No hay respuesta del servidor");
     console.log("Datos enviado", res.data);

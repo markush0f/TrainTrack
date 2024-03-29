@@ -46,10 +46,10 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { listPlayers, playersByCategory } from '@/services/playersAPI';
+// import { playersByCategory } from '@/services/playersAPI';
 const players = ref([])
 onMounted(async () => {
-  players.value = await playersByCategory()
+  // players.value = await playersByCategory()
 
 });
 </script>

@@ -39,3 +39,4 @@ def listShields(request):
         shields = Shields.objects.all()
         imgs = [shield.route for shield in shields]
         return JsonResponse({"imgs": imgs})
+    

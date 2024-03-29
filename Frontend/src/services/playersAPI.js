@@ -48,17 +48,17 @@ export async function createPlayer(data) {
 }
 
 // Solicitamos la lista de todos los jugadores según la categoría
-export async function playersByCategory() {
-  const categoryStore = useCategoryStore();
-  try {
-    const category = categoryStore.getCategory();
-    const res = await axios.get(`${URL}/bycategory?category=${category}`);
-    // console.log("Categoría seleccionada:", res.data);
-    if (res.data.players) {
-      // console.log("Jugadores por categoría:", res.data);
-      return res.data.players;
-    }
-  } catch (e) {
-    console.log("Error:", e);
-  }
-}
+// export async function playersByCategory() {
+//   const categoryStore = useCategoryStore();
+//   try {
+//     const category = categoryStore.getCategory();
+//     const res = await axios.get(`${URL}/bycategory?category=${category}`);
+//     // console.log("Categoría seleccionada:", res.data);
+//     if (res.data.players) {
+//       // console.log("Jugadores por categoría:", res.data);
+//       return res.data.players;
+//     }
+//   } catch (e) {
+//     console.log("Error:", e);
+//   }
+// }

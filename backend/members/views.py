@@ -5,18 +5,12 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.contrib.auth.models import User
 from django.contrib.auth import logout
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
-from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework_simplejwt.views import TokenObtainPairView
 from members.trainers.views import profileTrainer
-from members.parents.views import createParent, profileParent, signupParent
+from members.parents.views import profileParent
 from .models import *
 from .serializers import *
 from django.contrib.auth import authenticate, login
-import json, re, jwt
-from datetime import datetime, timedelta
-from django.conf import settings
+import json
 from .utils import *
 
 
@@ -51,27 +45,26 @@ class UserViewSet(viewsets.ModelViewSet):
 @csrf_exempt
 def checkCodeTeam(request):
     if request.method == "POST":
-        print("REQUESTR :", request)
-        # Obtenemos el code_team y la password del equipo, y luego el entrenador debe aceptar al padre
         data = json.loads(request.body)
-        print(data["password"])
-        if data["codeTeam"] and data["password"]:
-            try:
-                codeTeam = Team.objects.all().filter(team_code=data["codeTeam"])
-                password = Team.objects.all().filter(team_password=data["password"])
-                if password and codeTeam:
-                    print("Parametros correctos")
-                    return JsonResponse(
-                        {
-                            "redirect": "http://localhost:5173/signup",
-                            "success": "Datos correctos",
-                        }
-                    )
-                else:
-                    print("Contraseña o código de equipo incorrecto")
-                    return JsonResponse("Contraseña incorrecta", safe=False)
-            except NameError:
-                print("Error:", NameError)
+        print("Data: ", data)
+        payload = decodeJWT(request)
+        if payload["user_id"]:
+            print("Codigo recibido desde el token")
+            if data["codeTeam"] and data["password"]:
+                try:
+                    codeTeam = Team.objects.all().filter(team_code=data["codeTeam"])
+                    password = Team.objects.all().filter(team_password=data["password"])
+                    if password and codeTeam:
+                        # PONER LA VALIDACION CORRECTA
+                        return JsonResponse({"success": "Datos correctos"})
+                    else:
+                        return JsonResponse(
+                            {"error": "Contraseña o codigo de equipo incorrecto."}
+                        )
+                except Exception as e:
+                    return JsonResponse({"error": e})
+        else:
+            return JsonResponse({"error": "Debe registrarse primero"})
 
 
 def createUser(data):
@@ -85,11 +78,9 @@ def createUser(data):
         )
         return user
     except Exception as e:
-        print("116:", e)
-        return None
+        return JsonResponse({"error": e})
 
 
-# GENERA TOKEN
 @csrf_exempt
 def signupView(request):
     # COMRPOBAR SI LOS DATOS SON LOS CORRECTOS
@@ -113,17 +104,23 @@ def signupView(request):
         # Creamos el usuario en la base de datos User
         user = createUser(data)
         if user is not None:
+            print("Aqui si entra")
             parent = Parent.objects.create(
                 user_id=user.id,
                 birth=data.get("birth"),
                 address1=data.get("address1"),
                 address2=data.get("address2"),
                 phone=data.get("phone"),
-                trainer_id=0,
             )
             if parent:
                 # return signupParent(request, user)
-                return JsonResponse({"success": "Debe esperar a que el entrenador confirme su registro, en cuanto confirme le llegará un correo electrónico."})
+                token = generateJWT(user)
+                return JsonResponse(
+                    {
+                        "success": "Debe esperar a que el entrenador confirme su registro, en cuanto confirme le llegará un correo electrónico.",
+                        "JWT": token,
+                    }
+                )
 
 
 @csrf_exempt
@@ -135,14 +132,14 @@ def loginView(request):
             # Iniciamos sesión
             login(request, user)
             # Generamos el token
-            rol = ""
-            parentUser = Parent.objects.filter(user_id=user.id).first()
-            if parentUser:
-                rol = "parent"
-            else:
-                trainerUser = Trainer.objects.filter(user_id=user.id)
-                if trainerUser:
-                    rol = "trainer"
+            rol = "parent"
+            # parentUser = Parent.objects.filter(user_id=user.id).first()
+            # if parentUser:
+            #     rol = "parent"
+            # else:
+            #     trainerUser = Trainer.objects.filter(user_id=user.id).first()
+            #     if trainerUser:
+            #         rol = "trainer"
             token = generateJWT(user, rol)
 
             if token:
@@ -159,8 +156,6 @@ def loginView(request):
 
         else:
             return JsonResponse({"error": "Email o contraseña incorrectas"})
-
-
 
 
 @csrf_exempt

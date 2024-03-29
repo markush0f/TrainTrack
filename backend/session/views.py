@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from rest_framework import viewsets
 from .models import Message
 import json
-from members.utils import verifyToken, decodeJWT
+from members.utils import  decodeJWT
 from members.models import *
 from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime

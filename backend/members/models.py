@@ -44,6 +44,7 @@ class Parent(models.Model):
         on_delete=models.CASCADE,
         related_name="get_trainers",
         verbose_name="Trainer",
+        null = True
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     birth = models.DateField(blank=False, null=False)

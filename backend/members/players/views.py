@@ -1,7 +1,7 @@
 # Recogemos los jugadores según el equipo
 import json
 from django.http import JsonResponse
-from members.utils import decodeJWT
+from members.utils import *
 from members.models import Trainer, Player, Team
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
@@ -125,4 +125,6 @@ def profilePlayers(request):
                     {"error": "Se produjo un error al procesar la solicitud"},
                     status=500,
                 )
+
+
 # models.ImageField

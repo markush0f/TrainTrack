@@ -1,46 +1,45 @@
 from django.http import JsonResponse
-# from members.views import loginView
 from league.models import Team
-from members.utils import generateJWT, verifyToken, decodeJWT
+from members.utils import decodeJWT
 from members.models import Parent, Trainer
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 
 
-def createParent(data, user_id):
-    try:
-        parent = Parent.objects.create(
-            user_id=user_id,
-            birth=data.get("birth"),
-            address1=data.get("address1"),
-            address2=data.get("address2"),
-            phone=data.get("phone"),
-            team_id=1,
-        )
-        return JsonResponse(
-            {
-                "success": True,
-                "parent": parent,
-            },
-            safe=False,
-        )
-    except Exception as e:
-        print("190: ", e)
-        return None
+# def createParent(data, user_id):
+#     try:
+#         parent = Parent.objects.create(
+#             user_id=user_id,
+#             birth=data.get("birth"),
+#             address1=data.get("address1"),
+#             address2=data.get("address2"),
+#             phone=data.get("phone"),
+#         )
+#         return JsonResponse(
+#             {
+#                 "success": True,
+#                 "parent": parent,
+#             },
+#             safe=False,
+#         )
+#     except Exception as e:
+#         print("190: ", e)
+#         return None
 
 
-def signupParent(request, user):
-    JWT = generateJWT(user, "parent")
-    if JWT:
-        login(request, user)
-        return JsonResponse(
-            {
-                "success": "El Padre ha sido autenticado y creado.",
-                "JWT": JWT,
-            },
-            status=201,
-        )
-    return JsonResponse({"El entrenador no ha sido autenticado ni creado"}, status=500)
+# def signupParent(request, user):
+#     # if createParent(request)
+#     JWT = generateJWT(user, "parent")
+#     if JWT:
+#         login(request, user)
+#         return JsonResponse(
+#             {
+#                 "success": "El Padre ha sido autenticado y creado.",
+#                 "JWT": JWT,
+#             },
+#             status=201,
+#         )
+#     return JsonResponse({"El entrenador no ha sido autenticado ni creado"}, status=500)
 
 
 # Recogemos los padres segúun al entrenador al que pertenecen
@@ -68,12 +67,11 @@ def parentsByTrainer(request):
 
 
 def profileParent(request, payload):
-    # payload = decodeJWT(request)
-
+    payload = decodeJWT(request)
     try:
         user = User.objects.get(id=payload["user_id"])
         parent = Parent.objects.get(user_id=payload["user_id"])
-        team = Team.objects.get(id=parent.team_id)
+        team = Team.objects.get(id=parent.trainer.team)
         profile = {
             "first_name": user.first_name,
             "last_name": user.last_name,
@@ -92,13 +90,19 @@ def profileParent(request, payload):
 
 
 def loginParent(request):
+    from members.views import loginView
 
     try:
         payload = decodeJWT(request)
         user = User.objects.get(id=payload["user_id"])
         parent = Parent.objects.get(user_id=payload["user_id"])
         if parent.verify:
-            # REALIZAR LA CONFIRMACIÓN DEL REGISTRO DE PADRE.
             return loginView()
+            # REALIZAR LA CONFIRMACIÓN DEL REGISTRO DE PADRE.
+        else:
+            # if request["allow"] == True:
+            #     parent.verify = True
+            return JsonResponse({"access": "allowed"})
+        return JsonResponse({"access": "denied"})
     except:
         return JsonResponse({"Error"})

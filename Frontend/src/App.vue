@@ -13,7 +13,7 @@ import { decodeJWT } from "@/services/userAPI";
 import { useCookiesStore } from "./stores/cookies";
 import { useRolStore } from "./stores/profile";
 import { useCategoryStore } from "./stores/category";
-import {playersByCategory } from '@/services/playersAPI';
+// import { playersByCategory } from '@/services/playersAPI';
 
 
 const cookie = useCookiesStore()
@@ -24,13 +24,13 @@ const categoryStore = useCategoryStore();
 const rol = ref('')
 rol.value = rolStore.getRol();
 onMounted(() => {
+  // playersByCategory()
   if (token) {
     // console.log("Hay token");
     decodeJWT()
     // listNotifications()
-    categoryStore.setCategory('prebenjamin')
-    playersByCategory()
-    profile()
+    // categoryStore.setCategory('prebenjamin')
+    // profile()
   }
 });
 

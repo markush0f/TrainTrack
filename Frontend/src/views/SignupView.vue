@@ -2,7 +2,7 @@
 
 <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
   <div class="mx-auto max-w-lg">
-    <h1 class="text-center text-2xl font-bold text-main-green sm:text-3xl">Registrarse</h1>
+    <h1 class="text-center text-2xl font-bold text-main-green sm:text-3xl">Mandar solicitud</h1>
     <form @submit.prevent="submitForm" class="mb-0 mt-6 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8">
       <p class="mx-auto mt-4 max-w-md text-center text-gray-500">
         Bienvenido a Train Track, introduzca sus datos para registrarse y acceder a las funciones de su hijo/s
@@ -57,10 +57,12 @@
             placeholder="DNI" />
         </div>
       </div>
-
-     
+      <div class="mr-4">
+        <input type="date" v-model="data.birth"
+          class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-light-gray" />
+      </div>
         <div class="mr-4">
-          <input type="text" v-model="data.addres1"
+          <input type="text" v-model="data.address1"
             class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-light-gray"
             placeholder="Primera dirección" />
         </div>

@@ -35,7 +35,7 @@
       <div>
         <!-- REGISTRAR EQUIPO -->
         <div class="justify-center p-4  ">
-          <router-link to="/" class="max-w-xl w-full">
+          <router-link to="/checkcodeteam" class="max-w-xl w-full">
             <div class="bg-gray-100 p-8 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
               <h2 class="text-2xl font-semibold mb-4 ">Registrar equipo</h2>
               <p class="text-gray-700">Registro de equipo para el acceso a crearse la cuenta.

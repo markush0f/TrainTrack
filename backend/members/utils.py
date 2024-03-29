@@ -6,6 +6,7 @@ from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 
 
+# Verificamos el token
 @csrf_exempt
 def verifyToken(request):
     if request.method == "POST":
@@ -44,11 +45,92 @@ def verifyToken(request):
         )
 
 
+# PRIMERO SE DEBE REGISTAR EL USUARIO, LUEGO EL USUARIO INTRODUCIRÁ EL CODIGO Y CONTRASEÑA DEL EQUIPO, A RAIZ DE ESO
+# AL ENTRENADOR SEGÚN EL EQUIPO LE LLEGARÁ UNA PETICION PARA ACEPTAR AL PADRE
+# POR LO QUE EL USUARIO ACCEDERÁ A LAS RUTAS SIGUIENDO LOS SIGUIENTES REQUISITOS:
+# CHECKCODETEAM: SE NECESITA QUE EL USUARIO SE HAYA REGISTRADO, GUARDAREMOS EN EL TOKEN EL ID
+# LOGIN: SE NECESITA QUE EL USUARIO HAYA SIDO VERIFICADO POR EL ENTRENADOR
+
+# TOKEN:
+# user_id
+# CUANDO EL USUARIO SE REGISTRE PERO NO HAYA REGISTRADO EL EQUIPO, NO PODRÁ INICIAR SESIÓN, ESTO LO HAREMOS:
+# ENVIAREMOS EN EL TOKEN EL USER_ID, Y COMPROBAMOS SI EL VERIFY ES TRUE O FALSE
+
+
+@csrf_exempt
+def checkAccountUser(request):
+    if request.method == "POST":
+        token = request.headers.get("Authorization")
+        if token and token.startswith("Bearer "):
+            try:
+                JWT = token.split(" ")[1]
+                payload = jwt.decode(JWT, settings.SECRET_KEY, algorithms=["HS256"])
+                parent = Parent.objects.get(user_id=payload["user_id"])
+                if parent.verify:
+                    return JsonResponse(
+                        {
+                            "register": True,
+                            "rol": payload["rol"],
+                            "message": "Usuario logeado",
+                        }
+                    )
+                if parent:
+                    return JsonResponse(
+                        {
+                            "message": "El usuario está registrado",
+                            "register": True
+                        }
+                    )
+            except Exception as e:
+                print("Error: ", e)
+        return JsonResponse(
+            {
+                "message": "El usuario no está registrado",
+                "register": False,
+            }
+        )
+
+
+@csrf_exempt
+def checkRouteCheckCodeTeam(request):
+    if request.method == "POST":
+        # return JsonResponse({"siu": "Aqui entre"}, safe=False)
+        token = request.headers.get("Authorization")
+        if token and token.startswith("Bearer "):
+            try:
+                JWT = token.split(" ")[1]
+                payload = jwt.decode(JWT, settings.SECRET_KEY, algorithms=["HS256"])
+
+                parent = Parent.objects.get(user_id=payload["user_id"])
+
+                if parent and parent.verify:
+                    return JsonResponse(
+                        {
+                            "message": "Usuario verificado",
+                            "validCodeTeam": True,
+                        }
+                    )
+
+            except Exception as e:
+                print("Error: ", e)
+    return JsonResponse(
+        {
+            "message": "Debe esperar a que el entrenador acepte su solicitud.",
+            "validCodeTeam": False,
+        }
+    )
+
+
+# Comprobamos si en e token JWT está el
 # Generamos el token JWT
-def generateJWT(user, rol):
-    payload = {"user_id": user.id}
-    if rol:
+def generateJWT(user, rol=None, codeTeamChecked=False):
+    print("Creando token")
+    if not user:
+        raise ValueError("User must be provided")
+    payload = {"user_id": user.id, "codeTeamChecked": codeTeamChecked}
+    if rol and rol in ["trainer", "parent"]:
         payload["rol"] = rol
+
     token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
     return token
 
