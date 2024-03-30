@@ -22,7 +22,7 @@ class Trainer(models.Model):
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     birth = models.DateField(blank=False, null=False)
-    dni = ESIdentityCardNumberField(only_nif=True)
+    dni = models.CharField(blank=False, null= False, max_length=255)
     address1 = models.CharField(blank=False, null=False, max_length=255)
     address2 = models.CharField(blank=False, null=True, max_length=255)
     phone = models.CharField(blank=False, null=False, max_length=255)
@@ -48,7 +48,7 @@ class Parent(models.Model):
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     birth = models.DateField(blank=False, null=False)
-    dni = ESIdentityCardNumberField(only_nif=True)
+    dni = models.CharField(blank=False, null= False, max_length=255)
     address1 = models.CharField(blank=False, null=False, max_length=255)
     address2 = models.CharField(blank=False, null=True, max_length=255)
     phone = models.CharField(blank=False, null=False, max_length=255)
@@ -69,19 +69,19 @@ class Player(models.Model):
         on_delete=models.CASCADE,
         related_name="get_team",
         verbose_name="Team",
-        default=1,
+        null = True
     )
     parent = models.ForeignKey(
         Parent,
         on_delete=models.CASCADE,
         related_name="get_parent",
         verbose_name="Parent",
-        default=1,
+        null = True
     )
     name = models.CharField(blank=False, null=False, max_length=255)
     surname = models.CharField(blank=False, null=False, max_length=255)
     birth = models.DateField(blank=False, null=False)
-    dni = ESIdentityCardNumberField(only_nif=True)
+    dni = models.CharField(blank=False, null= False, max_length=255)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, null=True)
 

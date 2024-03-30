@@ -9,13 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^6.5.1",
-    "@fortawesome/free-brands-svg-icons": "^6.5.1",
-    "@fortawesome/free-regular-svg-icons": "^6.5.1",
-    "@fortawesome/free-solid-svg-icons": "^6.5.1",
-    "@fortawesome/vue-fontawesome": "^3.0.6",
+    "@flaticon/flaticon-uicons": "^3.1.0",
     "axios": "^1.6.7",
-    "bootstrap": "^5.3.3",
     "js-cookie": "^3.0.5",
     "pinia": "^2.1.7",
     "vue": "^3.4.15",

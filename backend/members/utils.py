@@ -16,7 +16,7 @@ def verifyToken(request):
         if token and token.startswith("Bearer "):
             print("token recogido y empieza por Bearer")
             print(token)
-            # SEGÚN EL ID, ENVIAR EL ROL DE SI ES PADRE O ENTRENADOR
+
             try:
                 tokenJWT = token.split(" ")[1]
                 # Decodificamos el token JWT
@@ -57,77 +57,14 @@ def verifyToken(request):
 # ENVIAREMOS EN EL TOKEN EL USER_ID, Y COMPROBAMOS SI EL VERIFY ES TRUE O FALSE
 
 
-@csrf_exempt
-def checkAccountUser(request):
-    if request.method == "POST":
-        token = request.headers.get("Authorization")
-        if token and token.startswith("Bearer "):
-            try:
-                JWT = token.split(" ")[1]
-                payload = jwt.decode(JWT, settings.SECRET_KEY, algorithms=["HS256"])
-                parent = Parent.objects.get(user_id=payload["user_id"])
-                if parent.verify:
-                    return JsonResponse(
-                        {
-                            "register": True,
-                            "rol": payload["rol"],
-                            "message": "Usuario logeado",
-                        }
-                    )
-                if parent:
-                    return JsonResponse(
-                        {
-                            "message": "El usuario está registrado",
-                            "register": True
-                        }
-                    )
-            except Exception as e:
-                print("Error: ", e)
-        return JsonResponse(
-            {
-                "message": "El usuario no está registrado",
-                "register": False,
-            }
-        )
-
-
-@csrf_exempt
-def checkRouteCheckCodeTeam(request):
-    if request.method == "POST":
-        # return JsonResponse({"siu": "Aqui entre"}, safe=False)
-        token = request.headers.get("Authorization")
-        if token and token.startswith("Bearer "):
-            try:
-                JWT = token.split(" ")[1]
-                payload = jwt.decode(JWT, settings.SECRET_KEY, algorithms=["HS256"])
-
-                parent = Parent.objects.get(user_id=payload["user_id"])
-
-                if parent and parent.verify:
-                    return JsonResponse(
-                        {
-                            "message": "Usuario verificado",
-                            "validCodeTeam": True,
-                        }
-                    )
-
-            except Exception as e:
-                print("Error: ", e)
-    return JsonResponse(
-        {
-            "message": "Debe esperar a que el entrenador acepte su solicitud.",
-            "validCodeTeam": False,
-        }
-    )
-
-
 # Comprobamos si en e token JWT está el
 # Generamos el token JWT
-def generateJWT(user, rol=None, codeTeamChecked=False):
+def generateJWT(user, rol=None):
     print("Creando token")
     if not user:
-        raise ValueError("User must be provided")
-    payload = {"user_id": user.id, "codeTeamChecked": codeTeamChecked}
+        print("Usuario no enviado")
+        return None
+    payload = {"user_id": user.id}
     if rol and rol in ["trainer", "parent"]:
         payload["rol"] = rol
 

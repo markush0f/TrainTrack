@@ -31,7 +31,7 @@
         <div class="mr-4">
           <label for="email" class="sr-only">Email</label>
           <div class="relative">
-            <input type="email" v-model="data.email"
+            <input type="text" v-model="data.email"
               class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-light-gray"
               placeholder="Email" />
           </div>
@@ -71,6 +71,21 @@
             class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-light-gray"
             placeholder="Segunda dirección (opcional)" />
       </div>
+      Equipo: 
+      <div class="mr-4">
+        <input type="text" v-model="data.teamCode"
+          class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-light-gray"
+          placeholder="Codigo de equipo" />
+    </div> 
+    <div class="mr-4">
+      <input type="text" v-model="data.teamPassword"
+        class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-light-gray"
+        placeholder="Contraseña de equipo" />
+  </div>
+  <p class="text-sm text-gray-500">
+    <router-link class="underline" to="/login">Ayuda sobre el equipo</router-link>
+  </p>
+    
       
 
       <div class="flex justify-between space-x-4">
@@ -106,7 +121,9 @@ const data = ref({
   "phone": "",
   "address1": "",
   "address2": "",
-  "DNI": ""
+  "DNI": "",
+  "teamCode": "",
+  "teamPassword": ""
 });
 
 const submitForm = async () => {

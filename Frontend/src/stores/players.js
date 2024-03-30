@@ -5,7 +5,6 @@ import { ref } from "vue";
 export const usePlayerStore = defineStore("player", () => {
   const players = ref([]);
   const playerMsg = ref(null);
-
   return {
     players,
     playerMsg,
@@ -25,3 +24,7 @@ export const useShowInsertPlayerStore = defineStore("insertplayer", () => {
     changeModal,
   };
 });
+
+// export const usePlayerStore = defineStore("showplayertxt", () =>{
+//   const
+// })

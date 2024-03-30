@@ -4,6 +4,7 @@
     <div class="w-full p-2 max-h-60 overflow-y-auto">
       <div class="b p-4 rounded-lg">
         <div class="mb-3">
+          Boton para eliminar una notificacion
           <template v-for="(notification, i) in notifications" :key="i">
             <div v-if="i % 2 === 0" class="flex mb-3 items-center justify-center">
               <div class="w-5/12 border border-main-green p-4 rounded-lg mr-3" :key="notification.id">

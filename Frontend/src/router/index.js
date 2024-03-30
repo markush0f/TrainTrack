@@ -35,7 +35,7 @@ const router = createRouter({
       name: "checkcodeteam",
       component: () => import("../views/teams/checkCodeTeamComponent.vue"),
       meta: {
-        requireAccountUser: true,
+        requireAuthUser: true,
       },
     },
     {
@@ -43,9 +43,8 @@ const router = createRouter({
       name: "trainer",
       component: () => import("../views/trainers/TrainerView.vue"),
       meta: {
-        requireAccountUser: true,
+        requireAuthUser: true,
         rol: "trainer",
-        // requireVerifyUser: true,
       },
     },
     {
@@ -53,8 +52,7 @@ const router = createRouter({
       name: "parent",
       component: () => import("../views/parents/ParentView.vue"),
       meta: {
-        requireAccountUser: true,
-        requireVerifyUser: true,
+        requireAuthUser: true,
         rol: "parent",
       },
     },
@@ -81,54 +79,36 @@ const { cookies } = useCookies();
 router.beforeEach(async (to, from, next) => {
   const token = cookies.get("token");
 
-  if (to.meta.requireAccountUser) {
+  if (to.meta.requireAuthUser) {
     const headers = {
       Authorization: `Bearer ${token}`,
     };
     try {
-      const res = await axios.post("/api/checkAccountUser", null, { headers });
+      const res = await axios.post("/api/authenticatejwt", null, { headers });
       console.log("Response Data:", res.data);
-      if (res.data.register) {
-        if (
-          (res.data.rol === "parent" && to.meta.rol === "parent") ||
-          (res.data.rol === "trainer" && to.meta.rol === "trainer") ||
-          to.path === "/checkcodeteam"
-        ) {
+      if (res.data.valid) {
+        // console.log("Rol:", res.data.rol);
+        if (res.data.rol === "parent" && to.meta.rol === "parent") {
           next();
-          return; 
+          return;
+        }
+        if (res.data.rol === "trainer" && to.meta.rol === "trainer") {
+          // console.log("Es un entrenador");
+          next();
+          return;
         }
       }
-      next("/signup");
+      next("/login");
       return;
     } catch (error) {
-      console.log("Error: ", error);
-      next("/signup");
+      console.log("Error al verificar el token:", error);
+      next("/login");
       return;
     }
+  } else {
+    next();
+    return;
   }
-  // Comprobamos si la verificacion del usuario es valida
-  if (to.meta.requireVerifyUser) {
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
-    try {
-      const res = await axios.post("/api/checkCodeTeam", null, { headers });
-      console.log(res.data);
-      if (res.data.validCodeTeam) {
-        next();
-        return; 
-      } else {
-        next("/");
-        return; 
-      }
-    } catch (error) {
-      console.log("Error: ", error);
-      next("/");
-      return; 
-    }
-  }
-  next(); 
-
-  // Comprobamos el rol del usuario para ver a que apartado puede acceder
 });
+
 export default router;

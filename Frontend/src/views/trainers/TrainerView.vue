@@ -20,17 +20,18 @@
         <!-- div de ultimas notificaciones -->
         <NotificationComponent class="border-b-4" />
         <!-- div de mensajes a los padres -->
-        <div class="flex">
-          <div class="flex p-4 border">
-            <SendSessionComponentTrainer />
-          </div>
-          <div class="flex p-4 border">
-            <RequestParentsComponents />
-          </div>
+
+        <div class="flex p-4 border">
+          <SendSessionComponentTrainer />
         </div>
+        <p class="text-center text-gray-400 text-2xl">Seleccione un jugador para acceder a sus características
+        </p>
       </div>
+
       <div class="w-1/4 p-4">
         <ListPlayersComponent />
+        <br>
+        <ListUnverifiedParents />
       </div>
     </div>
   </div>
@@ -43,11 +44,12 @@ import NotificationComponent from '@/components/teams/NotificationComponent.vue'
 import CalendarComponent from '@/components/teams/CalendarComponent.vue';
 import ListPlayersComponent from '@/components/players/ListPlayersComponent.vue';
 import SendSessionComponentTrainer from '@/components/trainers/SendSessionComponent.vue'
-import RequestParentsComponents from '@/components/trainers/RequestsParentsComponent.vue';
-import { listParentsByTrainer } from "@/services/parentsAPI";
+import ListUnverifiedParents from '@/components/parents/ListUnverifiedParents.vue'
+import { listParentsByTrainer, getUnverifiedParents } from "@/services/parentsAPI";
 import { onMounted, ref } from 'vue'
 
-onMounted(() => {
+
+onMounted(async () => {
   listParentsByTrainer()
 })
 </script>

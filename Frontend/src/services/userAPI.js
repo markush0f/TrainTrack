@@ -1,21 +1,20 @@
-import axios from 'axios';
+import axios from "axios";
 import { useCookies } from "vue3-cookies";
-import { useProfileStore, useRolStore } from '@/stores/profile';
-const URL = "http://127.0.0.1:8000/api/"
+import { useProfileStore, useRolStore } from "@/stores/profile";
+import { getUnverifiedParents } from "./parentsAPI";
+const URL = "http://127.0.0.1:8000/api/";
 const { cookies } = useCookies();
 
-// Solicitud de registro
+// Solicitud de registro de oadre
 export async function signup(data) {
-  const res = await axios.post(`${URL}signup`, data)
+  const res = await axios.post(`${URL}signup`, data);
   console.log("Datos enviados:", res.data);
   try {
     if (res) {
       console.log("Respuesta del servidor: ", res);
-      if (res.data.JWT && res.data.success) {
-        console.log('Token:', res.data.JWT);
-        // Almacenamos el token en las cookies
-        cookies.set('token', res.data.JWT)
-        window.location.href = "/checkcodeteam"
+      if (res.data.success) {
+        console.log("Success:", res.data.success);
+        window.location.href = "/home";
       }
     } else console.log("No hay respuesta del servidor");
     console.log("Datos enviado", res.data);
@@ -24,22 +23,21 @@ export async function signup(data) {
   }
 }
 
-// Solicitud de login
+// Solicitud de login de padre
 export async function login(data) {
   try {
-    const res = await axios.post(`${URL}login`, data)
+    const res = await axios.post(`${URL}login`, data);
     if (res) {
       console.log("Datos: ", res.data);
       console.log("Respuesta del servidor:", res);
       // Almacenamos el token en las cookies
       if (res.data.success) {
-        console.log('Token:', res.data.JWT);
-        cookies.set('token', res.data.JWT)
+        console.log("Token:", res.data.token);
+        cookies.set("token", res.data.token);
         if (res.data.rol == "trainer") {
-          window.location.href = "/trainer"
-        } else if (res.data.rol == "parent")
-          window.location.href = "/parent"
-        else window.location.href = "/"
+          window.location.href = "/trainer";
+        } else if (res.data.rol == "parent") window.location.href = "/parent";
+        else window.location.href = "/";
         // this.$router.push('/');
       }
     }
@@ -49,25 +47,25 @@ export async function login(data) {
 }
 // Solicitud de información del usuario
 export async function profile() {
-  const token = cookies.get('token')
+  const token = cookies.get("token");
   if (token) {
     // console.log("TOKEN:", token);
     try {
       const headers = {
-        'Authorization': `Bearer ${token}`
-      }
-      const res = await axios.get(`${URL}profile`, { headers })
+        Authorization: `Bearer ${token}`,
+      };
+      const res = await axios.get(`${URL}profile`, { headers });
       if (res) {
         // console.log('Datos: ', res.data);
-        const profileData = res.data.profile
-        const profile = useProfileStore()
-        profile.data.name = profileData.first_name
-        profile.data.surname = profileData.last_name
-        profile.data.email = profileData.email
-        profile.data.address1 = profileData.address1
-        profile.data.address2 = profileData.address2
-        profile.data.team = profileData.team
-        profile.data.childrens = "..."
+        const profileData = res.data.profile;
+        const profile = useProfileStore();
+        profile.data.name = profileData.first_name;
+        profile.data.surname = profileData.last_name;
+        profile.data.email = profileData.email;
+        profile.data.address1 = profileData.address1;
+        profile.data.address2 = profileData.address2;
+        profile.data.team = profileData.team;
+        profile.data.childrens = "...";
         // console.log(profile.getDataProfile());
       }
     } catch (e) {
@@ -78,16 +76,39 @@ export async function profile() {
 
 // Solicitud de JWT descodificado
 export async function decodeJWT() {
-  const token = cookies.get('token')
+  const token = cookies.get("token");
   const headers = {
-    'Authorization': `Bearer ${token}`
+    Authorization: `Bearer ${token}`,
   };
   try {
-    const res = await axios.post('/api/authenticatejwt', null, { headers });
+    const res = await axios.post("/api/authenticatejwt", null, { headers });
 
-    const rolStore = useRolStore()
-    rolStore.setRol(res.data.rol)
+    const rolStore = useRolStore();
+    rolStore.setRol(res.data.rol);
   } catch (e) {
     console.log("Error al cargar el token: ", e);
+  }
+}
+
+export async function manageRequestParent(decision, parentId) {
+  const token = cookies.get("token");
+  const data = {
+    decision: decision,
+    parentId: parentId,
+  };
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+  console.log(data);
+  try {
+    const res = await axios.post(`${URL}managerequestparent`, data, {
+      headers,
+    });
+    console.log("Data: ", res.data);
+    if (res.data.success) {
+      await getUnverifiedParents();
+    }
+  } catch (e) {
+    console.log("Error: ", e);
   }
 }

@@ -82,80 +82,147 @@ def createUser(data):
 
 
 @csrf_exempt
-def signupView(request):
-    # COMRPOBAR SI LOS DATOS SON LOS CORRECTOS
+def loginView(request):
     if request.method == "POST":
-        data = json.loads(request.body)
-        errors = {}
-        # Comprobamos si ya existe en la tabla User el email
-        for key, value in data.items():
-            if not value:
-                errors[f"{key}Empty"] = f"El campo {key} no puede estar vacio"
-            print(f"Key: {key}, Value: {value}")
-
-        if errors:
-            return JsonResponse({"Errors: ": errors})
-        # Arreglar esto
-        if "email" in data:
-            if User.objects.filter(email=data["email"]).exists():
-                return JsonResponse(
-                    {"Error": "Este correo electrónico ya está registrado."}
-                )
-        # Creamos el usuario en la base de datos User
-        user = createUser(data)
-        if user is not None:
-            print("Aqui si entra")
-            parent = Parent.objects.create(
-                user_id=user.id,
-                birth=data.get("birth"),
-                address1=data.get("address1"),
-                address2=data.get("address2"),
-                phone=data.get("phone"),
+        try:
+            data = json.loads(request.body)
+            user = authenticate(
+                request,
+                username=data.get("email", ""),
+                password=data.get("password", ""),
             )
-            if parent:
-                # return signupParent(request, user)
-                token = generateJWT(user)
+
+            if user is None:
                 return JsonResponse(
-                    {
-                        "success": "Debe esperar a que el entrenador confirme su registro, en cuanto confirme le llegará un correo electrónico.",
-                        "JWT": token,
-                    }
+                    {"error": "Correo electrónico o contraseña incorrectos"}
                 )
+
+            parent = Parent.objects.filter(user_id=user.id).first()
+            trainer = Trainer.objects.filter(user_id=user.id).first()
+
+            if parent:
+                if parent.verify != 0:
+                    login(request, user)
+                    rol = "parent"
+                    token = generateJWT(user, rol)
+                    if token:
+                        return JsonResponse(
+                            {"success": True, "token": token, "rol": rol}
+                        )
+                else:
+                    return JsonResponse({"denied": "Su cuenta no está verificada."})
+
+            elif trainer:
+                login(request, user)
+                rol = "trainer"
+                token = generateJWT(user, rol)
+                if token:
+                    return JsonResponse({"success": True, "token": token, "rol": rol})
+
+            else:
+                return JsonResponse(
+                    {"error": "No se encontró el perfil asociado al usuario."}
+                )
+
+        except json.JSONDecodeError:
+            return JsonResponse(
+                {"error": "JSON inválido proporcionado en el cuerpo de la solicitud."}
+            )
+
+        except Exception as e:
+            return JsonResponse({"error": str(e)})
+
+    return JsonResponse({"error": "Se requiere un método POST válido."})
+
+
+# Enviaremos los padres que no estan verificados
+def getUnverifiedParents(request):
+    if request.method == "GET":
+        try:
+            payload = decodeJWT(request)
+            user_id = payload.get("user_id")
+
+            if user_id:
+                unverifiedParents = Parent.objects.filter(verify=0)
+                # return JsonResponse({"error":unverifiedParents})
+                print(unverifiedParents)
+                if unverifiedParents:
+                    print("si existe")
+                    parentsData = [
+                        {
+                            "id": parent.id,
+                            "name": parent.user.first_name,
+                            "surname": parent.user.last_name,
+                            "DNI": parent.dni,
+                        }
+                        for parent in unverifiedParents
+                    ]
+                    return JsonResponse({"unverified": True, "parents": parentsData})
+                else:
+                    return JsonResponse(
+                        {
+                            "unverified": False,
+                            "message": "No hay padres no verificados para este usuario.",
+                        }
+                    )
+            else:
+                return JsonResponse(
+                    {"error": "Token JWT inválido o ausente."}, status=400
+                )
+
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+
+    return JsonResponse({"error": "Método no válido."}, status=405)
 
 
 @csrf_exempt
-def loginView(request):
+def manageRequestParent(request):
     if request.method == "POST":
-        data = json.loads(request.body)
-        user = authenticate(request, username=data["email"], password=data["password"])
-        if user is not None:
-            # Iniciamos sesión
-            login(request, user)
-            # Generamos el token
-            rol = "parent"
-            # parentUser = Parent.objects.filter(user_id=user.id).first()
-            # if parentUser:
-            #     rol = "parent"
-            # else:
-            #     trainerUser = Trainer.objects.filter(user_id=user.id).first()
-            #     if trainerUser:
-            #         rol = "trainer"
-            token = generateJWT(user, rol)
+        try:
+            data = json.loads(request.body)
+            decision = data.get("decision")
+            parentId = data.get("parentId")
+            # return JsonResponse({"error": data})
+            if decision is not None and parentId is not None:
+                parent = Parent.objects.filter(id=parentId).first()
 
-            if token:
-                return JsonResponse(
-                    {
-                        "success": True,
-                        "JWT": token,
-                        "rol": rol,
-                    },
-                    status=200,
-                )
+                if parent:
+                    if decision:
+                        print("Decisión aprobada")
+                        parent.verify = True
+                        parent.save()
+                        # Aquí puedes enviar un correo electrónico al padre
+                        return JsonResponse(
+                            {
+                                "accepted": "Padre aceptado correctamente",
+                                "success": True
+                            }
+                        )
+                    else:
+                        print("Decisión denegada")
+                        # user = User.objects.filter(id=parent.user).first()
+                        user = parent.user
+                        parent.delete()
+                        user.delete()
+                        # Aquí puedes enviar un correo electrónico al padre
+                        return JsonResponse(
+                            {
+                                "denied": "Padre no aceptado y eliminado correctamente",
+                                "success": True,
+                            }
+                        )
+
+                else:
+                    return JsonResponse(
+                        {"error": f"No se encontró el padre con el ID recibido"},
+                        status=400,
+                    )
             else:
-                return JsonResponse({"error": "El token no se ha podido crear"})
+                return JsonResponse({"error": "Faltan parámetros"}, status=400)
 
-        else:
-            return JsonResponse({"error": "Email o contraseña incorrectas"})
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
 
 
 @csrf_exempt
@@ -178,4 +245,4 @@ def profile(request):
             if payload["rol"] == "parent":
                 return profileParent(request, payload)
         except Exception as e:
-            return JsonResponse({"error": e})
+            return JsonResponse({"error": str(e)})
