@@ -3,11 +3,10 @@
   <!-- ESCUDOS -->
   <ListImgTeamsComponent />
   <!-- Div padre -->
-  <div class="flex h-full mt-16 ">
+  <div class="flex flex-col md:flex-row mt-16 h-full">
     <!-- divs hijos -->
-    <div class="flex flex-col gap-4 h-screen p-6 ">
+    <div class="flex flex-col gap-4 md:w-1/3 h-full p-6">
       <SelecCategory />
-
       <ClassificationTableComponent />
     </div>
     <!-- div de partidos -->
@@ -16,12 +15,12 @@
         <NextGamesComponent />
       </div>
       <!-- div de ranking de jugadores -->
-      <div class="justify-center p-4 ">
-
+      <div class="justify-center p-4">
         <RankingPlayersComponent />
       </div>
     </div>
-    <div class="w-1/3 justify-center p-4 pr-10">
+    <!-- div de federacion y registros -->
+    <div class="w-full md:w-1/3 justify-center p-4 pr-10">
       <!-- div de federacion -->
       <div class="justify-center p-4 flex">
         <div class="ml-4">
@@ -32,44 +31,28 @@
           <img src="../img/fcf.png" alt="Federacion" class="w-56">
         </div>
       </div>
-      <div>
-        <!-- REGISTRAR EQUIPO -->
-        <div class="justify-center p-4  ">
-          <router-link to="/checkcodeteam" class="max-w-xl w-full">
-            <div class="bg-gray-100 p-8 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
-              <h2 class="text-2xl font-semibold mb-4 ">Registrar equipo</h2>
-              <p class="text-gray-700">Registro de equipo para el acceso a crearse la cuenta.
-              </p>
-            </div>
-          </router-link>
-        </div>
-
-        <!-- PADRE -->
-        <div class="justify-center p-4 ">
-          <router-link to="/parent" class="max-w-xl w-full">
-            <div class="bg-gray-100 p-8 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
-              <h2 class="text-2xl font-semibold mb-4 ">Entrar como padre</h2>
-              <p class="text-gray-700">Si no tiene cuenta, primero registre el equipo al que pertence su hijo.
-              </p>
-            </div>
-          </router-link>
-        </div>
-
-        <!-- ENTRENADOR-->
-        <div class="justify-center p-4">
-          <router-link to="/trainer" class="max-w-xl w-full">
-            <div class="bg-gray-100 p-8 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
-              <h2 class="text-2xl font-semibold mb-4 ">Entrar como entrenador</h2>
-              <p class="text-gray-700">Si no tiene cuenta, primero registre el equipo al que pertence
-              </p>
-            </div>
-          </router-link>
-        </div>
+      <!-- PADRE -->
+      <div class="justify-center p-4 ">
+        <router-link to="/parent" class="max-w-xl w-full">
+          <div class="bg-gray-100 p-8 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+            <h2 class="text-2xl font-semibold mb-4 ">Entrar como padre</h2>
+            <p class="text-gray-700">Si no tiene cuenta, primero registre el equipo al que pertenece su hijo.</p>
+          </div>
+        </router-link>
+      </div>
+      <!-- ENTRENADOR -->
+      <div class="justify-center p-4">
+        <router-link to="/trainer" class="max-w-xl w-full">
+          <div class="bg-gray-100 p-8 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+            <h2 class="text-2xl font-semibold mb-4 ">Entrar como entrenador</h2>
+            <p class="text-gray-700">Si no tiene cuenta, primero registre el equipo al que pertenece.</p>
+          </div>
+        </router-link>
       </div>
     </div>
   </div>
-
 </template>
+
 
 <script setup>
 import NavBar from '../components/layouts/NavbarComponent.vue';

@@ -2,10 +2,11 @@ from django.http import JsonResponse
 from rest_framework import viewsets
 from .models import Message
 import json
-from members.utils import  decodeJWT
+from members.utils import decodeJWT
 from members.models import *
 from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
+
 
 class SessionViewSet(viewsets.ModelViewSet):
     queryset = Message.objects.all()
@@ -168,6 +169,7 @@ def listNotifications(request):
                     if notification.notification_title and notification.notification:
                         data.append(
                             {
+                                "id": notification.id,
                                 "title": notification.notification_title,
                                 "notification": notification.notification,
                                 "created_at": notification.created_at,
@@ -183,3 +185,30 @@ def listNotifications(request):
             return JsonResponse({"error": "Acceso no autorizado"}, status=403)
     else:
         return JsonResponse({"error": "Método no permitido"}, status=405)
+
+@csrf_exempt
+def removeNotification(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            payload = decodeJWT(request)
+            if payload["rol"] == "trainer":
+                notification = Message.objects.filter(id=data.get("id")).first()
+                if notification:
+                    notification.delete()
+                    return JsonResponse({"success": "Notificación eliminada."})
+                else:
+                    return JsonResponse(
+                        {"error": "La notificación no existe."}, status=404
+                    )
+            else:
+                return JsonResponse(
+                    {"error": "No tienes permisos para realizar esta acción."},
+                    status=403,
+                )
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Datos JSON no válidos."}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+    else:
+        return JsonResponse({"error": "Método no permitido."}, status=405)

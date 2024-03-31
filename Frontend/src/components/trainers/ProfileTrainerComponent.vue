@@ -31,7 +31,6 @@
 <script setup>
 
 import { useProfileStore } from '@/stores/profile';
-
 // Cambiar la solicitud a app para que no realize una peticion cada vez que pulse en el perfil
 const profileStore = useProfileStore();
 const profileData = profileStore.data

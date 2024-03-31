@@ -5,9 +5,11 @@ import { ref } from "vue";
 export const usePlayerStore = defineStore("player", () => {
   const players = ref([]);
   const playerMsg = ref(null);
+  const player = ref({});
   return {
     players,
     playerMsg,
+    player,
   };
 });
 

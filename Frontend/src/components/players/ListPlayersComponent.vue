@@ -8,13 +8,12 @@
 
         <i class="fi fi-rr-envelope cursor-pointer flex-shrink-0 mr-2 text-main-green text-lg w-8 h-8 hover:text-green-700"
           @click="selectMessagePlayer(player)"></i>
-          
+
         <i class="fi-rr-file-user cursor-pointer flex-shrink-0 text-main-green text-lg w-8 h-8 hover:text-green-700"
-          @click="getInfoPlayer(player)"></i>
+          @click="selectPlayer(player)"></i>
       </li>
     </ul>
 
-    <!-- Botón fuera del contenedor de la lista -->
     <button @click="storeShowPlayer.showInsertPlayer = true"
       class="w-full bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-2 ">
       Nuevo jugador
@@ -33,7 +32,6 @@ import InsertPlayerComponent from './InsertPlayerComponent.vue';
 import { listPlayers } from '@/services/playersAPI';
 import { useShowInsertPlayerStore, usePlayerStore } from '@/stores/players';
 
-
 const playerStore = usePlayerStore();
 const storeShowPlayer = useShowInsertPlayerStore();
 const player = ref({});
@@ -43,6 +41,12 @@ function selectMessagePlayer(newPlayer) {
   playerStore.playerMsg = newPlayer;
   player.value = newPlayer;
 }
+
+function selectPlayer(newPlayer) {
+  console.log("Player seleccionado: ", newPlayer);
+  playerStore.player = newPlayer;
+}
+
 
 onMounted(async () => {
   await listPlayers()

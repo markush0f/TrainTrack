@@ -1,34 +1,32 @@
 <template>
   <div class="min-h-screen">
     <NavbarComponent />
-    <div class="flex mt-16"> <!-- Ajuste el margin-top según sea necesario -->
-      <!-- div que recoge el escudo y la clasificacion -->
-      <div class="flex flex-col gap-4 h-screen p-6">
-        <!-- div del Escudo del equipo -->
+    <div class="flex flex-col md:flex-row mt-16">
+      <!-- División izquierda: Escudo del equipo y Clasificación -->
+      <div class="flex flex-col gap-4 md:w-1/4 h-full p-6">
+        <!-- Escudo del equipo -->
         <!-- <div class="justify-center p-4 border border-gray-400">
           aquí va el escudo del equipo
         </div> -->
-        <!-- div de la clasificacion -->
+        <!-- Clasificación -->
         <div>
           <ClassificationTableComponent />
         </div>
       </div>
-      <!-- div que recoge horarios de entrenamiento, ultimas noticias y mensajes a los padres -->
+      <!-- División central: Calendario de entrenamiento, últimas notificaciones y mensajes -->
       <div class="flex-grow justify-center p-4">
-        <!-- Calendario de entrenamiento-->
+        <!-- Calendario de entrenamiento -->
         <CalendarComponent />
-        <!-- div de ultimas notificaciones -->
+        <!-- Últimas notificaciones -->
         <NotificationComponent class="border-b-4" />
-        <!-- div de mensajes a los padres -->
-
+        <!-- Mensajes a los padres -->
         <div class="flex p-4 border">
           <SendSessionComponentTrainer />
         </div>
-        <p class="text-center text-gray-400 text-2xl">Seleccione un jugador para acceder a sus características
-        </p>
+        <p class="text-center text-gray-400 text-2xl">Seleccione un jugador para acceder a sus características</p>
       </div>
-
-      <div class="w-1/4 p-4">
+      <!-- División derecha: Lista de jugadores y padres no verificados -->
+      <div class="w-full md:w-1/4 p-4">
         <ListPlayersComponent />
         <br>
         <ListUnverifiedParents />
@@ -36,8 +34,9 @@
     </div>
   </div>
 </template>
-
 <script setup>
+
+
 import NavbarComponent from '@/components/layouts/NavbarComponent.vue';
 import ClassificationTableComponent from '@/components/teams/ClassificationTableComponent.vue';
 import NotificationComponent from '@/components/teams/NotificationComponent.vue';
