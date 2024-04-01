@@ -21,16 +21,17 @@
           </li>
           <li>
             <router-link to="/" class="block py-2 px-3 md:p-0 text-main-green text-xl rounded 
+            hover:bg-transparent md:hover:text-dark-green">Competiciones</router-link>
+          </li>
+          <li>
+            <router-link to="/" class="block py-2 px-3 md:p-0 text-main-green text-xl rounded 
             hover:bg-transparent md:hover:text-dark-green">AYUDA</router-link>
           </li>
           <li>
             <router-link to="/" class="block py-2 px-3 md:p-0 text-main-green text-xl rounded 
             hover:bg-transparent md:hover:text-dark-green">CONTACTO</router-link>
           </li>
-          <li>
-            <router-link to="/" class="block py-2 px-3 md:p-0 text-main-green text-xl rounded 
-            hover:bg-transparent md:hover:text-dark-green">SOBRE NOSOTROS</router-link>
-          </li>
+
         </ul>
       </div>
     </div>

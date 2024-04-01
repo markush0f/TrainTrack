@@ -179,12 +179,42 @@ def listNotifications(request):
             except Exception as e:
                 print("Error:", e)
                 return JsonResponse(
-                    {"error": "Error al recuperar las notificaciones"}, status=500
+                    {"error": str(e)}, status=500
                 )
         else:
             return JsonResponse({"error": "Acceso no autorizado"}, status=403)
     else:
         return JsonResponse({"error": "Método no permitido"}, status=405)
+
+
+# Mostramos las sesiones o mensajes enviados de entrenador a padre
+@csrf_exempt
+def listSessions(request):
+    if request.method == "POST":
+        if payload["rol"] == "parent":
+            try:
+                payload = decodeJWT(request)
+                parent = Parent.objects.filter(user_id=payload["user_id"]).first()
+                sessions = Message.objects.filter(parent_id=parent.id)
+                data = []
+                for session in sessions:
+                    if session.session_title and session.session_description:
+                        data.append(
+                            {
+                                "id": session.id,
+                                "title": session.session_title,
+                                "session": session.session_description,
+                                "created_at": session.created_at,
+                            }
+                        )
+                    if data:
+                        return JsonResponse({"sessions": data}, status=200)
+                    return JsonResponse({"none": "No hay sessiones"})
+            except Exception as e:
+                return JsonResponse({"error": str(e)})
+    else:
+        return JsonResponse({"error": "No tiene autorización."}, status=403)
+
 
 @csrf_exempt
 def removeNotification(request):

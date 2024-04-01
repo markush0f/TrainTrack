@@ -23,6 +23,7 @@ const rolStore = useRolStore()
 const categoryStore = useCategoryStore();
 const rol = ref('')
 rol.value = rolStore.getRol();
+
 onMounted(() => {
   // playersByCategory()
   if (token) {

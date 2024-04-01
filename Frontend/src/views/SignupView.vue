@@ -86,7 +86,6 @@
     <router-link class="underline" to="/login">Ayuda sobre el equipo</router-link>
   </p>
     
-      
 
       <div class="flex justify-between space-x-4">
         <button type="submit" class="w-1/2 rounded-lg bg-main-green px-4 py-2 text-sm font-medium text-white">

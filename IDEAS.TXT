@@ -1,0 +1,7 @@
+El entrenador puede poner eventos en el calendario y que llegue al usuario
+Crear una tabla donde haya una clave foranea entre el jugador y el entrenador y salga la información del evento producido
+por el entrenador.
+Cada vez que un entrenador o un padre envíe un mensaje, que se envíe un correo electrónico
+Que los entrenadores lleven un registro de asistencia
+Foros y grupos de discuciones
+Subir documentos(este al final)

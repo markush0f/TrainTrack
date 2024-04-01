@@ -42,10 +42,10 @@ const router = createRouter({
       path: "/trainer",
       name: "trainer",
       component: () => import("../views/trainers/TrainerView.vue"),
-      meta: {
-        requireAuthUser: true,
-        rol: "trainer",
-      },
+      // meta: {
+      //   requireAuthUser: true,
+      //   rol: "trainer",
+      // },
     },
     {
       path: "/parent",

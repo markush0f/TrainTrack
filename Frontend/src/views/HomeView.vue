@@ -1,22 +1,22 @@
 <template>
   <NavBar />
   <!-- ESCUDOS -->
+  
   <ListImgTeamsComponent />
-  <!-- Div padre -->
   <div class="flex flex-col md:flex-row mt-16 h-full">
-    <!-- divs hijos -->
     <div class="flex flex-col gap-4 md:w-1/3 h-full p-6">
       <SelecCategory />
       <ClassificationTableComponent />
+      <RankingPlayersComponent />
     </div>
     <!-- div de partidos -->
     <div class="flex-grow justify-center p-4">
-      <div class="justify-center p-4 pl-4">
+      <!-- <div class="justify-center p-4 pl-4">
         <NextGamesComponent />
-      </div>
+      </div> -->
       <!-- div de ranking de jugadores -->
       <div class="justify-center p-4">
-        <RankingPlayersComponent />
+        
       </div>
     </div>
     <!-- div de federacion y registros -->
@@ -56,8 +56,6 @@
 
 <script setup>
 import NavBar from '../components/layouts/NavbarComponent.vue';
-import NextGamesComponent from '@/components/teams/NextGamesComponent.vue';
-import Pie from '../components/layouts/FooterComponent.vue'
 import RankingPlayersComponent from '@/components/players/RankingPlayersComponent.vue';
 import { ref, } from 'vue';
 import ClassificationTableComponent from '@/components/teams/ClassificationTableComponent.vue';
