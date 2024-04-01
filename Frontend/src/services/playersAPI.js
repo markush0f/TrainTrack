@@ -19,8 +19,6 @@ export async function listPlayers() {
         playerStore.players = res.data.players;
         console.log(playerStore.players);
         return res.data.players;
-        // playerStore.setPlayer(res.data.players);
-        // return res.data.players
       }
     } catch (e) {
       console.log("Error:", e);

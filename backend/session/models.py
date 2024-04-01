@@ -3,7 +3,7 @@ from datetime import datetime
 from members.models import *
 
 
-class Message(models.Model):
+class Events(models.Model):
 
     # Un entrenador puede escribir varias sesiones
     trainer = models.ForeignKey(
@@ -11,7 +11,7 @@ class Message(models.Model):
         on_delete=models.CASCADE,
         related_name="get_trainers_session",
         verbose_name="Trainer",
-        default=1,
+        null=True,
     )
 
     # Un jugador puede tener una o muchas sesiones
@@ -20,14 +20,19 @@ class Message(models.Model):
         on_delete=models.CASCADE,
         related_name="get_players_session",
         verbose_name="Players",
-        default=1,
+        null=True,
     )
-    session_title = models.CharField(max_length=300, null=True, blank=True)
+    title = models.CharField(max_length=300, null=300, blank=True)
+    # Sesión de entrenador a padre
     session_description = models.CharField(max_length=300, null=True, blank=True)
-    notification_title = models.CharField(max_length=300, null=True, blank=True)
+    # Notificación de padre a entrenador
     notification = models.CharField(max_length=300, null=True, blank=True)
-    notice_title = models.CharField(max_length=300, null=True, blank=True)
+    # Aviso de entrenador a padre
     notice = models.CharField(max_length=300, null=True, blank=True)
+    # Evento global para todos los padres.
+    event = models.CharField(max_length=300, null=True, blank=True)
+    # dia que se producirá el evento
+    day_event = models.CharField(max_length=300, null=True, blank=True)
     created_at = models.DateField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):

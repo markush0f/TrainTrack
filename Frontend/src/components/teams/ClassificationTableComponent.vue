@@ -2,7 +2,7 @@
   <div class="rounded-md overflow-hidden mb-2">
     <table class="table-auto">
       <thead>
-        <tr class="bg-main-green border-2 border-dark-green">
+        <tr class="bg-main-green border-2 border-dark-green ">
           <th class="px-4 py-2 text-white" colspan="2">Club</th>
           <th class="px-4 py-2 text-white">PJ</th>
           <th class="px-4 py-2 text-white">W</th>
@@ -12,7 +12,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(team, index) in teams" class="border-2 border-third-green">
+        <tr v-for="(team, index) in teams" class="rounded-full border-2 border-third-green">
           <td class="px-4 py-2">{{ index + 1 }}.</td>
           <td class="px-4 py-2 pr-8">{{ team.name }}</td>
           <td class="px-4 py-2">{{ team.matchPlayed }}</td>

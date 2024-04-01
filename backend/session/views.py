@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from rest_framework import viewsets
-from .models import Message
+from .models import Events
 import json
 from members.utils import decodeJWT
 from members.models import *
@@ -9,8 +9,8 @@ from datetime import datetime
 
 
 class SessionViewSet(viewsets.ModelViewSet):
-    queryset = Message.objects.all()
-    serializer_class = Message
+    queryset = Events.objects.all()
+    serializer_class = Events
 
 
 # Mensaje de padre al entrenador
@@ -23,8 +23,8 @@ def writeNotification(request):
         try:
             parent = Parent.objects.get(user_id=payload["user_id"])
             player = Player.objects.get(parent_id=parent.id)
-            message = Message.objects.create(
-                notification_title=data["title"],
+            message = Events.objects.create(
+                title=data["title"],
                 notification=data["notification"],
                 player_id=player.id,
             )
@@ -54,10 +54,10 @@ def writeSession(request):
                 if title and session:
                     trainer = Trainer.objects.get(user_id=payload["user_id"])
                     if trainer:
-                        session = Message.objects.create(
-                            session_title=title,
+                        session = Events.objects.create(
+                            title=title,
                             session_description=session,
-                            player_id=1,
+                            player_id=data["player_id"],
                             trainer_id=trainer.id,
                         )
                         return JsonResponse({"success": "Sesión creada"})
@@ -84,7 +84,7 @@ def writeSession(request):
 @csrf_exempt
 # Enviar aviso de padre a entrenador
 def sendNotice(request):
-
+    
     if request.method == "POST":
         payload = decodeJWT(request)
 
@@ -128,9 +128,9 @@ def sendNotice(request):
 
             title, message = notifications[notice_type]
 
-            session = Message.objects.create(
+            session = Events.objects.create(
                 notification=message,
-                notification_title=title,
+                title=title,
                 # notification_create
                 player_id=player.id,
                 trainer_id=parent.trainer_id,
@@ -163,14 +163,14 @@ def listNotifications(request):
         if payload["rol"] == "trainer":
             try:
                 trainer = Trainer.objects.get(user_id=payload["user_id"])
-                notifications = Message.objects.filter(trainer_id=trainer.id)
+                notifications = Events.objects.filter(trainer_id=trainer.id)
                 data = []
                 for notification in notifications:
-                    if notification.notification_title and notification.notification:
+                    if notification.title and notification.notification:
                         data.append(
                             {
                                 "id": notification.id,
-                                "title": notification.notification_title,
+                                "title": notification.title,
                                 "notification": notification.notification,
                                 "created_at": notification.created_at,
                             }
@@ -195,14 +195,14 @@ def listSessions(request):
             try:
                 payload = decodeJWT(request)
                 parent = Parent.objects.filter(user_id=payload["user_id"]).first()
-                sessions = Message.objects.filter(parent_id=parent.id)
+                sessions = Events.objects.filter(parent_id=parent.id)
                 data = []
                 for session in sessions:
-                    if session.session_title and session.session_description:
+                    if session.title and session.session_description:
                         data.append(
                             {
                                 "id": session.id,
-                                "title": session.session_title,
+                                "title": session.title,
                                 "session": session.session_description,
                                 "created_at": session.created_at,
                             }
@@ -223,7 +223,7 @@ def removeNotification(request):
             data = json.loads(request.body)
             payload = decodeJWT(request)
             if payload["rol"] == "trainer":
-                notification = Message.objects.filter(id=data.get("id")).first()
+                notification = Events.objects.filter(id=data.get("id")).first()
                 if notification:
                     notification.delete()
                     return JsonResponse({"success": "Notificación eliminada."})

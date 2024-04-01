@@ -3,9 +3,9 @@ import { inject } from "vue";
 import { ref } from "vue";
 
 export const usePlayerStore = defineStore("player", () => {
-  const players = ref([]);
+  const players = ref({});
   const playerMsg = ref(null);
-  const player = ref({});
+  const player = ref(null);
   return {
     players,
     playerMsg,

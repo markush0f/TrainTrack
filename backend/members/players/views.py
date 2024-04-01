@@ -21,11 +21,14 @@ def playersByTeams(request):
                         # Aquí agregamos cada jugador a la lista, en lugar de sobrescribir la lista en cada iteración
                         playerList.append(
                             {
+                                "id": player.id,
                                 "name": player.name,
                                 "surname": player.surname,
                                 "parent": player.parent.user.first_name,
                                 "position": "Delantero",
                                 "goals": 34,
+                                "address1": player.parent.address1,
+                                "address2": player.parent.address2,
                             }
                         )
                     # Luego retornamos la lista completa de jugadores
@@ -71,13 +74,14 @@ def playersByCategory(request):
                     )
             return JsonResponse({"players": playersList})
         else:
-            return JsonResponse({"error": "Category not provided"}, status=400)
+            return JsonResponse({"error": "Categoría no encontrada"}, status=400)
     else:
-        return JsonResponse({"error": "Only GET requests are allowed"}, status=405)
+        return JsonResponse({"error": "Método no válido"}, status=405)
 
 
 @csrf_exempt
 def players(request):
+    # Creamos un jugador
     if request.method == "POST":
         data = json.loads(request.body)
         payload = decodeJWT(request)

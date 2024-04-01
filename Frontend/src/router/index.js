@@ -42,19 +42,19 @@ const router = createRouter({
       path: "/trainer",
       name: "trainer",
       component: () => import("../views/trainers/TrainerView.vue"),
-      // meta: {
-      //   requireAuthUser: true,
-      //   rol: "trainer",
-      // },
+      meta: {
+        requireAuthUser: true,
+        rol: "trainer",
+      },
     },
     {
       path: "/parent",
       name: "parent",
       component: () => import("../views/parents/ParentView.vue"),
-      meta: {
-        requireAuthUser: true,
-        rol: "parent",
-      },
+      // meta: {
+      //   requireAuthUser: true,
+      //   rol: "parent",
+      // },
     },
     {
       path: "/trainer/perfil",
@@ -71,7 +71,11 @@ const router = createRouter({
       name: "insert_childrens",
       component: InsertPlayerComponent,
     },
-    {},
+    {
+      path: "/new",
+      name: "new_home",
+      component: () =>import("@/views/NewHomeView.vue")
+    },
   ],
 });
 

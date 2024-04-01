@@ -84,7 +84,7 @@
 <script setup>
 import NavbarComponent from '@/components/layouts/NavbarComponent.vue';
 import ClassificationTableComponent from '@/components/teams/ClassificationTableComponent.vue';
-import CalendarComponent from '@/components/teams/CalendarComponent.vue';
+// import CalendarComponent from '@/components/teams/CalendarComponent.vue';
 import NotificationComponent from '@/components/teams/NotificationComponent.vue';
 import SendNoticeComponent from '@/components/parents/SendNoticeComponent.vue';
 import { ref } from 'vue';

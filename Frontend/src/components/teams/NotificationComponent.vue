@@ -1,5 +1,6 @@
 <template>
-  <div class="justify-center p-3">
+  <div v-if="notificationsStore.notifications && notificationsStore.notifications.length > 0"
+    class="justify-center p-3">
     <h2 class="text-center font-bold mb-4">Notificaciones recientes</h2>
     <div class="w-full p-2 max-h-60 overflow-y-auto">
       <div class="b p-4 rounded-lg">
@@ -30,12 +31,14 @@
                 <p class="text-sm">{{ notificationsStore.notifications[i + 1].notification }}</p>
                 <span class="text-xs">{{ notificationsStore.notifications[i + 1].created_at }}</span>
               </div>
-
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
+  <div v-else>
+    <h2 class="text-center font-bold mb-4">No hay notificaciones recientes</h2>
   </div>
 </template>
 

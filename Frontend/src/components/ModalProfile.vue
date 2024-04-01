@@ -1,9 +1,7 @@
 <template>
   <div class="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
-
     <ProfileTrainerComponent v-if="rol == 'trainer'" />
     <ProfileParentComponent v-if="rol == 'parent'" />
-
   </div>
 </template>
 

@@ -2,12 +2,10 @@
   <div>
     <h2 class="text-lg font-bold mb-4">Jugadores</h2>
     <ul class="w-full overflow-y-auto max-h-80">
+
       <li v-for="player in playerStore.players" :key="player.id"
         class="flex items-center justify-between border-b border-gray-300 py-1">
         <span class="flex-grow">{{ player.name }} {{ player.surname }}</span>
-
-        <i class="fi fi-rr-envelope cursor-pointer flex-shrink-0 mr-2 text-main-green text-lg w-8 h-8 hover:text-green-700"
-          @click="selectMessagePlayer(player)"></i>
 
         <i class="fi-rr-file-user cursor-pointer flex-shrink-0 text-main-green text-lg w-8 h-8 hover:text-green-700"
           @click="selectPlayer(player)"></i>
@@ -36,20 +34,17 @@ const playerStore = usePlayerStore();
 const storeShowPlayer = useShowInsertPlayerStore();
 const player = ref({});
 
-function selectMessagePlayer(newPlayer) {
-  console.log(newPlayer);
-  playerStore.playerMsg = newPlayer;
-  player.value = newPlayer;
-}
 
 function selectPlayer(newPlayer) {
-  console.log("Player seleccionado: ", newPlayer);
   playerStore.player = newPlayer;
+  console.log(playerStore.player);
+  player.value = newPlayer;
 }
 
 
 onMounted(async () => {
   await listPlayers()
+  console.log("Jugadores: ",playerStore.players);
 });
 
 
