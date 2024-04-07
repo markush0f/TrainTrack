@@ -5,8 +5,10 @@
 
       <li v-for="player in playerStore.players" :key="player.id"
         class="flex items-center justify-between border-b border-gray-300 py-1">
-        <span class="flex-grow">{{ player.name }} {{ player.surname }}</span>
-
+        <span class="flex-grow"
+          :class="{ 'playerSelected': playerStore && playerStore.player && playerStore.player.id === player.id }">
+          {{ player.name }} {{ player.surname }}
+        </span>
         <i class="fi-rr-file-user cursor-pointer flex-shrink-0 text-main-green text-lg w-8 h-8 hover:text-green-700"
           @click="selectPlayer(player)"></i>
       </li>
@@ -44,8 +46,15 @@ function selectPlayer(newPlayer) {
 
 onMounted(async () => {
   await listPlayers()
-  console.log("Jugadores: ",playerStore.players);
+  console.log("Jugadores: ", playerStore.players);
 });
 
 
 </script>
+
+<style scoped lang="css">
+.playerSelected {
+  color: green;
+  font-weight: bold
+}
+</style>

@@ -31,7 +31,7 @@ onMounted(() => {
     decodeJWT()
     // listNotifications()
     // categoryStore.setCategory('prebenjamin')
-    profile()
+    // profile()
   }
 });
 

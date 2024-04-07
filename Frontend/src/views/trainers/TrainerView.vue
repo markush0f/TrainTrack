@@ -17,7 +17,7 @@
       <div class="flex-grow justify-center p-4">
         <!-- Calendario de entrenamiento -->
         <!-- Últimas notificaciones -->
-        <NotificationComponent class="border-b-4" />
+        <ListNotificationsTrainerComponent class="border-b-4" />
         <!-- Mensajes a los padres -->
         <div class="flex flex-col p-4">
           <div v-if="playerStore.player != null">
@@ -46,18 +46,18 @@
 
 import NavbarComponent from '@/components/layouts/NavbarComponent.vue';
 import ClassificationTableComponent from '@/components/teams/ClassificationTableComponent.vue';
-import NotificationComponent from '@/components/teams/NotificationComponent.vue';
+import ListNotificationsTrainerComponent from '@/components/trainers/ListNotificationTrainerComponent.vue'
 import ListPlayersComponent from '@/components/players/ListPlayersComponent.vue';
 import SendSessionComponentTrainer from '@/components/trainers/SendSessionComponent.vue'
 import ListUnverifiedParents from '@/components/parents/ListUnverifiedParents.vue'
 import { listParentsByTrainer } from "@/services/parentsAPI";
 import PlayerInfoComponent from '@/components/players/PlayerInfoComponent.vue';
 import PlayerStatsComponent from '@/components/players/PlayerStatsComponent.vue'
-import { onMounted, ref } from 'vue'
+import { onMounted } from 'vue'
 import { usePlayerStore } from '@/stores/players';
 const playerStore = usePlayerStore();
+
 onMounted(async () => {
-  0
   listParentsByTrainer()
 })
 

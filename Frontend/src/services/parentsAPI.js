@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useCookies } from "vue3-cookies";
-
+import { useSessionStore } from "@/stores/sessions";
 const { cookies } = useCookies();
 const URL = "http://127.0.0.1:8000/api/";
 
@@ -79,9 +79,32 @@ export async function getUnverifiedParents() {
       }
     } catch (e) {
       console.log("Error: ", e);
-      return null; 
+      return null;
     }
   } else {
-    return null; 
+    return null;
+  }
+}
+
+// Solicitamos todas las notificaciones del entrenador al padre
+export async function getAllSessions() {
+  const token = cookies.get("token");
+  if (token) {
+    try {
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+
+      const res = await axios.post(`${URL}trainer/listsessions`, { headers });
+      if (res.data.session) {
+        console.log("Sessione:", res.data);
+        useSessionStore.session = res.data.session;
+      } else {
+        console.log("No hay sessiones.");
+        useSessionStore.session = null;
+      }
+    } catch (e) {
+      console.log("Error:", e);
+    }
   }
 }

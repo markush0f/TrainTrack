@@ -22,4 +22,5 @@ urlpatterns = [
         views.removeNotification,
         name="remove_notification",
     ),
+    path("parent/listsessions", views.listSessions, name="listSessions"),
 ]

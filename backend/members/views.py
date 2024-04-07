@@ -196,7 +196,7 @@ def manageRequestParent(request):
                         return JsonResponse(
                             {
                                 "accepted": "Padre aceptado correctamente",
-                                "success": True
+                                "success": True,
                             }
                         )
                     else:
@@ -228,6 +228,7 @@ def manageRequestParent(request):
 @csrf_exempt
 def logoutView(request):
     if request.method == "POST":
+
         # data = json.loads(request.body)
         logout(request)
         # Eliminar el token
