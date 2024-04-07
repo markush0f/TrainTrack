@@ -9,29 +9,28 @@
 import { RouterLink, RouterView } from "vue-router";
 import { ref, onMounted } from "vue";
 import { profile } from '@/services/userAPI';
-import { decodeJWT } from "@/services/userAPI";
+// import { decodeJWT } from "@/services/userAPI";
 import { useCookiesStore } from "./stores/cookies";
-import { useRolStore } from "./stores/profile";
 import { useCategoryStore } from "./stores/category";
+import { useProfileStore } from "./stores/profile";
+import { usePlayerStore } from "./stores/players";
 // import { playersByCategory } from '@/services/playersAPI';
 
-
-const cookie = useCookiesStore()
-const token = cookie.getCookie('token')
-const rolStore = useRolStore()
-
+const cookie = useCookiesStore();
+const token = cookie.getCookie('token');
 const categoryStore = useCategoryStore();
-const rol = ref('')
-rol.value = rolStore.getRol();
+const profileStore = useProfileStore();
+const playerStore = usePlayerStore()
 
-onMounted(() => {
-  // playersByCategory()
+onMounted(async () => {
   if (token) {
-    // console.log("Hay token");
-    decodeJWT()
-    // listNotifications()
-    // categoryStore.setCategory('prebenjamin')
-    // profile()
+    categoryStore.setCategory('prebenjamin')
+    await profile()
+    if (profileStore.data.childrens) {
+      console.log(profileStore.data);
+      playerStore.player = profileStore.data.childrens
+      console.log(playerStore.player);
+    }
   }
 });
 

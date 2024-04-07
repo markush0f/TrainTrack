@@ -13,9 +13,8 @@
       </div>
     </div>
     <div class="flex-grow justify-center p-4 overflow-y-auto">
-      <h2 class="text-center font-bold mb-4">Notificaciones recientes</h2>
-      <ListSessionsParent />
-
+      <ListSessionsParent class="border-b-4"/>
+      <PlayerInfoComponent />
     </div>
 
     <div class="w-1/4 p-4 overflow-y-auto">
@@ -28,7 +27,7 @@
           hijo</button><br><br>
         <!-- div de form para enviar aviso al entrenador. -->
         <div class="justify-center p-4">
-          <SendNoticeComponent />
+          <SendNoticeComponent/>
           <div class="justify-center p-4">
             <h2 class="text-lg font-bold text-center p-2">Enviar mensaje al entrenador</h2><br>
             <form @submit.prevent="submitForm">
@@ -63,8 +62,16 @@ import NavbarComponent from '@/components/layouts/NavbarComponent.vue';
 import ClassificationTableComponent from '@/components/teams/ClassificationTableComponent.vue';
 import SendNoticeComponent from '@/components/parents/SendNoticeComponent.vue';
 import ListSessionsParent from '@/components/parents/ListSessionsParent.vue'
-import { ref } from 'vue';
-
-
+import { ref, onMounted } from 'vue';
+import PlayerInfoComponent from '@/components/players/PlayerInfoComponent.vue';
+import { usePlayerStore } from '@/stores/players';
+import { useProfileStore } from '@/stores/profile';
+const playerStore = usePlayerStore()
+const profileStore = useProfileStore()
+onMounted(() => {
+  playerStore.player = profileStore.childrens
+  console.log("Player: ");
+  console.log(playerStore);
+})
 
 </script>

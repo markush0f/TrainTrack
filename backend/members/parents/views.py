@@ -6,6 +6,7 @@ from members.utils import decodeJWT, generateJWT
 from members.models import Parent, Trainer
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
+from members.models import Player
 
 
 def createParent(data, user_id):
@@ -81,8 +82,6 @@ def signupViewParent(request):
     return JsonResponse({"error": "Se requiere un método POST válido."})
 
 
-
-
 # Recogemos los padres segúun al entrenador al que pertenecen
 def parentsByTrainer(request):
     if request.method == "GET":
@@ -108,11 +107,18 @@ def parentsByTrainer(request):
 
 
 def profileParent(request, payload):
-    payload = decodeJWT(request)
     try:
         user = User.objects.get(id=payload["user_id"])
         parent = Parent.objects.get(user_id=payload["user_id"])
-        team = Team.objects.get(id=parent.trainer.team)
+        team = Team.objects.get(id=parent.trainer.team_id)
+        player = Player.objects.get(parent=parent.id)
+        if player:
+            playerData = {
+                "id": player.id,
+                "name": player.name,
+                "surname": player.surname,
+                "team": team.name,
+            }
         profile = {
             "first_name": user.first_name,
             "last_name": user.last_name,
@@ -120,6 +126,8 @@ def profileParent(request, payload):
             "address1": parent.address1,
             "address2": parent.address2,
             "team": (team.name if team else "Sin equipo"),
+            "rol": "parent",
+            "childrens": playerData,
         }
         return JsonResponse({"profile": profile}, safe=False)
     except User.DoesNotExist:
@@ -128,4 +136,3 @@ def profileParent(request, payload):
         return JsonResponse("Padre no encontrado", status=404)
     except Team.DoesNotExist:
         return JsonResponse("Equipo no encontrado", status=404)
-

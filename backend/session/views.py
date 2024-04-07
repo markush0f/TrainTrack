@@ -84,7 +84,7 @@ def writeSession(request):
 @csrf_exempt
 # Enviar aviso de padre a entrenador
 def sendNotice(request):
-    
+
     if request.method == "POST":
         payload = decodeJWT(request)
 
@@ -178,9 +178,7 @@ def listNotifications(request):
                 return JsonResponse({"notifications": data})
             except Exception as e:
                 print("Error:", e)
-                return JsonResponse(
-                    {"error": str(e)}, status=500
-                )
+                return JsonResponse({"error": str(e)}, status=500)
         else:
             return JsonResponse({"error": "Acceso no autorizado"}, status=403)
     else:
@@ -190,12 +188,15 @@ def listNotifications(request):
 # Mostramos las sesiones o mensajes enviados de entrenador a padre
 @csrf_exempt
 def listSessions(request):
-    if request.method == "POST":
+    if request.method == "GET":
+        payload = decodeJWT(request)
         if payload["rol"] == "parent":
             try:
                 payload = decodeJWT(request)
                 parent = Parent.objects.filter(user_id=payload["user_id"]).first()
-                sessions = Events.objects.filter(parent_id=parent.id)
+                player = Player.objects.filter(parent=parent.id).first()
+                sessions = Events.objects.filter(player_id=player.id)
+                print("Sesiones: ", sessions)
                 data = []
                 for session in sessions:
                     if session.title and session.session_description:
@@ -207,8 +208,9 @@ def listSessions(request):
                                 "created_at": session.created_at,
                             }
                         )
-                    if data:
-                        return JsonResponse({"sessions": data}, status=200)
+                if data:
+                    return JsonResponse({"sessions": data}, status=200)
+                else:
                     return JsonResponse({"none": "No hay sessiones"})
             except Exception as e:
                 return JsonResponse({"error": str(e)})
@@ -222,14 +224,14 @@ def removeNotification(request):
         try:
             data = json.loads(request.body)
             payload = decodeJWT(request)
-            if payload["rol"] == "trainer":
+            if payload["rol"] == "trainer" or payload["rol"] == "parent":
                 notification = Events.objects.filter(id=data.get("id")).first()
                 if notification:
                     notification.delete()
-                    return JsonResponse({"success": "Notificación eliminada."})
+                    return JsonResponse({"success": "Evento eliminada."})
                 else:
                     return JsonResponse(
-                        {"error": "La notificación no existe."}, status=404
+                        {"error": "El evento no existe."}, status=404
                     )
             else:
                 return JsonResponse(

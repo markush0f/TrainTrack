@@ -67,4 +67,5 @@ onMounted(async () => {
   await listNotifications();
   console.log(notificationsStore.notifications);
 });
+
 </script>

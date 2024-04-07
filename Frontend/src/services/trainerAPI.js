@@ -55,7 +55,7 @@ export async function removeNotification(id) {
     id: id,
   };
   try {
-    const res = await axios.post(`${URL}session/trainer/removenotification`, data, {
+    const res = await axios.post(`${URL}session/removenotification`, data, {
       headers,
     });
     console.log("Data: ", res.data);

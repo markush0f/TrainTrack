@@ -47,6 +47,7 @@ def profileTrainer(request, payload):
             "address1": trainer.address1,
             "address2": trainer.address2,
             "team": (team.name if team else "Sin equipo"),
+            "rol": "trainer"
         }
         return JsonResponse({"profile": profile}, safe=False)
     except User.DoesNotExist:

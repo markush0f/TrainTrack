@@ -20,6 +20,7 @@
           <p class="text-gray-600 p-2 pr-3">Correo electrónico: {{ profileData.email }}</p>
           <p class="text-gray-600 p-2 pr-3">Ubicación: {{ profileData.address1 }}, {{ profileData.address2 }}</p>
           <p class="text-gray-600 p-2 pr-3">Equipo: {{ profileData.team }}</p>
+          
         </div>
         <div>
         </div>

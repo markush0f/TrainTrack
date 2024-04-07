@@ -18,7 +18,7 @@ urlpatterns = [
     path("parent/sendnotice", views.sendNotice, name="sendnotices"),
     # Ruta para eliminar notificación
     path(
-        "trainer/removenotification",
+        "removenotification",
         views.removeNotification,
         name="remove_notification",
     ),

@@ -89,18 +89,20 @@ export async function getUnverifiedParents() {
 // Solicitamos todas las notificaciones del entrenador al padre
 export async function getAllSessions() {
   const token = cookies.get("token");
+  const sessionStore = useSessionStore();
   if (token) {
     try {
       const headers = {
         Authorization: `Bearer ${token}`,
       };
-
-      const res = await axios.post(`${URL}trainer/listsessions`, { headers });
-      if (res.data.session) {
+      const res = await axios.get(`${URL}session/parent/listsessions`, {
+        headers,
+      });
+      console.log("Dataaa ", res.data);
+      if (res.data.sessions) {
         console.log("Sessione:", res.data);
-        useSessionStore.session = res.data.session;
+        sessionStore.sessions = res.data.sessions;
       } else {
-        console.log("No hay sessiones.");
         useSessionStore.session = null;
       }
     } catch (e) {

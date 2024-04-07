@@ -4,7 +4,7 @@
       <!-- Encabezado del perfil -->
       <div class="bg-main-green text-white px-6 py-4">
         <div class="flex items-center justify-between">
-          <h1 class="text-2xl ">Perfil de Usuario</h1>
+          <h1 class="text-2xl ">Perfil</h1>
           <button class="mr-4" @click="profileStore.show = false"><i class="material-icons">close</i></button>
         </div>
       </div>
@@ -14,16 +14,17 @@
         <div class="flex items-center justify-center mb-6">
           <img src="" alt="" class="w-24 h-24 rounded-full">
         </div>
-        <div class="mb-6">
-          <p class="text-lg font-semibold">Nombre y apellidos</p>
-          <p class="text-lg font-semibold"> </p>
-          <p class="text-gray-600">Correo electrónico: </p>
-          <p class="text-gray-600">Ubicación</p>
+        <div class="mb-6 p-5">
+          <p class="text-lg font-semibold p-2 pr-3">Nombre y apellidos: {{ profileData.name }} {{ profileData.surname }}
+          </p>
+          <p class="text-gray-600 p-2 pr-3">Correo electrónico: {{ profileData.email }}</p>
+          <p class="text-gray-600 p-2 pr-3">Ubicación: {{ profileData.address1 }}, {{ profileData.address2 }}</p>
+          <p class="text-gray-600 p-2 pr-3">Equipo: {{ profileData.team }}</p>
+          <div v-if="profileData.childrens">
+            <p class="text-gray-600 p-2 pr-3">Hijo/s: {{ profileData.childrens.name }}</p>
+          </div>
         </div>
-        <div class="mb-6">
-          <p class="text-lg font-semibold">Hijos</p>
-          <p class="text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent
-            libero. Sed cursus ante dapibus diam.</p>
+        <div>
         </div>
 
       </div>
@@ -31,14 +32,14 @@
   </div>
 </template>
 <script setup>
+
 import { useProfileStore } from '@/stores/profile';
-import axios from 'axios';
-import { onMounted } from 'vue';
+// Cambiar la solicitud a app para que no realize una peticion cada vez que pulse en el perfil
 const profileStore = useProfileStore();
-import { profile } from '@/services/userAPI';
-onMounted(async () => {
-  profile()
-  console.log(profileStore.showProfile);
-});
+const profileData = profileStore.data
+import { onMounted } from 'vue';
+onMounted(() => {
+console.log(profileData);
+})
 </script>
 <style scoped></style>

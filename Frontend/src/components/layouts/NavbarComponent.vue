@@ -40,9 +40,6 @@
 
 </template>
 <script setup>
-
-import axios from 'axios';
-import { ref } from 'vue'
 import Modal from '@/components/ModalProfile.vue';
 
 const profileStore = useProfileStore();

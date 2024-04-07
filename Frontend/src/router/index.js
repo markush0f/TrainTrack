@@ -51,10 +51,10 @@ const router = createRouter({
       path: "/parent",
       name: "parent",
       component: () => import("../views/parents/ParentView.vue"),
-      // meta: {
-      //   requireAuthUser: true,
-      //   rol: "parent",
-      // },
+      meta: {
+        requireAuthUser: true,
+        rol: "parent",
+      },
     },
     {
       path: "/trainer/perfil",

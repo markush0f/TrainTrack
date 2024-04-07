@@ -56,16 +56,19 @@ export async function profile() {
       };
       const res = await axios.get(`${URL}profile`, { headers });
       if (res) {
-        // console.log('Datos: ', res.data);
+        console.log("Datos perfil: ", res.data);
         const profileData = res.data.profile;
-        const profile = useProfileStore();
-        profile.data.name = profileData.first_name;
-        profile.data.surname = profileData.last_name;
-        profile.data.email = profileData.email;
-        profile.data.address1 = profileData.address1;
-        profile.data.address2 = profileData.address2;
-        profile.data.team = profileData.team;
-        profile.data.childrens = "...";
+        const profileStore = useProfileStore();
+        profileStore.data.name = profileData.first_name;
+        profileStore.data.surname = profileData.last_name;
+        profileStore.data.email = profileData.email;
+        profileStore.data.address1 = profileData.address1;
+        profileStore.data.address2 = profileData.address2;
+        profileStore.data.team = profileData.team;
+        if (profileData.childrens) {
+          console.log("tiene");
+          profileStore.data.childrens = profileData.childrens;
+        }
         // console.log(profile.getDataProfile());
       }
     } catch (e) {
@@ -75,20 +78,20 @@ export async function profile() {
 }
 
 // Solicitud de JWT descodificado
-export async function decodeJWT() {
-  const token = cookies.get("token");
-  const headers = {
-    Authorization: `Bearer ${token}`,
-  };
-  try {
-    const res = await axios.post("/api/authenticatejwt", null, { headers });
+// export async function decodeJWT() {
+//   const token = cookies.get("token");
+//   const headers = {
+//     Authorization: `Bearer ${token}`,
+//   };
+//   try {
+//     const res = await axios.post("/api/authenticatejwt", null, { headers });
 
-    const rolStore = useRolStore();
-    rolStore.setRol(res.data.rol);
-  } catch (e) {
-    console.log("Error al cargar el token: ", e);
-  }
-}
+//     const rolStore = useRolStore();
+//     rolStore.setRol(res.data.rol);
+//   } catch (e) {
+//     console.log("Error al cargar el token: ", e);
+//   }
+// }
 
 export async function manageRequestParent(decision, parentId) {
   const token = cookies.get("token");
