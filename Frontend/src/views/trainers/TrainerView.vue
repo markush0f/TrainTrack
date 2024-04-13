@@ -58,7 +58,8 @@ import { usePlayerStore } from '@/stores/players';
 const playerStore = usePlayerStore();
 
 onMounted(async () => {
-  listParentsByTrainer()
+  await listParentsByTrainer()
+  console.log(playerStore.player);
 })
 
 </script>

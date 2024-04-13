@@ -29,11 +29,26 @@ class Events(models.Model):
     notification = models.CharField(max_length=300, null=True, blank=True)
     # Aviso de entrenador a padre
     notice = models.CharField(max_length=300, null=True, blank=True)
-    # Evento global para todos los padres.
-    event = models.CharField(max_length=300, null=True, blank=True)
-    # dia que se producirá el evento
-    day_event = models.CharField(max_length=300, null=True, blank=True)
+
     created_at = models.DateField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
         return self.player.parent.user.first_name + " " + self.trainer.user.first_name
+
+
+class Calendar(models.Model):
+    team = models.ForeignKey(
+        Team,
+        on_delete=models.CASCADE,
+        related_name="get_team_foro",
+        verbose_name="Team",
+        null=True,
+    )
+    title_event = models.CharField(max_length=300, null=False, blank=False)
+    description_event = models.CharField(max_length=300, null=True, blank=True)
+    event_date = models.DateField()
+    event_time = models.CharField(max_length=300, null=False, blank=False)
+    created_at = models.DateField(auto_now_add=True, null=True, blank=True)
+
+    def __str__(self):
+        return self.title_event

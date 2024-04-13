@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from rest_framework import viewsets
-from .models import Events
+from .models import Events, Calendar
 import json
 from members.utils import decodeJWT
 from members.models import *
@@ -35,8 +35,7 @@ def writeNotification(request):
                 status=404,
             )
         except Exception as e:
-            print("Error:", e)
-            return JsonResponse({"error": "Error al crear la notificación"}, status=500)
+            return JsonResponse({"error": str(e)}, status=500)
     else:
         return JsonResponse({"error": "Método no permitido"}, status=405)
 
@@ -73,8 +72,7 @@ def writeSession(request):
                         status=400,
                     )
             except Exception as e:
-                print("Error:", e)
-                return JsonResponse({"error": "Error al crear la sesión"}, status=500)
+                return JsonResponse({"error": str(e)}, status=500)
         else:
             return JsonResponse({"error": "Token JWT no válido o ausente"}, status=401)
     else:
@@ -150,8 +148,7 @@ def sendNotice(request):
         except json.JSONDecodeError:
             return JsonResponse({"error": "Datos JSON no válidos"}, status=400)
         except Exception as e:
-            print("Error:", e)
-            return JsonResponse({"error": "Error al crear la notificación"}, status=500)
+            return JsonResponse({"error": str(e)}, status=500)
     else:
         return JsonResponse({"error": "Error de método  "})
 
@@ -177,7 +174,6 @@ def listNotifications(request):
                         )
                 return JsonResponse({"notifications": data})
             except Exception as e:
-                print("Error:", e)
                 return JsonResponse({"error": str(e)}, status=500)
         else:
             return JsonResponse({"error": "Acceso no autorizado"}, status=403)
@@ -196,7 +192,6 @@ def listSessions(request):
                 parent = Parent.objects.filter(user_id=payload["user_id"]).first()
                 player = Player.objects.filter(parent=parent.id).first()
                 sessions = Events.objects.filter(player_id=player.id)
-                print("Sesiones: ", sessions)
                 data = []
                 for session in sessions:
                     if session.title and session.session_description:
@@ -230,9 +225,7 @@ def removeNotification(request):
                     notification.delete()
                     return JsonResponse({"success": "Evento eliminada."})
                 else:
-                    return JsonResponse(
-                        {"error": "El evento no existe."}, status=404
-                    )
+                    return JsonResponse({"error": "El evento no existe."}, status=404)
             else:
                 return JsonResponse(
                     {"error": "No tienes permisos para realizar esta acción."},
@@ -244,3 +237,35 @@ def removeNotification(request):
             return JsonResponse({"error": str(e)}, status=500)
     else:
         return JsonResponse({"error": "Método no permitido."}, status=405)
+
+
+@csrf_exempt
+def loadEventsCalendar(request):
+    if request.method == "GET":
+        try:
+            payload = decodeJWT(request)
+            if payload:
+                parent = Parent.objects.get(user_id=payload["user_id"])
+                events = Calendar.objects.filter(team=parent.trainer.team)
+                print("EVENTOS:", events)
+                eventsData = []
+                for event in events:
+                    eventsData.append(
+                        {
+                            "id": event.id,
+                            "title": event.title_event,
+                            "description": event.description_event,
+                            "dateEvent": event.event_date,
+                            "dateTime": event.event_time,
+                        }
+                    )
+                if eventsData:
+                    return JsonResponse({"events": eventsData}, status=200)
+                else:
+                    return JsonResponse({"empty": "No hay eventos"})
+            else:
+                return JsonResponse({"error": "No tiene autorización"}, status=403)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+    else:
+        return JsonResponse({"error": "Metodo no permitido"}, status=405)

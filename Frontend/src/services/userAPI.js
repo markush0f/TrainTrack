@@ -57,7 +57,7 @@ export async function profile() {
       const res = await axios.get(`${URL}profile`, { headers });
       if (res) {
         console.log("Datos perfil: ", res.data);
-        const profileData = res.data.profile;
+        const profileData =  res.data.profile;
         const profileStore = useProfileStore();
         profileStore.data.name = profileData.first_name;
         profileStore.data.surname = profileData.last_name;
@@ -65,6 +65,7 @@ export async function profile() {
         profileStore.data.address1 = profileData.address1;
         profileStore.data.address2 = profileData.address2;
         profileStore.data.team = profileData.team;
+        profileStore.data.rol = profileData.rol
         if (profileData.childrens) {
           console.log("tiene");
           profileStore.data.childrens = profileData.childrens;

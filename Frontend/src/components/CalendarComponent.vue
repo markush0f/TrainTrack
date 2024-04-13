@@ -1,46 +1,53 @@
 <template>
-    <div>
-        <v-calendar ref="calendar" @dayclick="openDialog" />
-
-        <v-dialog v-model="dialogVisible" max-width="500px">
-            <v-card>
-                <v-card-title>Agregar evento</v-card-title>
-                <v-card-text>
-                    <v-text-field v-model="eventTitle" label="Título del evento"></v-text-field>
-                    <v-text-field v-model="eventDate" label="Fecha del evento" type="date"></v-text-field>
-                </v-card-text>
-                <v-card-actions>
-                    <v-btn color="primary" @click="saveEvent">Guardar evento</v-btn>
-                    <v-btn @click="closeDialog">Cancelar</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-    </div>
+    <FullCalendar :options='calendarOptions'>
+        <template v-slot:eventContent='arg'>
+            <b>{{ arg.timeText }}</b>
+            <i>{{ arg.event.title }}</i>
+        </template>
+    </FullCalendar>
 </template>
 
 <script setup>
 import { ref } from 'vue';
-import { Calendar as VCalendar } from 'v-calendar';
+import FullCalendar from '@fullcalendar/vue3';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
 
-const calendar = ref(null);
-const dialogVisible = ref(false);
-const eventTitle = ref('');
-const eventDate = ref('');
+const info = ref({
+    view: null,
+    date: '',
+    events: []
+});
 
-const openDialog = (info) => {
-    const selectedDate = info.date;
-    eventDate.value = selectedDate.toISOString().split('T')[0]; // Formatea la fecha como "YYYY-MM-DD"
-    dialogVisible.value = true;
-};
+const calendarOptions = ref({
+    plugins: [dayGridPlugin, interactionPlugin],
+    initialView: 'dayGridMonth',
+    locale: 'es',
+    events: [
+        { title: 'event 1', date: '2024-04-01' },
+        { title: 'event 2', date: '2024-04-01' },
+        { title: 'event 3', date: '2019-04-02' }
+    ],
+    dateClick: function (arg) {
+        info.value.events = []
+        info.value.date = arg.dateStr;
+        info.value.events = calendarOptions.value.events.filter(event => event.date === arg.dateStr);
+        console.log(info.value);
 
-const closeDialog = () => {
-    eventTitle.value = '';
-    eventDate.value = '';
-};
-
-const saveEvent = async () => {
-    // Aquí puedes guardar el evento en la base de datos o realizar otras acciones necesarias
-    console.log('Evento guardado:', { title: eventTitle.value, date: eventDate.value });
-    closeDialog();
-};
+    },
+    dayHeaderFormat: { weekday: 'narrow' }, // Personalizar el formato del encabezado del día
+});
 </script>
+
+<style scoped>
+/* Estilos personalizados para el calendario */
+.fc-daygrid-event-dot {
+    width: 5px;
+    /* Ancho del punto del evento */
+}
+
+.fc-daygrid-container {
+    border-color: green !important;
+    /* Color del borde del calendario */
+}
+</style>

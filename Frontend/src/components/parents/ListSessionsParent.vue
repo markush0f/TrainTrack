@@ -1,6 +1,5 @@
 <template lang="html">
     <div v-if="sessionStore.sessions && sessionStore.sessions.length > 0" class="justify-center p-3">
-
         <h2 class="text-center font-bold mb-4">Notificaciones recientes</h2>
         <div class="w-full p-2 max-h-60 overflow-y-auto">
             <div class="b p-4 rounded-lg">

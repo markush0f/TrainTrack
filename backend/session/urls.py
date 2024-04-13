@@ -16,11 +16,13 @@ urlpatterns = [
     path("trainer/sendsession", views.writeSession, name="sendsession"),
     path("parent/sendnotification", views.writeNotification, name="sendnotification"),
     path("parent/sendnotice", views.sendNotice, name="sendnotices"),
-    # Ruta para eliminar notificación
+    # Ruta para eliminar notificaciónada
     path(
         "removenotification",
         views.removeNotification,
         name="remove_notification",
     ),
     path("parent/listsessions", views.listSessions, name="listSessions"),
+    # Ruta para devolver todos los eventos
+    path("calendar/events", views.loadEventsCalendar, name="loadevents"),
 ]

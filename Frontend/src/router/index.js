@@ -72,9 +72,9 @@ const router = createRouter({
       component: InsertPlayerComponent,
     },
     {
-      path: "/new",
-      name: "new_home",
-      component: () =>import("@/views/NewHomeView.vue")
+      path: "/forum",
+      name: "forum",
+      component: () => import("@/views/forum/ForumView.vue")
     },
   ],
 });

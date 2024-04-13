@@ -6,6 +6,9 @@ export const usePlayerStore = defineStore("player", () => {
   const players = ref({});
   const playerMsg = ref(null);
   const player = ref(null);
+  function setPlayer() {
+    
+  }
   return {
     players,
     playerMsg,
