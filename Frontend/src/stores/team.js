@@ -7,6 +7,7 @@ export const useTeamStore = defineStore('teams', () => {
     listTeams.value = [...teams]
   }
   return {
+    putListTeam,
     listTeams
   }
 })

@@ -1,6 +1,6 @@
 import axios from "axios";
 const URL = "http://127.0.0.1:8000/api/league/"
-// import { useTeamStore } from "@/stores/team";
+import { useTeamStore } from "@/stores/team";
 
 // Solicitamos la lista de equipos
 export async function listTeams(data) {
@@ -11,6 +11,7 @@ export async function listTeams(data) {
     const res = await axios.get(`${URL}teams`, { params: data })
     if (res.data.team) {
       // dataTeam = useTeamStore().dataTeams
+      useTeamStore().putListTeam(res.data.team)
       return res.data.team
     }
   } catch (e) {

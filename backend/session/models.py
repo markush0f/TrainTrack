@@ -29,12 +29,12 @@ class Events(models.Model):
     notification = models.CharField(max_length=300, null=True, blank=True)
     # Aviso de entrenador a padre
     notice = models.CharField(max_length=300, null=True, blank=True)
-
+    other = models.CharField(max_length=300, null=True, blank=True)
     created_at = models.DateField(auto_now_add=True, null=True, blank=True)
+    
 
-    def __str__(self):
-        return self.player.parent.user.first_name + " " + self.trainer.user.first_name
-
+    def __str__(self) -> str:
+        return self.title 
 
 class Calendar(models.Model):
     team = models.ForeignKey(

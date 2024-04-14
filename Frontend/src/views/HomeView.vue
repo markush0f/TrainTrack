@@ -41,7 +41,7 @@
               </div>
             </router-link>
           </div>
-
+          <img src="" alt="">
           <!-- División para entrar como entrenador -->
           <div class="justify-center p-4">
             <router-link to="/trainer" class="max-w-xl w-full">

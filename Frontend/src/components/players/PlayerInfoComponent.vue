@@ -5,18 +5,14 @@
         </div>
         <div class="py-2">
             poner foto
-            <div class="border-b border-t py-1">
+            <div class="border-b border-t py-1 border-gray-300">
                 <h3 class="text-base font-medium text-gray-500 pr-2 ml-2">Nombre y apellidos:</h3>
                 <h4 class="ml-2">{{ profileStore.data.childrens.name }} {{ profileStore.data.childrens.surname }}</h4>
             </div>
             <div class="border-b py-1">
-                <h3 class="text-base font-medium text-gray-500 pr-2 ml-2">Padre:
+                <h3 class="text-base font-medium text-gray-500 pr-2 ml-2">Entrenador:
                 </h3>
                 <h4 class="ml-2">{{ profileStore.data.name }} {{ profileStore.data.name }} </h4>
-            </div>
-            <div class="border-b py-1">
-                <h3 class="text-base font-medium text-gray-500 pr-2 ml-2">DNI:</h3>
-                <!-- <h4 class="ml-2">{{ playerStore.player.DNI }}</h4> -->
             </div>
             <div class=" py-1">
                 <h3 class="text-base font-medium text-gray-500 pr-2 ml-2">Dirección:</h3>

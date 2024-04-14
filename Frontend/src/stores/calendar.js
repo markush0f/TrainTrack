@@ -4,7 +4,7 @@ import { ref } from "vue";
 export const useCalendarStore = defineStore("calendar", () => {
   const events = ref([]);
   const event = ref(null)
-  
+
   function setEvent(newEvent) {
     events.value.push(newEvent);
   }
@@ -13,7 +13,7 @@ export const useCalendarStore = defineStore("calendar", () => {
     return event.value;
   }
 
-  function setEvent(id) {
+  async function setEvent(id) {
     event.value = events.value.filter((event) => event.id === id);
   }
 
@@ -25,10 +25,15 @@ export const useCalendarStore = defineStore("calendar", () => {
     events.value = listEvents
   }
 
+  function cancelEvent() {
+    event.value = null
+  }
+
   return {
     setEvent,
     getEvent,
     getAllEvents,
     setAllEvents,
+    cancelEvent,
   };
 });

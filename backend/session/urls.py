@@ -15,7 +15,7 @@ urlpatterns = [
     ),
     path("trainer/sendsession", views.writeSession, name="sendsession"),
     path("parent/sendnotification", views.writeNotification, name="sendnotification"),
-    path("parent/sendnotice", views.sendNotice, name="sendnotices"),
+    path("parent/sendnotice", views.sendNotification, name="sendnotices"),
     # Ruta para eliminar notificaciónada
     path(
         "removenotification",
