@@ -6,6 +6,7 @@
       <div class="flex flex-col gap-4 md:w-1/4 h-full p-6">
         <div>
           <ShieldComponent/>
+          <EditEventComponent/>
           <ClassificationTableComponent />
         </div>
       </div>
@@ -52,6 +53,7 @@ import ShieldComponent from '@/components/teams/ShieldComponent.vue';
 import NextGamesComponent from '@/components/teams/NextGamesComponent.vue';
 import LastGamesComponent from '@/components/teams/LastGamesComponent.vue';
 import CalendarComponentTrainer from '@/components/trainers/CalendarComponentTrainer.vue';
+import EditEventComponent from '@/components/calendar/EditEventComponent.vue';
 const playerStore = usePlayerStore();
 
 onMounted(async () => {

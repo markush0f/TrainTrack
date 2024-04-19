@@ -205,20 +205,25 @@ def loadEventsCalendar(request):
         try:
             payload = decodeJWT(request)
             if payload:
-                parent = Parent.objects.get(user_id=payload["user_id"])
-                events = Calendar.objects.filter(team=parent.trainer.team)
-                print("EVENTOS:", events)
-                eventsData = []
-                for event in events:
-                    eventsData.append(
-                        {
-                            "id": event.id,
-                            "title": event.title_event,
-                            "description": event.description_event,
-                            "dateEvent": event.event_date,
-                            "dateTime": event.event_time,
-                        }
-                    )
+                user_id = payload["user_id"]
+                rol = payload["rol"]
+                if rol == 'parent':
+                    parent = Parent.objects.get(user_id=user_id)
+                    events = Calendar.objects.filter(team=parent.trainer.team)
+                elif rol == 'trainer':
+                    trainer = Trainer.objects.get(user_id=user_id)
+                    events = Calendar.objects.filter(team=trainer.team)
+                else:
+                    return JsonResponse({"error": "Rol no reconocido"}, status=400)
+                
+                eventsData = [{
+                    "id": event.id,
+                    "title": event.title_event,
+                    "description": event.description_event,
+                    "dateEvent": event.event_date,
+                    "dateTime": event.event_time,
+                } for event in events]
+                
                 if eventsData:
                     return JsonResponse({"events": eventsData}, status=200)
                 else:
@@ -228,4 +233,5 @@ def loadEventsCalendar(request):
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
     else:
-        return JsonResponse({"error": "Metodo no permitido"}, status=405)
+        return JsonResponse({"error": "Método no permitido"}, status=405)
+
