@@ -47,18 +47,18 @@
 
     </form>
   </div>
-  <div v-else>
+  <div v-else >
     <h1 class="text-2xl font-bold text-center p-4 text-green-700">
       Seleccione un evento!
     </h1>
-    <h1 class=" text-center">
-      Pulse en el calendario o en uno de los proximos eventos para confirmar o denegar su asistencia.
-    </h1>
+    <h4 class="text-center">
+      Pulse en el calendario o en uno de los proximos <br>
+      eventos para confirmar o denegar su asistencia.
+    </h4>
   </div>
 </template>
 
 <script setup>
-// ESTABLECER LA CANTIDAD DE TIEMPO QUE LLEGARÁ TARDE
 import { sendNotice } from '@/services/parentsAPI';
 import { ref } from 'vue';
 import { useCalendarStore } from '@/stores/calendar';

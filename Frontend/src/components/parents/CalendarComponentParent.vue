@@ -7,7 +7,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useCalendarStore } from '@/stores/calendar';
-import { loadEvents } from '@/services/calendarAPI';
+
 
 const calendarStore = useCalendarStore();
 const events = ref([]);

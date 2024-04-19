@@ -1,65 +1,57 @@
 <template>
-    <div class="flex-grow flex justify-center p-4 h-full">
-        <form @submit.prevent="addEvent">
-            <label for="newEventDate">Fecha del nuevo evento:</label>
-            <input type="date" id="newEventDate" v-model="newEventDate" required>
-            <button type="submit">Añadir evento</button>
-        </form>
+    <VDatePicker :attributes="eventsInCalendar" :select-attribute="selectAttribute" expanded @dayclick="handleDayClick"
+        locale="es" />
 
-        <VDatePicker :attributes="events" expanded mode="dateTime" is24hr />
-    </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import { useCalendarStore } from '@/stores/calendar';
 
-// Variables de estado
-const newEventDate = ref('');
-const date = new Date();
-const year = date.getFullYear();
-const month = date.getMonth();
-const events = ref([
-    {
-        key: 'today',
-        highlight: {
-            color: 'green',
-            fillMode: 'solid',
-            contentClass: 'italic',
-        },
-        dates: new Date(year, month, 12),
-    },
-    {
-        highlight: {
-            color: 'green',
-            fillMode: 'light',
-        },
-        dates: new Date(year, month, 13),
-    },
-    {
-        highlight: {
-            color: 'green',
-            fillMode: 'outline',
-        },
-        dates: new Date(year, month, 14),
-    },
-]);
 
-// Método para agregar un nuevo evento
-const addEvent = () => {
-    if (newEventDate.value) {
-        const newDate = new Date(newEventDate.value);
-        events.value.push({
-            highlight: {
-                color: 'blue', // Puedes cambiar el color según tu preferencia
-                fillMode: 'solid',
-            },
-            dates: newDate,
-        });
-        newEventDate.value = ''; // Limpiar el input después de agregar el evento
+const calendarStore = useCalendarStore();
+const events = ref([]);
+const eventsInCalendar = ref([]);
+const selectAttribute = ref(
+    {
+        highlight: {
+            color: 'green',
+            fillMode: 'light'
+        }
     }
-};
+);
+
+async function loadEventsInCalendar() {
+    events.value.forEach(event => {
+        eventsInCalendar.value.push(
+            {
+                id: event.id,
+                title: event.title,
+                time: event.dateTime,
+                description: event.description,
+                highlight: {
+                    color: 'green',
+                },
+                dates: event.dateEvent,
+            }
+        )
+    });
+}
+
+function handleDayClick(event) {
+    console.log('Información del evento:', event);
+    if (event.attributes[0]) {
+        calendarStore.setEvent(event.attributes[0].id)
+        console.log(calendarStore.getEvent());
+    }
+
+}
+
+onMounted(async () => {
+    // await loadEvents();
+    events.value = calendarStore.getAllEvents();
+    console.log(events.value);
+    await loadEventsInCalendar()
+    console.log(eventsInCalendar.value);
+});
 </script>
-
-
-
-<!--     <div class="flex-grow flex justify-center p-4 h-full"> -->
