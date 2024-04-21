@@ -45,7 +45,7 @@ export async function sendSession(data) {
   }
 }
 
-// Solicitud para elimianr una notificación
+// Solicitud para eliminar una notificación
 export async function removeNotification(id) {
   const token = cookies.get("token");
   const headers = {
@@ -68,3 +68,4 @@ export async function removeNotification(id) {
     console.log("Error: ", e);
   }
 }
+

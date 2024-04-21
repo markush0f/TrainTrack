@@ -207,23 +207,26 @@ def loadEventsCalendar(request):
             if payload:
                 user_id = payload["user_id"]
                 rol = payload["rol"]
-                if rol == 'parent':
+                if rol == "parent":
                     parent = Parent.objects.get(user_id=user_id)
                     events = Calendar.objects.filter(team=parent.trainer.team)
-                elif rol == 'trainer':
+                elif rol == "trainer":
                     trainer = Trainer.objects.get(user_id=user_id)
                     events = Calendar.objects.filter(team=trainer.team)
                 else:
                     return JsonResponse({"error": "Rol no reconocido"}, status=400)
-                
-                eventsData = [{
-                    "id": event.id,
-                    "title": event.title_event,
-                    "description": event.description_event,
-                    "dateEvent": event.event_date,
-                    "dateTime": event.event_time,
-                } for event in events]
-                
+
+                eventsData = [
+                    {
+                        "id": event.id,
+                        "title": event.title_event,
+                        "description": event.description_event,
+                        "dateEvent": event.event_date,
+                        "dateTime": event.event_time,
+                    }
+                    for event in events
+                ]
+
                 if eventsData:
                     return JsonResponse({"events": eventsData}, status=200)
                 else:
@@ -235,3 +238,39 @@ def loadEventsCalendar(request):
     else:
         return JsonResponse({"error": "Método no permitido"}, status=405)
 
+
+@csrf_exempt
+def createEvent(request):
+    if request.method == "POST":
+        try:
+            payload = decodeJWT(request)
+            print(payload)
+            if payload["rol"] == "trainer":
+                data = json.loads(request.body)
+                if data:
+                    print(data)
+                    trainer = Trainer.objects.get(user_id=payload["user_id"])
+                    print(trainer)
+                    event = Calendar.objects.create(
+                        team=trainer.team,
+                        title_event=data["title"],
+                        description_event=data["description"],
+                        event_date=data["date"],
+                        event_time=data["time"],
+                    )
+                    print("Evento", event)
+                if event:
+                        return JsonResponse({"success": True, "event": {
+                            "id": event.id,
+                            "title": event.title_event,
+                            "description": event.description_event,
+                            "date": event.event_date,
+                            "time": event.event_time
+                        }})
+                else:
+                    return JsonResponse({"success": False, "error": "No se pudo crear el evento"})
+
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+    else:
+        return JsonResponse({"error": "Método no permitido"}, status=405)

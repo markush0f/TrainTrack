@@ -1,7 +1,7 @@
 <template>
     <div>
         <p>Lista de peticiones</p>
-        <div class="flex p-4 border" v-if="unverifiedParents != null">
+        <div class="flex p-4" v-if="unverifiedParents != null">
             <div class="justify-center w-full">
                 <!-- Con el max-h-60 ajustamos el scroll -->
                 <div class="w-full overflow-y-auto max-h-60">

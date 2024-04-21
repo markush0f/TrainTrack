@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="text-lg font-bold mb-4">Jugadores</h2>
+    <h2 class="text-center font-bold mb-4  text-lg">Jugadores</h2>
     <ul class="w-full overflow-y-auto max-h-80">
 
       <li v-for="player in playerStore.players" :key="player.id"
@@ -9,7 +9,7 @@
           :class="{ 'playerSelected': playerStore && playerStore.player && playerStore.player.id === player.id }">
           {{ player.name }} {{ player.surname }}
         </span>
-        <i class="fi-rr-file-user cursor-pointer flex-shrink-0 text-main-green text-lg w-8 h-8 hover:text-green-700"
+        <i class="fi-rr-file-user cursor-pointer flex-shrink-0 text-main-green text-lg w-8 h-8 hover:text-green-500"
           @click="selectPlayer(player)"></i>
       </li>
     </ul>
@@ -54,7 +54,7 @@ onMounted(async () => {
 
 <style scoped lang="css">
 .playerSelected {
-  color: green;
+  color: rgb(23, 149, 23);
   font-weight: bold
 }
 </style>

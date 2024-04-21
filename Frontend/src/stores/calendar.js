@@ -3,7 +3,8 @@ import { ref } from "vue";
 
 export const useCalendarStore = defineStore("calendar", () => {
   const events = ref([]);
-  const event = ref(null)
+  const event = ref(null);
+  const addEventOption = ref(false);
 
   function setEvent(newEvent) {
     events.value.push(newEvent);
@@ -29,11 +30,14 @@ export const useCalendarStore = defineStore("calendar", () => {
     event.value = null
   }
 
+
+
   return {
     setEvent,
     getEvent,
     getAllEvents,
     setAllEvents,
     cancelEvent,
+    addEventOption
   };
 });

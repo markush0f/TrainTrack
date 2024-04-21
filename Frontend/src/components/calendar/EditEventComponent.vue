@@ -23,7 +23,7 @@
                         </span>
                     </h4>
                     <div class="pt-1 flex justify-center space-x-2 ">
-                        <button @click="manageRequest()"
+                        <button @click="editEvent(event)"
                             class="px-3 py-1.5 font-medium bg-green-700 hover:bg-green-600 hover:text-white text-green-200 rounded-lg text-xs">
                             Editar
                         </button>
@@ -31,10 +31,14 @@
                 </div>
             </div>
         </div>
+        <div class="pt-1 flex justify-center">
+            <button @click="newEvent()"
+                class="flex-grow px-3 py-1.5 font-medium bg-green-700 hover:bg-green-600 hover:text-white text-white rounded-lg ">
+                Añadir evento
+            </button>
+        </div>
     </div>
 </template>
-
-
 
 <script setup>
 import { onMounted, ref } from 'vue';
@@ -42,11 +46,18 @@ import { useCalendarStore } from '@/stores/calendar';
 const calendarStore = useCalendarStore();
 const events = ref([])
 
-async function respondEvent(event) {
+async function editEvent(event) {
     console.log("Usted pulso", event);
     calendarStore.setEvent(event.id);
     console.log(calendarStore.getEvent()[0]);
 }
+
+async function newEvent() {
+    calendarStore.addEventOption = true;
+
+}
+
+
 
 onMounted(async () => {
     events.value = calendarStore.getAllEvents();

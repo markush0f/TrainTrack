@@ -2,16 +2,19 @@
   <div class="min-h-screen">
     <NavbarComponent />
     <div class="flex flex-col md:flex-row">
-      <!-- División izquierda: Escudo del equipo y Clasificación -->
       <div class="flex flex-col gap-4 md:w-1/4 h-full p-6">
         <div>
-          <ShieldComponent/>
-          <EditEventComponent/>
-          <ClassificationTableComponent />
+          <ShieldComponent />
+          ACTUALIZAR LOS EVENTOS AL AÑADIRLOS
+          <EditEventComponent class="mb-5" />
+          <AddEventComponent/>
         </div>
+        <LastGamesComponent />
+        <!-- <NextGamesComponent /> -->
+
       </div>
       <div class="flex-grow justify-center p-4">
-        <CalendarComponentTrainer/>
+        <CalendarComponentTrainer />
         <ListNotificationsTrainerComponent class="border-b-4" />
         <div class="flex flex-col p-4">
           <div v-if="playerStore.player != null">
@@ -27,9 +30,8 @@
       <div class="w-full md:w-1/4 p-4">
         <ListPlayersComponent />
         <br>
-        <ListUnverifiedParents />
-        <LastGamesComponent/>
-        <NextGamesComponent/>
+        <ListUnverifiedParents class="border-b-4"/>
+        <ClassificationTableComponent />
       </div>
     </div>
     <div>
@@ -54,6 +56,7 @@ import NextGamesComponent from '@/components/teams/NextGamesComponent.vue';
 import LastGamesComponent from '@/components/teams/LastGamesComponent.vue';
 import CalendarComponentTrainer from '@/components/trainers/CalendarComponentTrainer.vue';
 import EditEventComponent from '@/components/calendar/EditEventComponent.vue';
+import AddEventComponent from '@/components/calendar/AddEventComponent.vue';
 const playerStore = usePlayerStore();
 
 onMounted(async () => {

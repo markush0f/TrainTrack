@@ -25,4 +25,6 @@ urlpatterns = [
     path("parent/listsessions", views.listSessions, name="listSessions"),
     # Ruta para devolver todos los eventos
     path("calendar/events", views.loadEventsCalendar, name="loadevents"),
+    # Ruta para crear un nuevo evento
+    path("calendar/events/createevent", views.createEvent, name="createevent"),
 ]
