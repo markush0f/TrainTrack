@@ -11,7 +11,6 @@
                 <input type="text" id="small-input" v-model="data.description"
                     class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs">
 
-
                 <div class="flex w-full">
                     <div class="mr-4 ">
                         <label for="title" class="mb-2 font-medium text-green-700 block mt-2">Selecciona la fecha del
@@ -19,9 +18,9 @@
                         <VDatePicker v-model="date" :select-attribute="selectAttribute" :popover="false">
                             <template #default="{ togglePopover, inputValue, inputEvents }">
                                 <div class="flex rounded-lg border border-gray-300 overflow-hidden">
-                                    <button
+                                    <button type="button"
                                         class="flex justify-center items-center px-2 bg-accent-100 hover:bg-accent-200 text-accent-700 border-r border-gray-300"
-                                        @click="() => togglePopover()">
+                                        @click.stop="togglePopover">
                                         <i class="gg-calendar"></i>
                                     </button>
                                     <input :value="inputValue" v-on="inputEvents"
@@ -35,18 +34,23 @@
                         </div>
                         <div>
                         </div>
-
                     </div>
                 </div>
-                <button @click="addEvent()"
-                    class=" w-full px-3 py-1.5 font-medium bg-gray-500 hover:bg-gray-600 hover:text-white text-white rounded-lg ">
-                    Confirmar
-                </button>
+                <div>
+                    <button
+                        class="flex-grow px-10 py-1.5 font-medium bg-gray-500 hover:bg-gray-600 hover:text-white text-white rounded-lg ">
+                        Aceptar
+                    </button>
+                    <button type="button" @click="cancelForm()"
+                        class="flex-grow px-10 py-1.5 font-medium bg-red-500 hover:bg-red-600 hover:text-white text-white rounded-lg ml-10">
+                        Cancelar
+                    </button>
+                </div>
             </form>
         </div>
     </div>
-
 </template>
+
 
 <script setup>
 import { useCalendarStore } from '@/stores/calendar';
@@ -68,7 +72,9 @@ const data = ref({
     date: '',
     time: ''
 })
-
+function cancelForm() {
+    calendarStore.addEventOption = false;
+}
 function submitForm() {
     const formatted = formatDate(date.value);
     console.log(formatted.formattedTime);

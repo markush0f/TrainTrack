@@ -17,8 +17,9 @@ export async function loadEvents() {
       if (res.data.events) {
         console.log(res.data.events);
         const calendarStore = useCalendarStore();
-        calendarStore.setAllEvents(res.data.events)
-        console.log(calendarStore.getAllEvents());
+        calendarStore.events = res.data.events
+        console.log("Lista eventos: ", calendarStore.events);
+        return res.data.events;
       }
 
     } catch (e) {
@@ -37,11 +38,11 @@ export async function createEvent(data) {
   try {
     const res = await axios.post(`${URL}session/calendar/events/createevent`, data, { headers });
     console.log("Data new event: ", res);
-    if (res.data.sucess) {
-      // Añadir nuevo evento
-      console.log(res.data);
-      
-      await loadEvents()
+    if (res.data.success) {
+      // const calendarStore = useCalendarStore();
+      // calendarStore.setEvent(res.data.event)
+      await loadEvents();
+      return true;
     }
   } catch (e) {
     console.log(e);

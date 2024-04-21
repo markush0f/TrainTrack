@@ -3,7 +3,7 @@
         <div class="flex justify-center">
             <h2 class="text-center text-lg font-semibold p-2 text-green-700">Próximos eventos</h2>
         </div>
-        <div v-for="(event, i) in events" :key="i" class="p-1">
+        <div v-for="event in calendarStore.events" :key="i" class="p-1">
             <div class="overflow-hidden rounded-xl bg-white border border-green-600 flex flex-col items-center hover:bg-green-100 hover:border-2 cursor-pointer hover:cursor-pointer"
                 @click="respondEvent(event)"
                 :class="{ 'eventSelected': calendarStore.getEvent() && event.id === calendarStore.getEvent()[0].id }">

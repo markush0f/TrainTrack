@@ -4,10 +4,9 @@
     <div class="flex flex-col md:flex-row">
       <div class="flex flex-col gap-4 md:w-1/4 h-full p-6">
         <div>
-          <ShieldComponent />
-          ACTUALIZAR LOS EVENTOS AL AÑADIRLOS
-          <EditEventComponent class="mb-5" />
-          <AddEventComponent/>
+          <ShieldComponent class="border-b-4" />
+          <EditEventComponent class="mb-5 mt-2" />
+          <AddEventComponent />
         </div>
         <LastGamesComponent />
         <!-- <NextGamesComponent /> -->
@@ -30,7 +29,7 @@
       <div class="w-full md:w-1/4 p-4">
         <ListPlayersComponent />
         <br>
-        <ListUnverifiedParents class="border-b-4"/>
+        <ListUnverifiedParents class="border-b-4" />
         <ClassificationTableComponent />
       </div>
     </div>

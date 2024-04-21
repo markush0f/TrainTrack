@@ -1,7 +1,8 @@
 <template>
     <VDatePicker :attributes="eventsInCalendar" :select-attribute="selectAttribute" expanded @dayclick="handleDayClick"
         locale="es" />
-
+    AÑADIR COLOR EN BASE DE DATOS EN EL CALENDARIO, AL AÑADIR UN EVENTO EL ENTRENADOR PUEDE ELEGIR UNA SERIE DE COLOR
+    ADEMÁS ELIMINAR UN EVENTO,Y POR ULTIMO EL FORO
 </template>
 
 <script setup>
@@ -22,7 +23,7 @@ const selectAttribute = ref(
 );
 
 async function loadEventsInCalendar() {
-    events.value.forEach(event => {
+    calendarStore.events.forEach(event => {
         eventsInCalendar.value.push(
             {
                 id: event.id,
@@ -49,7 +50,7 @@ function handleDayClick(event) {
 
 onMounted(async () => {
     // await loadEvents();
-    events.value = calendarStore.getAllEvents();
+    // events.value = calendarStore.getAllEvents();
     console.log(events.value);
     await loadEventsInCalendar()
     console.log(eventsInCalendar.value);

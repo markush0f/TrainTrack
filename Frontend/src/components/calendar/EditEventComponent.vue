@@ -1,9 +1,9 @@
 <template>
-    <div v-if="events.length > 1">
+    <div v-if="events.length > 1" class="event-container overflow-y-auto max-h-96">
         <div class="flex justify-center">
             <h2 class="text-center text-xl font-semibold p-2 text-green-700">Próximos eventos</h2>
         </div>
-        <div v-for="(event, i) in events" :key="i" class="p-1">
+        <div v-for="(event, i) in calendarStore.events" :key="i" class="p-1">
             <div class="overflow-hidden rounded-xl bg-white border border-green-600 flex flex-col items-center  "
                 :class="{ 'eventSelected': calendarStore.getEvent() && event.id === calendarStore.getEvent()[0].id }">
                 <h3 class="text-center pt-1 font-medium">
@@ -23,20 +23,21 @@
                         </span>
                     </h4>
                     <div class="pt-1 flex justify-center space-x-2 ">
-                        <button @click="editEvent(event)"
+                        <a @click="editEvent(event)"
                             class="px-3 py-1.5 font-medium bg-green-700 hover:bg-green-600 hover:text-white text-green-200 rounded-lg text-xs">
                             Editar
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="pt-1 flex justify-center">
-            <button @click="newEvent()"
-                class="flex-grow px-3 py-1.5 font-medium bg-green-700 hover:bg-green-600 hover:text-white text-white rounded-lg ">
-                Añadir evento
-            </button>
-        </div>
+
+    </div>
+    <div class="pt-1 flex justify-center">
+        <button @click="newEvent()"
+            class="flex-grow px-3 py-1.5 font-medium bg-green-700 hover:bg-green-600 hover:text-white text-white rounded-lg mr-5 mt-2">
+            Añadir evento
+        </button>
     </div>
 </template>
 
@@ -47,9 +48,7 @@ const calendarStore = useCalendarStore();
 const events = ref([])
 
 async function editEvent(event) {
-    console.log("Usted pulso", event);
     calendarStore.setEvent(event.id);
-    console.log(calendarStore.getEvent()[0]);
 }
 
 async function newEvent() {

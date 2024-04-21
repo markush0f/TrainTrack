@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 
 export const useCalendarStore = defineStore("calendar", () => {
-  const events = ref([]);
+  const events = ref({});
   const event = ref(null);
   const addEventOption = ref(false);
 
@@ -38,6 +38,7 @@ export const useCalendarStore = defineStore("calendar", () => {
     getAllEvents,
     setAllEvents,
     cancelEvent,
-    addEventOption
+    addEventOption,
+    events
   };
 });
