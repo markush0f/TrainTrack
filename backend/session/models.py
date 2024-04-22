@@ -31,10 +31,10 @@ class Events(models.Model):
     notice = models.CharField(max_length=300, null=True, blank=True)
     other = models.CharField(max_length=300, null=True, blank=True)
     created_at = models.DateField(auto_now_add=True, null=True, blank=True)
-    
 
     def __str__(self) -> str:
-        return self.title 
+        return self.title
+
 
 class Calendar(models.Model):
     team = models.ForeignKey(
@@ -48,6 +48,7 @@ class Calendar(models.Model):
     description_event = models.CharField(max_length=300, null=True, blank=True)
     event_date = models.DateField()
     event_time = models.CharField(max_length=300, null=False, blank=False)
+    color_event = models.CharField(max_length=300, null=False, blank=False)
     created_at = models.DateField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):

@@ -13,7 +13,7 @@
 
                 <div class="flex w-full">
                     <div class="mr-4 ">
-                        <label for="title" class="mb-2 font-medium text-green-700 block mt-2">Selecciona la fecha del
+                        <label for="title" class="mb-2 font-medium text-green-700 block mt-2">Fecha del
                             evento</label>
                         <VDatePicker v-model="date" :select-attribute="selectAttribute" :popover="false">
                             <template #default="{ togglePopover, inputValue, inputEvents }">
@@ -28,12 +28,39 @@
                                 </div>
                             </template>
                         </VDatePicker>
-                        <div>
-                            <VDatePicker v-model="date" mode="time" class="mt-2 mb-2" hide-time-header />
+                        <VDatePicker v-model="date" mode="time" class="mt-2 mb-2" hide-time-header />
+                        <label for="title" class="block mb-2 font-medium text-green-700 ">Color del evento</label>
+                        <div class="flex  mt-2 mb-2 space-x-1">
+                            <input type="radio" id="color-red" name="color" value="red" v-model="data.color"
+                                class="hidden">
+                            <input type="radio" id="color-yellow" name="color" value="yellow" v-model="data.color"
+                                class="hidden">
+                            <input type="radio" id="color-green" name="color" value="green" v-model="data.color"
+                                class="hidden">
+                            <input type="radio" id="color-blue" name="color" value="blue" v-model="data.color"
+                                class="hidden">
+                            <label for="color-red"
+                                class="cursor-pointer w-6 h-6 rounded-full border border-gray-300 bg-red-500 flex items-center justify-center hover:border-2 hover:border-red-700"
+                                :class="{ 'border-red-700 border-4': data.color === 'red' }">
+                                <span class="sr-only">Rojo</span>
+                            </label>
+                            <label for="color-green"
+                                class="cursor-pointer  w-6 h-6 rounded-full border border-gray-300 bg-green-500 flex items-center justify-center hover:border-2 hover:border-green-700"
+                                :class="{ 'border-green-700 border-4': data.color === 'green' }">
+                                <span class="sr-only">Verde</span>
+                            </label>
+                            <label for="color-blue"
+                                class="cursor-pointer  w-6 h-6 rounded-full border border-gray-300 bg-blue-500 flex items-center justify-center hover:border-2 hover:border-blue-700"
+                                :class="{ 'border-blue-700 border-4': data.color === 'blue' }">
+                                <span class="sr-only">Azul</span>
+                            </label>
+                            <label for="color-yellow"
+                                class="cursor-pointer  w-6 h-6 rounded-full border border-gray-300 bg-yellow-500 flex items-center justify-center hover:border-2 hover:border-yellow-700"
+                                :class="{ 'border-yellow-600 border-4': data.color === 'yellow' }">
+                                <span class="sr-only">Amarillo</span>
+                            </label>
+                        </div>
 
-                        </div>
-                        <div>
-                        </div>
                     </div>
                 </div>
                 <div>
@@ -45,6 +72,9 @@
                         class="flex-grow px-10 py-1.5 font-medium bg-red-500 hover:bg-red-600 hover:text-white text-white rounded-lg ml-10">
                         Cancelar
                     </button>
+
+
+
                 </div>
             </form>
         </div>
@@ -70,9 +100,11 @@ const data = ref({
     title: '',
     description: '',
     date: '',
-    time: ''
+    time: '',
+    color: ''
 })
 function cancelForm() {
+    console.log(data);
     calendarStore.addEventOption = false;
 }
 function submitForm() {

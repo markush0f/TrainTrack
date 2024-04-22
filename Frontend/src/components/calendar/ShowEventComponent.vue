@@ -1,7 +1,7 @@
 <template>
-    <div v-if="events.length > 1">
+    <div v-if="events.length > 1" class="event-container overflow-y-auto max-h-96">
         <div class="flex justify-center">
-            <h2 class="text-center text-lg font-semibold p-2 text-green-700">Próximos eventos</h2>
+            <h2 class="text-center text-2xl font-semibold p-2 text-green-700">Próximos eventos</h2>
         </div>
         <div v-for="event in calendarStore.events" :key="i" class="p-1">
             <div class="overflow-hidden rounded-xl bg-white border border-green-600 flex flex-col items-center hover:bg-green-100 hover:border-2 cursor-pointer hover:cursor-pointer"

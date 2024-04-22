@@ -1,7 +1,7 @@
 <template>
-        <VDatePicker :attributes="eventsInCalendar" :select-attribute="selectAttribute" expanded
-            @dayclick="handleDayClick" locale="es" />
-    
+    <VDatePicker :attributes="eventsInCalendar" :select-attribute="selectAttribute" expanded @dayclick="handleDayClick"
+        locale="es" />
+
 </template>
 
 <script setup>
@@ -30,7 +30,7 @@ async function loadEventsInCalendar() {
                 time: event.dateTime,
                 description: event.description,
                 highlight: {
-                    color: 'green',
+                    color: event.color,
                 },
                 dates: event.dateEvent,
             }

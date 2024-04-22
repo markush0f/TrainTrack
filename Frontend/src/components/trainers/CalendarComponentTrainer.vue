@@ -31,7 +31,7 @@ async function loadEventsInCalendar() {
                 time: event.dateTime,
                 description: event.description,
                 highlight: {
-                    color: 'green',
+                    color: event.color,
                 },
                 dates: event.dateEvent,
             }
@@ -51,8 +51,6 @@ function handleDayClick(event) {
 onMounted(async () => {
     // await loadEvents();
     // events.value = calendarStore.getAllEvents();
-    console.log(events.value);
     await loadEventsInCalendar()
-    console.log(eventsInCalendar.value);
 });
 </script>

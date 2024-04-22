@@ -223,6 +223,7 @@ def loadEventsCalendar(request):
                         "description": event.description_event,
                         "dateEvent": event.event_date,
                         "dateTime": event.event_time,
+                        "color": event.color_event
                     }
                     for event in events
                 ]
@@ -250,13 +251,13 @@ def createEvent(request):
                 if data:
                     print(data)
                     trainer = Trainer.objects.get(user_id=payload["user_id"])
-                    print(trainer)
                     event = Calendar.objects.create(
                         team=trainer.team,
                         title_event=data["title"],
                         description_event=data["description"],
                         event_date=data["date"],
                         event_time=data["time"],
+                        color_event = data["color"]
                     )
                     print("Evento", event)
                 if event:
