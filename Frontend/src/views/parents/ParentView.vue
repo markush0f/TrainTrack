@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="min-h-screen">
     <NavbarComponent />
     <div class="flex h-full">
       <div class="profile p-4 overflow-y-auto">
@@ -13,7 +13,8 @@
       <div class="flex flex-col flex-grow justify-center p-4 h-full">
         <CalendarComponentParent />
         <ListSessionsParent class="border-b-4" />
-        FORO
+        FORO Y HACERLO RESPONSIVE
+        <ForumView/>
       </div>
 
       <div class="flex flex-col p-4">
@@ -40,7 +41,8 @@ import CalendarComponentParent from '@/components/parents/CalendarComponentParen
 import ShowEventComponent from '@/components/calendar/ShowEventComponent.vue'
 import LastGamesComponent from '@/components/teams/LastGamesComponent.vue';
 import NextGamesComponent from '@/components/teams/NextGamesComponent.vue';
-import ShieldComponent from '@/components/teams/ShieldComponent.vue'
+import ShieldComponent from '@/components/teams/ShieldComponent.vue';
+import ForumView from '../forum/ForumView.vue';
 const playerStore = usePlayerStore()
 const profileStore = useProfileStore()
 

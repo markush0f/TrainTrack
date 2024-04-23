@@ -27,4 +27,6 @@ urlpatterns = [
     path("calendar/events", views.loadEventsCalendar, name="loadevents"),
     # Ruta para crear un nuevo evento
     path("calendar/events/createevent", views.createEvent, name="createevent"),
+    # Ruta para eliminar un evento
+    path("calendar/events/removeevent", views.removeEvent, name="createevent"),
 ]

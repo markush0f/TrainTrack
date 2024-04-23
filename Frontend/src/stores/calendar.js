@@ -5,6 +5,7 @@ export const useCalendarStore = defineStore("calendar", () => {
   const events = ref({});
   const event = ref(null);
   const addEventOption = ref(false);
+  const eventsInCalendar = ref([]);
 
   function setEvent(newEvent) {
     events.value.push(newEvent);
@@ -39,6 +40,7 @@ export const useCalendarStore = defineStore("calendar", () => {
     setAllEvents,
     cancelEvent,
     addEventOption,
-    events
+    events,
+    eventsInCalendar
   };
 });

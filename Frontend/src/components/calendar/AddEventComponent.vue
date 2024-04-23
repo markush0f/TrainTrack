@@ -84,8 +84,9 @@
 
 <script setup>
 import { useCalendarStore } from '@/stores/calendar';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { createEvent } from '@/services/calendarAPI';
+
 const calendarStore = useCalendarStore();
 const date = ref(new Date())
 const selectAttribute = ref(
@@ -96,6 +97,7 @@ const selectAttribute = ref(
         }
     }
 );
+const event = ref();
 const data = ref({
     title: '',
     description: '',
@@ -104,16 +106,17 @@ const data = ref({
     color: ''
 })
 function cancelForm() {
-    console.log(data);
+    console.log(data.value);
     calendarStore.addEventOption = false;
 }
-function submitForm() {
+async function submitForm() {
     const formatted = formatDate(date.value);
     console.log(formatted.formattedTime);
     data.value.date = formatted.formattedDate;
     data.value.time = formatted.formattedTime;
     console.log(data.value);
-    createEvent(data.value)
+    await createEvent(data.value)
+
 }
 
 function formatDate(date) {
@@ -129,5 +132,12 @@ function formatDate(date) {
 
     return { formattedDate, formattedTime };
 }
+onMounted(async () => {
+    // if (calendarStore.getEvent()) {
+    //     event = calendarStore.getEvent()[0];
+    //     console.log(event);
+
+    // }
+})
 
 </script>

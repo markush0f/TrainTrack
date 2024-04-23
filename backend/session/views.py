@@ -223,11 +223,11 @@ def loadEventsCalendar(request):
                         "description": event.description_event,
                         "dateEvent": event.event_date,
                         "dateTime": event.event_time,
-                        "color": event.color_event
+                        "color": event.color_event,
                     }
                     for event in events
                 ]
-
+                print(eventsData)
                 if eventsData:
                     return JsonResponse({"events": eventsData}, status=200)
                 else:
@@ -257,21 +257,58 @@ def createEvent(request):
                         description_event=data["description"],
                         event_date=data["date"],
                         event_time=data["time"],
-                        color_event = data["color"]
+                        color_event=data["color"],
                     )
                     print("Evento", event)
                 if event:
-                        return JsonResponse({"success": True, "event": {
-                            "id": event.id,
-                            "title": event.title_event,
-                            "description": event.description_event,
-                            "date": event.event_date,
-                            "time": event.event_time
-                        }})
+                    return JsonResponse(
+                        {
+                            "success": True,
+                            "event": {
+                                "id": event.id,
+                                "title": event.title_event,
+                                "description": event.description_event,
+                                "date": event.event_date,
+                                "time": event.event_time,
+                            },
+                        }
+                    )
                 else:
-                    return JsonResponse({"success": False, "error": "No se pudo crear el evento"})
+                    return JsonResponse(
+                        {"success": False, "error": "No se pudo crear el evento"}
+                    )
 
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
+    else:
+        return JsonResponse({"error": "Método no permitido"}, status=405)
+
+
+@csrf_exempt
+def removeEvent(request):
+    if request.method == "POST":
+        try:
+            payload = decodeJWT(request)
+            trainer = Trainer.objects.get(user_id=payload["user_id"])
+            if payload["rol"] == "trainer" and trainer:
+                data = json.loads(request.body)
+                if data:
+                    event = Calendar.objects.get(id=data.get("id"))
+                    if event:
+                        eventRemoved = event.delete()
+                        print("Event removed",eventRemoved)
+                        return JsonResponse(
+                            {"success": "true", "message": "Evento eliminado"}
+                        )
+                    else:
+                        return JsonResponse(
+                            {"error": "Evento no encontrad"}, status=404
+                        )
+                else:
+                    return JsonResponse({"error": "Datos no recibidos"})
+            else:
+                return JsonResponse({"error": "No tienes permisos"}, status=403)
+        except Exception as e:
+            return JsonResponse({"error": str(e)})
     else:
         return JsonResponse({"error": "Método no permitido"}, status=405)

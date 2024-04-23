@@ -46,7 +46,7 @@ BASE_APPS = [
 # Librerias
 THIRD_APPS = ["rest_framework", "corsheaders"]
 # Aplicaciones
-OWN_APPS = ["members", "league","session"]
+OWN_APPS = ["members", "league", "session", "forum"]
 
 INSTALLED_APPS = BASE_APPS + THIRD_APPS + OWN_APPS
 

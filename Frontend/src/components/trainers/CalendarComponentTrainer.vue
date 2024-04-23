@@ -1,15 +1,12 @@
 <template>
-    <VDatePicker :attributes="eventsInCalendar" :select-attribute="selectAttribute" expanded @dayclick="handleDayClick"
-        locale="es" />
-    AÑADIR COLOR EN BASE DE DATOS EN EL CALENDARIO, AL AÑADIR UN EVENTO EL ENTRENADOR PUEDE ELEGIR UNA SERIE DE COLOR
-    ADEMÁS ELIMINAR UN EVENTO,Y POR ULTIMO EL FORO
+    <VDatePicker :attributes="calendarStore.eventsInCalendar" :select-attribute="selectAttribute" expanded
+        @dayclick="handleDayClick" locale="es" />
 </template>
 
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useCalendarStore } from '@/stores/calendar';
-
-
+import { loadEventsInCalendar } from '@/services/calendarAPI';
 const calendarStore = useCalendarStore();
 const events = ref([]);
 const eventsInCalendar = ref([]);
@@ -22,22 +19,7 @@ const selectAttribute = ref(
     }
 );
 
-async function loadEventsInCalendar() {
-    calendarStore.events.forEach(event => {
-        eventsInCalendar.value.push(
-            {
-                id: event.id,
-                title: event.title,
-                time: event.dateTime,
-                description: event.description,
-                highlight: {
-                    color: event.color,
-                },
-                dates: event.dateEvent,
-            }
-        )
-    });
-}
+
 
 function handleDayClick(event) {
     console.log('Información del evento:', event);

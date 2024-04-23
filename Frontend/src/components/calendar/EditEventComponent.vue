@@ -1,5 +1,5 @@
 <template>
-    <div v-if="events.length > 1" class="event-container overflow-y-auto max-h-96">
+    <div v-if="events.length > 0" class="event-container overflow-y-auto max-h-96">
         <div class="flex justify-center">
             <h2 class="text-center text-xl font-semibold p-2 text-green-700">Próximos eventos</h2>
         </div>
@@ -23,15 +23,22 @@
                         </span>
                     </h4>
                     <div class="pt-1 flex justify-center space-x-2 ">
-                        <a @click="editEvent(event)"
+                        <button type="button" @click="editEvent(event)"
                             class="px-3 py-1.5 font-medium bg-green-700 hover:bg-green-600 hover:text-white text-green-200 rounded-lg text-xs">
                             Editar
-                        </a>
+                        </button>
+                        <button type="button" @click="deleteEvent(event)"
+                            class="px-3 py-1.5 font-medium bg-red-700 hover:bg-red-600 hover:text-white text-red-200 rounded-lg text-xs">
+                            Eliminar
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
 
+    </div>
+    <div v-else>
+        <h1 class="text-xl flex justify-center text-gray-400 font-bold"> No hay eventos recientes </h1>
     </div>
     <div class="pt-1 flex justify-center">
         <button @click="newEvent()"
@@ -44,16 +51,23 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useCalendarStore } from '@/stores/calendar';
+import { removeEvent } from '@/services/calendarAPI'
 const calendarStore = useCalendarStore();
 const events = ref([])
 
 async function editEvent(event) {
     calendarStore.setEvent(event.id);
+    calendarStore.addEventOption = true;
+    console.log(calendarStore.getEvent());
 }
 
 async function newEvent() {
     calendarStore.addEventOption = true;
+}
 
+async function deleteEvent(event) {
+
+    await removeEvent(event.id)
 }
 
 
