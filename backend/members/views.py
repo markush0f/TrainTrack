@@ -39,9 +39,6 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
 
-# Validamos el token JWT
-#  Comprobamos si en los datos enviados existe tanto el codigo como la contraseña proporcionada por el equipo
-#  La idea es que cada mes se cambie tanto el codigo como la contraseña del equipo
 @csrf_exempt
 def checkCodeTeam(request):
     if request.method == "POST":

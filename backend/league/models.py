@@ -31,6 +31,9 @@ class Shields(models.Model):
         verbose_name="Team",
         default=1,
     )
+    
+class Stats():
+    
 
 
 # models.ImageField

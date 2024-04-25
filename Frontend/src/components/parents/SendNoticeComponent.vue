@@ -1,6 +1,9 @@
 <template>
   <div v-if="calendarStore.getEvent()">
-    <h2 class="text-2xl font-bold text-center p-5 text-green-700">Confirmar asistencia al entrenador</h2>
+    <h2 class="text-2xl font-bold text-center p-5 text-green-700 transition-all">Confirmar asistencia a {{
+    calendarStore.getEvent()[0].title }} ({{ calendarStore.getEvent()[0].dateEvent }} {{
+    calendarStore.getEvent()[0].dateTime }})
+    </h2>
     <form @submit.prevent="submitFormNotices">
       <div class="p-3">
         <ul
@@ -47,7 +50,7 @@
 
     </form>
   </div>
-  <div v-else >
+  <div v-else>
     <h1 class="text-2xl font-bold text-center p-4 text-green-700">
       Seleccione un evento!
     </h1>

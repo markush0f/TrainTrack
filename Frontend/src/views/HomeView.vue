@@ -17,21 +17,22 @@
           para apoyar el desarrollo y el crecimiento de los jóvenes.
         </p>
       </div>
-
+      
+      
       <!-- División para el contenido adicional -->
       <div class="flex flex-col md:w-1/2 justify-center p-4">
         <div class="w-full justify-center p-4 pr-10">
-
+          
           <div class="justify-center p-4 flex">
             <div class="ml-4">
               <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/Logotipo_del_Gobierno_de_Canarias.svg"
-                alt="Federacion" class="w-56">
+              alt="Federacion" class="w-56">
             </div>
             <div>
               <img src="../img/fcf.png" alt="Federacion" class="w-56">
             </div>
           </div>
-
+          
           <!-- División para entrar como padre -->
           <div class="justify-center p-4">
             <router-link to="/parent" class="max-w-xl w-full">
@@ -54,8 +55,9 @@
         </div>
       </div>
     </div>
+    <!-- <img src="../img/TrainTrackPhone.jpg" alt="" class="w-24"> -->
   </div>
-
+  
 </template>
 
 

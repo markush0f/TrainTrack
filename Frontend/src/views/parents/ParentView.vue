@@ -13,8 +13,7 @@
       <div class="flex flex-col flex-grow justify-center p-4 h-full">
         <CalendarComponentParent />
         <ListSessionsParent class="border-b-4" />
-        FORO Y HACERLO RESPONSIVE
-        <ForumView/>
+        <ForumView />
       </div>
 
       <div class="flex flex-col p-4">
