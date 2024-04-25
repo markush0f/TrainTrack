@@ -33,7 +33,10 @@ class Shields(models.Model):
     )
     
 class Stats():
-    
+    goals = models.CharField(max_length=255)
+    assists = models.CharField(max_length=255)
+    games_played = models.CharField(max_length=255)
+    position= models.CharField(max_length=255)
 
 
 # models.ImageField
