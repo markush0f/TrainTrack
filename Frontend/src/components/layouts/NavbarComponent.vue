@@ -1,16 +1,16 @@
 <template>
-  <nav class="bg-white w-full z-20 top-0 start-0 border-b border-main-green">
+  <nav class="bg-white w-full z-20 top-0 start-0 border-b border-main-green p-4">
     <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-      <img src="../../img/LogoTrainTrack.png" alt="" class="flex w-20">
       <!-- <a href="" class="flex items-center space-x-3 rtl:space-x-reverse">
         <span class="self-center text-2xl font-semibold whitespace-nowrap text-black">Train Track</span>
       </a> -->
-      <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+      <div class="flex md:order-2 space-x-3 md:space-x-0">
 
         <button @click=" profileStore.show = true" v-if="token" class="block py-2 px-3 md:p-0 text-main-green rounded 
           hover:bg-transparent md:hover:text-main-green">
-          PERFIL
+          <i class="gg-profile"></i>
         </button>
+        
         <Modal v-if="profileStore.show" @close="profileStore.show = false" />
       </div>
       <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
@@ -22,17 +22,17 @@
           </li>
           <li>
             <router-link to="/" class="block py-2 px-3 md:p-0 text-main-green text-xl rounded 
-            hover:bg-transparent md:hover:text-dark-green">Competiciones</router-link>
+            hover:bg-transparent md:hover:text-dark-green">SOBRE NOSOTROS</router-link>
           </li>
           <li>
-            <router-link to="/" class="block py-2 px-3 md:p-0 text-main-green text-xl rounded 
-            hover:bg-transparent md:hover:text-dark-green">AYUDA</router-link>
-          </li>
-          <li>
-            <router-link to="/" class="block py-2 px-3 md:p-0 text-main-green text-xl rounded 
+            <router-link to="/contact" class="block py-2 px-3 md:p-0 text-main-green text-xl rounded 
             hover:bg-transparent md:hover:text-dark-green">CONTACTO</router-link>
           </li>
 
+          <li>
+            <p to="/contact" class="block py-2 px-3 md:p-0 text-gray-300 text-xl rounded 
+            hover:bg-transparent ">COMPETICIONES (proximamente)</p>
+          </li>
         </ul>
       </div>
     </div>
