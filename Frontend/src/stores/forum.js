@@ -13,8 +13,8 @@ export const useForumStore = defineStore('forum', () => {
   }
 
   return {
-    setCategory,
-    getCategory
+    setMessage,
+    getMessages
   }
 })
 

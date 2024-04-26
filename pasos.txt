@@ -1,9 +1,0 @@
-Primero, instalar un entorno virtual (venv) y entramos a el.
-venv\Scripts\activate
-A continuacion, descargaremos Django.
-Ahora descargaremos los siguientes paquetes y seguiremos los pasos
-que nos sale en la documentacion:
-Django REST framework (https://www.django-rest-framework.org/)
-Django CORS headers (https://pypi.org/project/django-cors-headers/)
-A continuacion en nuestro proyecto vue, descargamos axios 
-(https://www.npmjs.com/package/vue-axios).

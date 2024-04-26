@@ -2,7 +2,7 @@
 
     <body class="bg-gray-200">
         <div class="container mx-auto px-4 py-4">
-            <h1 class="text-2xl font-semibold mb-4 text-green-700">{{dataForum.team}}</h1>
+            <h1 class="text-2xl font-semibold mb-4">{{ dataForum.team }}</h1>
             <div class="space-y-4">
                 <div class="bg-white p-3 rounded-lg shadow-md">
                     <h2 class="text-lg font-semibold mb-1">Autor</h2>
@@ -23,22 +23,22 @@
             </div>
             <div class="mt-8">
                 <h2 class="text-lg font-semibold mb-2">Nueva Publicación</h2>
-                <form>
+                <form @submit.prevent="submitForm">
                     <div class="mb-2">
                         <label for="titulo" class="block text-gray-700 font-bold mb-1">Título</label>
                         <input type="text" id="titulo" name="titulo"
-                            class="w-full px-3 py-2 rounded-lg border focus:outline-none focus:border-blue-500"
+                            class="w-full px-3 py-2 rounded-lg border focus:outline-none focus:border-green-500"
                             required>
                     </div>
                     <div class="mb-2">
                         <label for="contenido" class="block text-gray-700 font-bold mb-1">Contenido</label>
                         <textarea id="contenido" name="contenido" rows="4"
-                            class="w-full px-3 py-2 rounded-lg border focus:outline-none focus:border-blue-500"
+                            class="w-full px-3 py-2 rounded-lg border focus:outline-none focus:green-blue-500"
                             required></textarea>
                     </div>
                     <div>
                         <button type="submit"
-                            class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Publicar</button>
+                            class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">Publicar</button>
                     </div>
                 </form>
             </div>
@@ -48,12 +48,22 @@
 
 <script setup>
 import { useProfileStore } from '@/stores/profile';
+import { onMounted } from 'vue';
+import { loadMessageForum, sendMessageForum } from '@/services/forumAPI';
+
 const profile = useProfileStore()
 const dataForum = {
     team: profile.data.team
 }
 const data = {
-    // author,
     message: ''
 }
+
+async function submitForm() {
+    await sendMessageForum(data)
+}
+
+onMounted(async () => {
+    await loadMessageForum();
+});
 </script>
