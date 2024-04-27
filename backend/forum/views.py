@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 def loadMessages(request):
-    if request.method == "POST":
+    if request.method == "GET":
         try:
             payload = decodeJWT(request)
             if payload:
@@ -29,12 +29,13 @@ def loadMessages(request):
                         "title": message.title,
                         "message": message.message,
                         "author": message.author,
+                        'created_at': message.created_at
                     }
                     for message in forum
                 ]
                 print(data)
                 if data:
-                    return JsonResponse({"events": data, "success": True}, status=200)
+                    return JsonResponse({"messages": data, "success": True}, status=200)
                 else:
                     return JsonResponse({"empty": "No hay mensajes en el foro"})
             else:
@@ -44,6 +45,7 @@ def loadMessages(request):
     else:
         return JsonResponse({"error": "Método no permitido"}, status=405)
 
+
 @csrf_exempt
 def sendMessage(request):
     if request.method == "POST":
@@ -51,7 +53,7 @@ def sendMessage(request):
             payload = decodeJWT(request)
             if payload:
                 data = json.loads(request.body)
-                print("Entra; ",data)
+                print("Entra; ", data)
                 if data:
                     if payload["rol"] == "trainer":
                         trainer = Trainer.objects.get(user_id=payload["user_id"])
@@ -61,21 +63,22 @@ def sendMessage(request):
                         parent = Parent.objects.get(user_id=payload["user_id"])
                         team = parent.trainer.team
                         author = parent.user.first_name
+                        print(team.name)
 
                     message = Forum.objects.create(
-                        team=team,
+                        team_id=team.id,
                         message=data["message"],
                         title=data["title"],
                         author=author,
                     )
                     print(message)
                     data = {
-                        'team': message.team,
-                        'message': message.message,
-                        'title': message.title,
-                        'author': message.author
+                        "team": message.team.name,
+                        "message": message.message,
+                        "title": message.title,
+                        "author": message.author,
                     }
-                    print("Mensaje: ",data)
+                    print("Mensaje: ", data)
                     if message:
                         return JsonResponse(
                             {"success": "true", "message": data}, status=200
@@ -86,5 +89,5 @@ def sendMessage(request):
             else:
                 return JsonResponse({"error": "Bad request"}, status=400)
         except Exception as e:
-            print("error: ",str(e))
+            print("error: ", str(e))
             return JsonResponse({"error": str(e)})

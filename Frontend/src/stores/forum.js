@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { ref } from 'vue';
 
 export const useForumStore = defineStore('forum', () => {
-  const messagesForum = ref('')
+  const messagesForum = ref([])
 
   function setMessage(newForum) {
     messagesForum.value = newForum;
@@ -13,6 +13,7 @@ export const useForumStore = defineStore('forum', () => {
   }
 
   return {
+    messagesForum,
     setMessage,
     getMessages
   }

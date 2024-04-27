@@ -19,7 +19,7 @@ export async function sendMessageForum(data) {
       console.log(res);
       if (res.data.success) {
         console.log("Nuevo mensaje foro:", res.data);
-        forumStore.setMessage(res.data.message)
+        await loadMessageForum()
       }
     } catch (e) {
       console.log("Error:", e);
@@ -36,13 +36,13 @@ export async function loadMessageForum() {
       const headers = {
         Authorization: `Bearer ${token}`,
       };
-      const res = await axios.post(`${URL}forum/loadmessage`, data, {
+      const res = await axios.get(`${URL}forum/loadmessages`, {
         headers,
       });
 
       if (res.data.success) {
-        console.log("Mensajes foro:", res.data);
-        forumStore.setMessage(res.data.message)
+        console.log("Mensajes foro:", res.data.messages);
+        forumStore.messagesForum  = await res.data.messages
       }
     } catch (e) {
       console.log("Error:", e);

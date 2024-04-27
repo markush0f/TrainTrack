@@ -1,23 +1,37 @@
 <template>
-  <body class="bg-gray-200">
+  <div class="bg-white-100">
     <div class="container mx-auto px-4 py-4">
-      <h1 class="text-2xl font-semibold mb-4">{{ dataForum.team }}</h1>
-      <div class="space-y-4">
-        <div class="bg-white p-3 rounded-lg shadow-md">
-          <h2 class="text-lg font-semibold mb-1">Autor</h2>
-          <p class="text-sm text-gray-700 mb-2">
-            Contenido de la publicación. Aquí se puede incluir texto, imágenes,
-            enlaces, etc.
-          </p>
-          <div class="flex items-center justify-between"></div>
-        </div>
-
-        <div class="bg-white p-3 rounded-lg shadow-md">
-          <h2 class="text-lg font-semibold mb-1">Autor</h2>
-          <p class="text-sm text-gray-700 mb-2">
-            Contenido de la publicación. Aquí se puede incluir texto, imágenes,
-            enlaces, etc.
-          </p>
+      <h1
+        class="text-4xl font-semibold mb-4 flex justify-center text-green-600"
+      >
+        FORO
+      </h1>
+      <div class="space-y-1 overflow-auto max-h-96">
+        <div
+          :class="{
+            '': index % 2 === 0,
+            'bg-gray-100 ': index % 2 !== 0,
+          }"
+          class="p-3 border-b-2 rounded-l-full"
+          v-for="(message, index) in forumStore.messagesForum"
+          :key="message.id"
+        >
+          <div class="flex justify-between">
+            <div class="ml-4 text-left">
+              <h2 class="text-lg font-semibold mb-1">{{ message.title }}</h2>
+            </div>
+            <div class="text-right">
+              <p class="text-sm text-gray-500">{{ message.author }}</p>
+            </div>
+          </div>
+          <div class="flex justify-between">
+            <div class="ml-10 text-left">
+              <p class="text-gray-700 mb-2">{{ message.message }}</p>
+            </div>
+            <div class="text-right">
+              <p class="text-sm text-gray-700 mb-2">{{ message.created_at }}</p>
+            </div>
+          </div>
           <div class="flex items-center justify-between"></div>
         </div>
       </div>
@@ -45,7 +59,7 @@
               id="contenido"
               name="contenido"
               rows="4"
-              class="w-full px-3 py-2 rounded-lg border focus:outline-none focus:green-blue-500"
+              class="w-full px-3 py-2 rounded-lg border focus:outline-none focus:border-green-500"
               v-model="data.message"
               required
             ></textarea>
@@ -61,13 +75,15 @@
         </form>
       </div>
     </div>
-  </body>
+  </div>
 </template>
 
 <script setup>
 import { useProfileStore } from "@/stores/profile";
 import { onMounted } from "vue";
 import { loadMessageForum, sendMessageForum } from "@/services/forumAPI";
+import { useForumStore } from "@/stores/forum";
+const forumStore = useForumStore();
 
 const profile = useProfileStore();
 const dataForum = {
@@ -79,11 +95,12 @@ const data = {
 };
 
 async function submitForm() {
-    console.log(data);
+  console.log(data);
   await sendMessageForum(data);
 }
 
 onMounted(async () => {
   await loadMessageForum();
+  console.log(forumStore.messagesForum);
 });
 </script>

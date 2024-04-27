@@ -1,10 +1,8 @@
 <template>
-
     <div>
         <NavbarComponent />
-
         <div class="container mx-auto px-4 py-8">
-            <h1 class="text-3xl font-bold text-center mb-8 text-green-600">Contacto</h1>
+            <h1 class="text-3xl font-bold text-center mb-8 text-green-600">Contacte con Train Track</h1>
             <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md">
                 <form>
                     <div class="mb-4">
