@@ -8,7 +8,6 @@ export async function sendMessageForum(data) {
   const token = cookies.get("token");
   const forumStore = useForumStore();
 
-  console.log(data);
   if (token) {
     try {
       const headers = {
@@ -17,6 +16,7 @@ export async function sendMessageForum(data) {
       const res = await axios.post(`${URL}forum/sendmessage`, data, {
         headers,
       });
+      console.log(res);
       if (res.data.success) {
         console.log("Nuevo mensaje foro:", res.data);
         forumStore.setMessage(res.data.message)

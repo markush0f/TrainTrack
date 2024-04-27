@@ -77,7 +77,7 @@ export async function getUnverifiedParents() {
       const res = await axios.get(`${URL}getUnverifiedParents`, { headers });
       console.log(res.data);
       if (res.data.parents) {
-        return res.data.parents; // Devuelve los datos obtenidos
+        return res.data.parents; 
       } else {
         return null;
       }

@@ -13,7 +13,9 @@
 
       </div>
       <div class="flex-grow justify-center p-4">
+        <div v-if="!storeShowPlayer.showInsertPlayer">
         <CalendarComponentTrainer />
+      </div>
         <ListNotificationsTrainerComponent class="border-b-4" />
         <div class="flex flex-col p-4">
           <div v-if="playerStore.player != null">
@@ -49,7 +51,7 @@ import { listParentsByTrainer } from "@/services/parentsAPI";
 import PlayerInfoComponent from '@/components/players/PlayerInfoComponent.vue';
 import PlayerStatsComponent from '@/components/players/PlayerStatsComponent.vue'
 import { onMounted } from 'vue'
-import { usePlayerStore } from '@/stores/players';
+import { usePlayerStore,useShowInsertPlayerStore } from '@/stores/players';
 import ShieldComponent from '@/components/teams/ShieldComponent.vue';
 import NextGamesComponent from '@/components/teams/NextGamesComponent.vue';
 import LastGamesComponent from '@/components/teams/LastGamesComponent.vue';
@@ -57,6 +59,8 @@ import CalendarComponentTrainer from '@/components/trainers/CalendarComponentTra
 import EditEventComponent from '@/components/calendar/EditEventComponent.vue';
 import AddEventComponent from '@/components/calendar/AddEventComponent.vue';
 const playerStore = usePlayerStore();
+
+const storeShowPlayer = useShowInsertPlayerStore();
 
 onMounted(async () => {
   await listParentsByTrainer()

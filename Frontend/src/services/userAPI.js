@@ -2,6 +2,7 @@ import axios from "axios";
 import { useCookies } from "vue3-cookies";
 import { useProfileStore, useRolStore } from "@/stores/profile";
 import { getUnverifiedParents } from "./parentsAPI";
+import { useParentStore } from "@/stores/parents"
 const URL = "http://127.0.0.1:8000/api/";
 const { cookies } = useCookies();
 
@@ -57,7 +58,7 @@ export async function profile() {
       const res = await axios.get(`${URL}profile`, { headers });
       if (res) {
         console.log("Datos perfil: ", res.data);
-        const profileData =  res.data.profile;
+        const profileData = res.data.profile;
         const profileStore = useProfileStore();
         profileStore.data.name = profileData.first_name;
         profileStore.data.surname = profileData.last_name;
