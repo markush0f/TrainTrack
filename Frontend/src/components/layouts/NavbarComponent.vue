@@ -21,7 +21,7 @@
             hover:bg-transparent md:hover:text-dark-green">INICIO</router-link>
           </li>
           <li>
-            <router-link to="/" class="block py-2 px-3 md:p-0 text-main-green text-xl rounded 
+            <router-link to="/aboutus" class="block py-2 px-3 md:p-0 text-main-green text-xl rounded 
             hover:bg-transparent md:hover:text-dark-green">SOBRE NOSOTROS</router-link>
           </li>
           <li>
@@ -30,7 +30,7 @@
           </li>
 
           <li>
-            <p to="/contact" class="block py-2 px-3 md:p-0 text-gray-300 text-xl rounded 
+            <p  class="block py-2 px-3 md:p-0 text-gray-300 text-xl rounded 
             hover:bg-transparent ">COMPETICIONES (proximamente)</p>
           </li>
         </ul>

@@ -10,10 +10,6 @@
       </div>
 
       <div class="p-6">
-
-        <div class="flex items-center justify-center mb-6">
-          <img src="" alt="" class="w-24 h-24 rounded-full">
-        </div>
         <div class="mb-6 p-5">
           <p class="text-lg font-semibold p-2 pr-3">Nombre y apellidos: {{ profileData.name }} {{ profileData.surname }}
           </p>

@@ -14,9 +14,14 @@
                 <h4 class="ml-2">{{ profileStore.data.name }} {{ profileStore.data.name }} </h4>
             </div>
             <div class=" py-1">
-                <h3 class="text-base font-medium text-gray-500 pr-2 ml-2">Dirección:</h3>
-                <h4 class="ml-2">{{ profileStore.data.address1 }}, {{ profileStore.data.address2 }}</h4>
+                <h3 class="text-base font-medium text-gray-500 pr-2 ml-2">Posición:</h3>
+                <h4 class="ml-2">Delantero</h4>
             </div>
+            <div class=" py-1">
+                <h3 class="text-base font-medium text-gray-500 pr-2 ml-2">Goles y asistencias:</h3>
+                <h4 class="ml-2">G: 10 A: 5</h4>
+            </div>
+
         </div>
     </div>
 </template>

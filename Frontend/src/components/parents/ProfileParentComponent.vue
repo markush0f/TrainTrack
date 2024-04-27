@@ -11,9 +11,6 @@
 
       <div class="p-6">
 
-        <div class="flex items-center justify-center mb-6">
-          <img src="" alt="" class="w-24 h-24 rounded-full">
-        </div>
         <div class="mb-6">
           <p class="text-lg font-semibold">Nombre y apellidos</p>
           <p class="text-lg font-semibold"> </p>
