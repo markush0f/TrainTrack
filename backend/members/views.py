@@ -52,7 +52,6 @@ def checkCodeTeam(request):
                     codeTeam = Team.objects.all().filter(team_code=data["codeTeam"])
                     password = Team.objects.all().filter(team_password=data["password"])
                     if password and codeTeam:
-                        # PONER LA VALIDACION CORRECTA
                         return JsonResponse({"success": "Datos correctos"})
                     else:
                         return JsonResponse(
@@ -91,7 +90,10 @@ def loginView(request):
 
             if user is None:
                 return JsonResponse(
-                    {"error": "Correo electrónico o contraseña incorrectos"}
+                    {
+                        "error": "Correo electrónico o contraseña incorrectos",
+                        "key": "invalidDateLogin",
+                    }
                 )
 
             parent = Parent.objects.filter(user_id=user.id).first()
@@ -189,12 +191,14 @@ def manageRequestParent(request):
 
                     if parent:
                         if decision:
-                            trainer = Trainer.objects.filter(user_id=payload["user_id"]).first()
-                            print('ID TRAINER',trainer.id)
+                            trainer = Trainer.objects.filter(
+                                user_id=payload["user_id"]
+                            ).first()
+                            print("ID TRAINER", trainer.id)
                             print("Decisión aprobada")
                             parent.trainer_id = trainer.id
                             parent.verify = True
-                            print('aqui si')
+                            print("aqui si")
                             parent.save()
                             # Aquí puedes enviar un correo electrónico al padre
                             return JsonResponse(

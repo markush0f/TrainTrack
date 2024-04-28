@@ -36,29 +36,23 @@ def signupViewParent(request):
             print("Data:", data)
 
             errors = {}
-            # Comprobamos si hay campos vacíos
             for key, value in data.items():
                 if not value:
                     errors[f"{key}Empty"] = f"El campo {key} no puede estar vacío"
                     print(f"Key: {key}, Value: {value}")
             if errors:
                 return JsonResponse({"Errors": errors})
-
-            # Verificar si el correo electrónico ya está registrado
             if "email" in data:
                 if User.objects.filter(email=data["email"]).exists():
-                    return JsonResponse(
-                        {"EmailExist": "Este correo electrónico ya está registrado."}
-                    )
-
-            # Verificar si el equipo existe y la contraseña del equipo es correcta
+                    return JsonResponse({"emailExist": True})
             teamCode = data["teamCode"]
             teamPassword = data["teamPassword"]
             team = Team.objects.filter(team_code=teamCode).first()
             if not team or team.team_password != teamPassword:
                 return JsonResponse(
                     {
-                        "error": "No se encuentra ningún equipo con este código o la contraseña es incorrecta."
+                        "error": "No se encuentra ningún equipo con este código o la contraseña es incorrecta.",
+                        "codePassNotExist": "true",
                     }
                 )
 

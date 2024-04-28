@@ -9,8 +9,7 @@
         class="mb-0 mt-6 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8"
       >
         <p class="mx-auto mt-4 max-w-md text-center text-gray-500">
-          Bienvenido de nuevo a Train Track, introduzca sus datos para acceder a
-          las funciones de su hijo/s
+          Bienvenido de nuevo, introduzca sus datos para acceder Train Track
         </p>
         <p class="text-center text-lg font-medium"></p>
 
@@ -39,7 +38,9 @@
             />
           </div>
         </div>
-
+        <div v-if="errorStore.errorInvalidDateLogin !== null" class="text-red-600 text-sm italic">
+          {{ errorStore.errorInvalidDateLogin }}
+        </div>
         <div class="flex justify-between space-x-4">
           <button
             type="submit"
@@ -69,7 +70,8 @@
 import { ref } from "vue";
 import { login } from "@/services/userAPI";
 import { useCookies } from "vue3-cookies";
-
+import { useErrorStore } from "@/stores/errors";
+const errorStore = useErrorStore()
 const { cookies } = useCookies();
 const data = ref({
   email: "",
@@ -82,6 +84,7 @@ const errors = {
 const submitForm = async () => {
   await login(data.value);
 };
+console.log(errorStore.errorInvalidDateLogin);
 </script>
 
 <style lang="css" scoped></style>

@@ -3,6 +3,7 @@ import { useCookies } from "vue3-cookies";
 import { useProfileStore, useRolStore } from "@/stores/profile";
 import { getUnverifiedParents } from "./parentsAPI";
 import { useParentStore } from "@/stores/parents"
+import { useErrorStore } from "@/stores/errors";
 const URL = "http://127.0.0.1:8000/api/";
 const { cookies } = useCookies();
 
@@ -12,7 +13,19 @@ export async function signup(data) {
   console.log("Datos enviados:", res.data);
   try {
     if (res) {
-      console.log("Respuesta del servidor: ", res);
+      const errorStore = useErrorStore();
+      console.log("Respuesta del servidor: ", res.data);
+      errorStore.errorEmailExist = ''
+      errorStore.errorInvalidCodePassTeam = ''
+      if (res.data.emailExist) {
+        console.log('ya existe');
+        errorStore.errorEmailExist = 'Este email ya existe, si ya esta registrado espere la confirmacion del entrenador.'
+      }
+
+      if (res.data.codePassNotExist = true) {
+        console.log('Codigo equipo incorrecto');
+        errorStore.errorInvalidCodePassTeam = 'Codigo o contraseña de equipo incorrecto.'
+      }
       if (res.data.success) {
         console.log("Success:", res.data.success);
         window.location.href = "/registersuccess";
@@ -29,16 +42,20 @@ export async function login(data) {
   try {
     const res = await axios.post(`${URL}login`, data);
     if (res) {
+      const errorStore = useErrorStore();
       console.log("Datos: ", res.data);
       console.log("Respuesta del servidor:", res);
       if (res.data.success) {
         console.log("Token:", res.data.token);
         cookies.set("token", res.data.token);
+        errorStore.errorInvalidDateLogin = ''
         if (res.data.rol == "trainer") {
           window.location.href = "/trainer";
         } else if (res.data.rol == "parent") window.location.href = "/parent";
         else window.location.href = "/";
         // this.$router.push('/');
+      } else {
+        errorStore.errorInvalidDateLogin = 'Contraseña o email incorrectos'
       }
     }
   } catch (e) {

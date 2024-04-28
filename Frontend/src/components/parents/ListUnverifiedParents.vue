@@ -2,8 +2,8 @@
   <div>
     
     <div class="flex p-4" v-if="unverifiedParents != null">
-      <p>Lista de peticiones</p>
       <div class="justify-center w-full">
+        <p class="flex justify-center text-lg text-green-600 pb-3">Lista de peticiones</p>
         <!-- Con el max-h-60 ajustamos el scroll -->
         <div class="w-full overflow-y-auto max-h-60">
           <!-- Iterar sobre los padres y mostrarlos en una columna -->

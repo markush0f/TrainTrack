@@ -60,7 +60,7 @@ const router = createRouter({
       path: "/trainer/perfil",
       name: "trainer_perfil",
       component: () => import("../components/ProfileComponent.vue"),
-    }, 
+    },
     {
       path: "/notfound",
       name: "notfound",
@@ -97,7 +97,24 @@ const router = createRouter({
 const { cookies } = useCookies();
 router.beforeEach(async (to, from, next) => {
   const token = cookies.get("token");
-
+  if (token) {
+    if (to.path === "/" || to.path === "/login" || to.path === "/signup") {
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      const res = await axios.post("/api/authenticatejwt", null, { headers });
+      if (res.data.valid) {
+        if (res.data.rol === 'trainer') {
+          next("/trainer");
+          return;
+        }else if (res.data.rol === 'parent'){
+          next("/parent");
+        }
+        
+      }
+      return;
+    }
+  }
   if (to.meta.requireAuthUser) {
     const headers = {
       Authorization: `Bearer ${token}`,

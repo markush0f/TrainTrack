@@ -16,8 +16,10 @@
         <div class="hidden lg:flex justify-center">
           <CalendarComponentParent />
         </div>
-        <div class="lg:hidden mb-4">
-          <CalendarComponentParent />
+        <div v-if="!profileStore.showProfile">
+          <div class="lg:hidden mb-4">
+            <CalendarComponentParent />
+          </div>
         </div>
         <ListSessionsParent class="border-b-4" />
         <ForumView />
@@ -40,7 +42,7 @@ import SendNoticeComponent from "@/components/parents/SendNoticeComponent.vue";
 import ListSessionsParent from "@/components/parents/ListSessionsParent.vue";
 import { onMounted } from "vue";
 import PlayerInfoParentComponent from "@/components/players/PlayerInfoParentComponent.vue";
-import { usePlayerStore } from "@/stores/players";
+import { usePlayerStore, useShowInsertPlayerStore } from "@/stores/players";
 import { useProfileStore } from "@/stores/profile";
 import CalendarComponentParent from "@/components/parents/CalendarComponentParent.vue";
 import ShowEventComponent from "@/components/calendar/ShowEventComponent.vue";
@@ -48,6 +50,7 @@ import LastGamesComponent from "@/components/teams/LastGamesComponent.vue";
 import NextGamesComponent from "@/components/teams/NextGamesComponent.vue";
 import ShieldComponent from "@/components/teams/ShieldComponent.vue";
 import ForumView from "../forum/ForumView.vue";
+
 const playerStore = usePlayerStore();
 const profileStore = useProfileStore();
 

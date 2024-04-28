@@ -1,7 +1,6 @@
 <template>
   <div class="container mx-auto px-4 py-8">
     <div class="max-w-lg mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
-      <!-- Encabezado del perfil -->
       <div class="bg-main-green text-white px-6 py-4">
         <div class="flex items-center justify-between">
           <h1 class="text-2xl">Perfil</h1>
@@ -23,7 +22,7 @@
             Ubicación: {{ profileData.address1 }}, {{ profileData.address2 }}
           </p>
           <p class="text-gray-600 p-2 pr-3">Equipo: {{ profileData.team }}</p>
-          <div v-if="profileData.childrens">
+          <div v-if="profileData.childrens > 0">
             <p class="text-gray-600 p-2 pr-3">
               Hijo/s: {{ profileData.childrens.name }}
             </p>
