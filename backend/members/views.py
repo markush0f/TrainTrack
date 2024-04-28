@@ -177,46 +177,55 @@ def getUnverifiedParents(request):
 def manageRequestParent(request):
     if request.method == "POST":
         try:
-            data = json.loads(request.body)
-            decision = data.get("decision")
-            parentId = data.get("parentId")
-            # return JsonResponse({"error": data})
-            if decision is not None and parentId is not None:
-                parent = Parent.objects.filter(id=parentId).first()
+            payload = decodeJWT(request)
+            if payload:
+                print(payload)
+                data = json.loads(request.body)
+                decision = data.get("decision")
+                parentId = data.get("parentId")
+                # return JsonResponse({"error": data})
+                if decision is not None and parentId is not None:
+                    parent = Parent.objects.filter(id=parentId).first()
 
-                if parent:
-                    if decision:
-                        print("Decisión aprobada")
-                        parent.verify = True
-                        parent.save()
-                        # Aquí puedes enviar un correo electrónico al padre
-                        return JsonResponse(
-                            {
-                                "accepted": "Padre aceptado correctamente",
-                                "success": True,
-                            }
-                        )
+                    if parent:
+                        if decision:
+                            trainer = Trainer.objects.filter(user_id=payload["user_id"]).first()
+                            print('ID TRAINER',trainer.id)
+                            print("Decisión aprobada")
+                            parent.trainer_id = trainer.id
+                            parent.verify = True
+                            print('aqui si')
+                            parent.save()
+                            # Aquí puedes enviar un correo electrónico al padre
+                            return JsonResponse(
+                                {
+                                    "accepted": "Padre aceptado correctamente",
+                                    "success": True,
+                                }
+                            )
+                        else:
+                            print("Decisión denegada")
+                            # user = User.objects.filter(id=parent.user).first()
+                            user = parent.user
+                            parent.delete()
+                            user.delete()
+                            # Aquí puedes enviar un correo electrónico al padre
+                            return JsonResponse(
+                                {
+                                    "denied": "Padre no aceptado y eliminado correctamente",
+                                    "success": True,
+                                }
+                            )
+
                     else:
-                        print("Decisión denegada")
-                        # user = User.objects.filter(id=parent.user).first()
-                        user = parent.user
-                        parent.delete()
-                        user.delete()
-                        # Aquí puedes enviar un correo electrónico al padre
                         return JsonResponse(
-                            {
-                                "denied": "Padre no aceptado y eliminado correctamente",
-                                "success": True,
-                            }
+                            {"error": f"No se encontró el padre con el ID recibido"},
+                            status=400,
                         )
-
                 else:
-                    return JsonResponse(
-                        {"error": f"No se encontró el padre con el ID recibido"},
-                        status=400,
-                    )
+                    return JsonResponse({"error": "Faltan parámetros"}, status=400)
             else:
-                return JsonResponse({"error": "Faltan parámetros"}, status=400)
+                return JsonResponse({"error": "No tiene autorizacion"}, status=403)
 
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)

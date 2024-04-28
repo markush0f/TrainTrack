@@ -3,17 +3,15 @@
     <NavbarComponent />
 
     <div class="flex flex-col lg:flex-row h-full">
-      <!-- Contenedor izquierdo -->
       <div class="lg:w-1/4 p-4 overflow-y-auto">
         <div class="justify-center p-4">
           <ShieldComponent />
-          <PlayerInfoComponent />
+          <PlayerInfoParentComponent />
           <LastGamesComponent />
           <NextGamesComponent />
         </div>
       </div>
 
-      <!-- Contenedor central -->
       <div class="lg:w-1/2 flex-grow p-4">
         <div class="hidden lg:flex justify-center">
           <CalendarComponentParent />
@@ -24,8 +22,6 @@
         <ListSessionsParent class="border-b-4" />
         <ForumView />
       </div>
-
-      <!-- Contenedor derecho -->
       <div class="lg:w-1/4 p-4">
         <div class="hidden lg:block">
           <ShowEventComponent class="p-4" />
@@ -43,7 +39,7 @@ import ClassificationTableComponent from "@/components/teams/ClassificationTable
 import SendNoticeComponent from "@/components/parents/SendNoticeComponent.vue";
 import ListSessionsParent from "@/components/parents/ListSessionsParent.vue";
 import { onMounted } from "vue";
-import PlayerInfoComponent from "@/components/players/PlayerInfoComponent.vue";
+import PlayerInfoParentComponent from "@/components/players/PlayerInfoParentComponent.vue";
 import { usePlayerStore } from "@/stores/players";
 import { useProfileStore } from "@/stores/profile";
 import CalendarComponentParent from "@/components/parents/CalendarComponentParent.vue";

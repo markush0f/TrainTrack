@@ -41,6 +41,7 @@ export const useCalendarStore = defineStore("calendar", () => {
     cancelEvent,
     addEventOption,
     events,
-    eventsInCalendar
+    eventsInCalendar,
+    event
   };
 });

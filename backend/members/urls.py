@@ -1,4 +1,4 @@
-from members.players.views import playersByCategory, players, playersByTeams
+from members.players.views import playersByCategory, players, playersByTeams, removePlayer
 from . import views
 from django.urls import path, include
 from .views import *
@@ -25,6 +25,7 @@ urlpatterns = [
     path("checkcodeteam", views.checkCodeTeam, name="check_code_team"),
     path("profile", views.profile, name="profile"),
     path("players", players, name="parents_by_parent"),
+    path("players/removeplayer", removePlayer, name="remove_player"),
     path("playersbyteam", playersByTeams, name="players_by_team"),
     path("parents/bytrainer", parentsByTrainer, name="parents_by_parent"),
     path("players/bycategory", playersByCategory, name="players_by_category"),

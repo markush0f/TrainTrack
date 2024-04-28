@@ -17,6 +17,7 @@ def createParent(data, user_id):
             address1=data.get("address1"),
             address2=data.get("address2"),
             phone=data.get("phone"),
+            dni=data.get("dni"),
             verify=0,
         )
         return parent
@@ -47,7 +48,7 @@ def signupViewParent(request):
             if "email" in data:
                 if User.objects.filter(email=data["email"]).exists():
                     return JsonResponse(
-                        {"Error": "Este correo electrónico ya está registrado."}
+                        {"EmailExist": "Este correo electrónico ya está registrado."}
                     )
 
             # Verificar si el equipo existe y la contraseña del equipo es correcta
@@ -82,7 +83,6 @@ def signupViewParent(request):
     return JsonResponse({"error": "Se requiere un método POST válido."})
 
 
-# Recogemos los padres segúun al entrenador al que pertenecen
 def parentsByTrainer(request):
     if request.method == "GET":
         payload = decodeJWT(request)
@@ -92,18 +92,17 @@ def parentsByTrainer(request):
                 trainer = Trainer.objects.get(user_id=payload["user_id"])
                 parents = Parent.objects.filter(trainer_id=trainer.id)
                 for parent in parents:
-                    parentsList.append(
-                        {
-                            "name": parent.user.first_name,
-                            "username": parent.user.last_name,
-                            "id": parent.id,
-                        }
-                    )
+                    if parent.verify:
+                        parentsList.append(
+                            {
+                                "name": parent.user.first_name,
+                                "username": parent.user.last_name,
+                                "id": parent.id,
+                            }
+                        )
                 return JsonResponse({"parents": parentsList})
         except Exception as e:
-            return JsonResponse(
-                {"error": "Se produjo un error al procesar la solicitud"}
-            )
+            return JsonResponse({"error": str(e)})
 
 
 def profileParent(request, payload):

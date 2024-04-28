@@ -132,3 +132,30 @@ def profilePlayers(request):
 
 
 # models.ImageField
+@csrf_exempt
+def removePlayer(request):
+    
+    if request.method == "POST":
+        payload = decodeJWT(request)
+        if payload["rol"] == "trainer":
+            try:
+                data = json.loads(request.body)
+                player_id = data.get("id")
+                player = Player.objects.get(id=player_id)
+                playerRemoved = {
+                    "id": player.id,
+                    "nombre": player.name,
+                    "apellido": player.surname,
+                }
+                player.delete()
+                return JsonResponse(
+                    {"success": True, "jugador_eliminado": playerRemoved}
+                )
+            except Player.DoesNotExist:
+                return JsonResponse({"error": "El jugador no existe"})
+            except Exception as e:
+                return JsonResponse(
+                    {"error": str(e)}
+                )
+    else:
+        return JsonResponse({'error': 'Metodo no valido'})

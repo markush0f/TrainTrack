@@ -5,13 +5,12 @@ export const usePlayerStore = defineStore("player", () => {
   const players = ref({});
   const playerMsg = ref(null);
   const player = ref(null);
-  function setPlayer() {
-    
-  }
+  const playerToRemove = ref(null)
   return {
     players,
     playerMsg,
     player,
+    playerToRemove,
   };
 });
 
@@ -28,6 +27,17 @@ export const useShowInsertPlayerStore = defineStore("insertplayer", () => {
     changeModal,
   };
 });
+
+export const useRemovePlayerStore = defineStore('removeplayermodal', () => {
+  const showRemovePlayer = ref(false)
+  function changeModal() {
+    showRemovePlayer.value = !showRemovePlayer.value;
+  }
+  return {
+    changeModal,
+    showRemovePlayer
+  }
+})
 
 // export const usePlayerStore = defineStore("showplayertxt", () =>{
 //   const

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <p>Lista de peticiones</p>
-    Actualizar ista de padres al añadir un hijo
+    
     <div class="flex p-4" v-if="unverifiedParents != null">
+      <p>Lista de peticiones</p>
       <div class="justify-center w-full">
         <!-- Con el max-h-60 ajustamos el scroll -->
         <div class="w-full overflow-y-auto max-h-60">
@@ -38,7 +38,7 @@
         </div>
       </div>
     </div>
-    <div v-else>
+    <div v-else class="text-lg flex justify-center p-3">
       <p>No hay ninguna solicitud pendiente</p>
     </div>
   </div>
@@ -49,6 +49,7 @@ import { onMounted, ref } from "vue";
 import { getUnverifiedParents } from "@/services/parentsAPI";
 import { manageRequestParent } from "@/services/userAPI";
 import { useParentStore } from "@/stores/parents";
+import { listParentsByTrainer } from "@/services/parentsAPI";
 const parentStore = useParentStore();
 const unverifiedParents = ref([]);
 
@@ -60,6 +61,7 @@ onMounted(async () => {
 async function manageRequest(decision, parentId) {
   if (decision) {
     console.log("Aprobado", parentId);
+    (await parentStore).parents = await listParentsByTrainer();
   } else {
     console.log("Denegado", parentId);
   }

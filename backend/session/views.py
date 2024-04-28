@@ -86,10 +86,11 @@ def sendNotification(request):
         payload = decodeJWT(request)
         if not payload:
             return JsonResponse({"error": "Token no válido"}, status=400)
-
+            
         try:
             data = json.loads(request.body)
             print(data)
+            parent = Parent.objects.filter(user_id  = payload['user_id']).first()
             if "title" not in data or "notice" not in data:
                 return JsonResponse(
                     {"error": "Los campos 'title' y 'notice' son obligatorios"},
@@ -97,6 +98,7 @@ def sendNotification(request):
                 )
 
             notice = Events.objects.create(
+                trainer= parent.trainer,
                 title=data["title"],
                 notification=data["notice"],
                 other=data.get("other", ""),

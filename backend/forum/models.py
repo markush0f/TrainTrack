@@ -14,4 +14,5 @@ class Forum(models.Model):
     author = models.CharField(max_length=300, null=300, blank=True)
     created_at = models.DateField(auto_now_add=True, null=True, blank=True)
 
-    
+    def __str__(self):
+        return self.title + "-" + self.author

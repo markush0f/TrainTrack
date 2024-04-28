@@ -1,4 +1,4 @@
-import { Button } from 'bootstrap';
+
 <template>
     <div class="justify-center">
         <div class="max-w-xl w-full">

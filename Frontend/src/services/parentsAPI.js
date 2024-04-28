@@ -3,7 +3,7 @@ import { useCookies } from "vue3-cookies";
 import { useSessionStore } from "@/stores/sessions";
 const { cookies } = useCookies();
 const URL = "http://127.0.0.1:8000/api/";
-
+import { useCalendarStore } from '@/stores/calendar';
 // Solicitamos la lista de todos los jugadores según el entrenador
 export async function listParentsByTrainer() {
   const token = cookies.get("token");
@@ -44,6 +44,8 @@ export async function sendNotification(data) {
 // Solicitamos la creación de un aviso de un padre al entrenador
 export async function sendNotice(data) {
   const token = cookies.get("token");
+  const calendarStore = useCalendarStore()
+
   console.log(data);
   if (token) {
     try {
@@ -56,8 +58,8 @@ export async function sendNotice(data) {
       console.log("Respuestaa...::", res);
       if (res.data.notice) {
         console.log("Advertencia:", res.data);
+        calendarStore.event = null
         if (res.data.success) {
-          
         }
       }
     } catch (e) {

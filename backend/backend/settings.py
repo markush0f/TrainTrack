@@ -33,6 +33,8 @@ ALLOWED_HOSTS = []
 
 # Almacenar las sessiones en las cookies
 SESSION_ENGINE = "django.contrib.sessions.backends.db"
+
+
 # Aplicaciones bases
 BASE_APPS = [
     "django.contrib.admin",

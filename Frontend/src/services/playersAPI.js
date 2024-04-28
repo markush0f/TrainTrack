@@ -1,10 +1,13 @@
 import axios from "axios";
 import { useCookies } from "vue3-cookies";
 import { useCategoryStore } from "@/stores/category";
-import { usePlayerStore } from "@/stores/players";
-const { cookies } = useCookies();
+import {
+  useShowInsertPlayerStore,
+  usePlayerStore,
+  useRemovePlayerStore,
+} from "@/stores/players";
 const URL = "http://127.0.0.1:8000/api/players";
-
+const { cookies } = useCookies();
 // Solicitamos la lista de todos los jugadores según el equipo
 export async function listPlayers() {
   const token = cookies.get("token");
@@ -36,8 +39,28 @@ export async function createPlayer(data) {
       };
       const res = await axios.post(`${URL}`, data, { headers });
       if (res.data.success) {
+        useShowInsertPlayerStore().showInsertPlayer = false
         await listPlayers();
         return true;
+      }
+    } catch (e) {
+      console.log("Error:", e);
+    }
+  }
+}
+
+export async function removePlayer(data) {
+  const token = cookies.get("token");
+  if (token) {
+    try {
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      const res = await axios.post(`${URL}/removeplayer`, data, { headers });
+      console.log(res);
+      if (res.data.success) {
+        console.log('Player removed');
+        await listPlayers()
       }
     } catch (e) {
       console.log("Error:", e);

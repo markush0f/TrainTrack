@@ -1,4 +1,6 @@
 <template>
+    <transition name="fade">
+        
     <div v-if="calendarStore.addEventOption" class="border-t-4">
         <div class="mt-2">
             <form @submit.prevent="submitForm">
@@ -79,6 +81,7 @@
             </form>
         </div>
     </div>
+</transition>
 </template>
 
 

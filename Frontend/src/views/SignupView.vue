@@ -2,7 +2,7 @@
 
 <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
   <div class="mx-auto max-w-lg">
-    <h1 class="text-center text-2xl font-bold text-main-green sm:text-3xl">Mandar solicitud</h1>
+    <h1 class="text-center text-2xl font-bold text-main-green sm:text-3xl">Registrarse</h1>
     <form @submit.prevent="submitForm" class="mb-0 mt-6 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8">
       <p class="mx-auto mt-4 max-w-md text-center text-gray-500">
         Bienvenido a Train Track, introduzca sus datos para registrarse y acceder a las funciones de su hijo/s
@@ -13,6 +13,7 @@
         <div class="mr-4">
           <div class="relative">
             <input type="text" v-model="data.name"
+            required
               class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-light-gray"
               placeholder="Nombre" />
           </div>
@@ -20,7 +21,7 @@
       
         <div>
           <div class="relative">
-            <input type="text" v-model="data.surname"
+            <input type="text" v-model="data.surname" required
               class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-light-gray"
               placeholder="Apellidos" />
           </div>
@@ -31,7 +32,7 @@
         <div class="mr-4">
           <label for="email" class="sr-only">Email</label>
           <div class="relative">
-            <input type="text" v-model="data.email"
+            <input type="text" v-model="data.email" required
               class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-light-gray"
               placeholder="Email" />
           </div>
@@ -39,7 +40,7 @@
       
         <div>
           <div class="relative">
-            <input type="text" v-model="data.password"
+            <input type="password" v-model="data.password" required
               class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-light-gray"
               placeholder="Contraseña" />
           </div>
@@ -47,38 +48,38 @@
 
       <div class="flex ">
         <div class="mr-4">
-          <input type="text" v-model="data.phone"
+          <input type="text" v-model="data.phone" required
             class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-light-gray"
             placeholder="Numero de teléfono" />
         </div>
         <div class="mr-4">
-          <input type="text" v-model="data.DNI"
+          <input type="text" v-model="data.dni" required
             class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-light-gray"
             placeholder="DNI" />
         </div>
       </div>
       <div class="mr-4">
-        <input type="date" v-model="data.birth"
+        <input type="date" v-model="data.birth" required
           class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-light-gray" />
       </div>
         <div class="mr-4">
-          <input type="text" v-model="data.address1"
+          <input type="text" v-model="data.address1" required
             class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-light-gray"
             placeholder="Primera dirección" />
         </div>
         <div class="mr-4">
-          <input type="text" v-model="data.address2"
+          <input type="text" v-model="data.address2" required
             class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-light-gray"
             placeholder="Segunda dirección (opcional)" />
       </div>
       Equipo: 
       <div class="mr-4">
-        <input type="text" v-model="data.teamCode"
+        <input type="text" v-model="data.teamCode" required
           class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-light-gray"
           placeholder="Codigo de equipo" />
     </div> 
     <div class="mr-4">
-      <input type="text" v-model="data.teamPassword"
+      <input type="password" v-model="data.teamPassword" required
         class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm shadow-light-gray"
         placeholder="Contraseña de equipo" />
   </div>
@@ -120,7 +121,7 @@ const data = ref({
   "phone": "",
   "address1": "",
   "address2": "",
-  "DNI": "",
+  "dni": "",
   "teamCode": "",
   "teamPassword": ""
 });

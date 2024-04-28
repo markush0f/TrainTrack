@@ -60,7 +60,7 @@ const router = createRouter({
       path: "/trainer/perfil",
       name: "trainer_perfil",
       component: () => import("../components/ProfileComponent.vue"),
-    },
+    }, 
     {
       path: "/notfound",
       name: "notfound",
@@ -85,6 +85,11 @@ const router = createRouter({
       path: '/aboutus',
       name: 'aboutus',
       component: () => import("@/views/AboutUs.vue")
+    },
+    {
+      path: '/registersuccess',
+      name: 'register_success',
+      component: () => import("@/views/RegisterSuccess.vue")
     }
   ],
 });

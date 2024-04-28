@@ -4,7 +4,7 @@
       <h1
         class="text-4xl font-semibold mb-4 flex justify-center text-green-600"
       >
-        FORO
+        Chat de equipo
       </h1>
       <div class="space-y-1 overflow-auto max-h-96">
         <div

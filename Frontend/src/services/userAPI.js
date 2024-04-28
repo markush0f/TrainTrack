@@ -15,7 +15,7 @@ export async function signup(data) {
       console.log("Respuesta del servidor: ", res);
       if (res.data.success) {
         console.log("Success:", res.data.success);
-        window.location.href = "/home";
+        window.location.href = "/registersuccess";
       }
     } else console.log("No hay respuesta del servidor");
     console.log("Datos enviado", res.data);
@@ -31,7 +31,6 @@ export async function login(data) {
     if (res) {
       console.log("Datos: ", res.data);
       console.log("Respuesta del servidor:", res);
-      // Almacenamos el token en las cookies
       if (res.data.success) {
         console.log("Token:", res.data.token);
         cookies.set("token", res.data.token);
