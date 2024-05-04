@@ -26,7 +26,7 @@
     "vue-cookies": "^1.8.3",
     "vue-router": "^4.2.5",
     "vue3-cookies": "^1.0.6",
-    "vuetify": "^3.4.0-beta.1"
+    "vuetify": "^3.5.15"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.3",
