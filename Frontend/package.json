@@ -16,7 +16,7 @@
     "@fullcalendar/timegrid": "^6.1.11",
     "@fullcalendar/vue3": "^6.1.11",
     "@popperjs/core": "^2.11.8",
-    "axios": "^1.6.7",
+    "axios": "^1.6.8",
     "flowbite-datepicker": "^1.2.6",
     "js-cookie": "^3.0.5",
     "pinia": "^2.1.7",
