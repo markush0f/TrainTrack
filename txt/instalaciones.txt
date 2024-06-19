@@ -1,2 +1,0 @@
-Django REST framework (https://www.django-rest-framework.org/)
-Django CORS headers (https://pypi.org/project/django-cors-headers/)
