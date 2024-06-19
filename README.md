@@ -1,6 +1,6 @@
 # TrainTrack
 
-Welcome to Train Track, an application designed to enhance communication and tracking for local sports teams in the Canary Islands. Our mission is to provide a comprehensive platform that facilitates information exchange among coaches, players, and parents, promoting active participation within the sports community.
+Welcome to my first project, Train Track, an application designed to enhance communication and tracking for football team. Our mission is to provide a comprehensive platform that facilitates information exchange among coaches, players, and parents, promoting active participation within the sports community.
 
 ## Project Overview
 
@@ -27,8 +27,8 @@ To set up and run this project on your local machine, follow these steps:
 
 1. **Clone the repository:**
     ```sh
-    git clone https://github.com/your-username/your-repo-name.git
-    cd your-repo-name
+    git clone https://github.com/markush0f/TrainTrack.git
+    cd TrainTrack
     ```
 
 2. **Backend Setup (Django):**
@@ -63,7 +63,7 @@ To set up and run this project on your local machine, follow these steps:
 
 ## Usage
 
-After completing the setup, you can access the application by opening your web browser and navigating to `http://localhost:8000` for the Django backend and `http://localhost:8080` for the Vue frontend.
+After completing the setup, you can access the application by opening your web browser and navigating to `http://localhost:3000` for the Django backend and `http://localhost:8080` for the Vue frontend.
 
 ## Contributing
 
@@ -71,4 +71,3 @@ This project is open to contributions and feedback. Feel free to fork the reposi
 
 ---
 
-*Note: This project is developed with a focus on enhancing communication and tracking for local sports teams in the Canary Islands.*
